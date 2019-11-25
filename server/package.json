@@ -1,0 +1,32 @@
+{
+    "name": "Project_Grads",
+    "version": "1.0.0",
+    "description": "",
+    "main": "localDatabaseConnection.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FACxBeamery/grads-final-project.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/FACxBeamery/grads-final-project/issues"
+    },
+    "homepage": "https://github.com/FACxBeamery/grads-final-project#readme",
+    "dependencies": {
+        "@hapi/boom": "^8.0.1",
+        "@hapi/joi": "^16.1.8",
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "mongodb": "^3.3.4"
+    },
+    "devDependencies": {
+        "jest": "^24.9.0",
+        "supertest": "^4.0.2"
+    }
+}

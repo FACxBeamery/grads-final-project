@@ -1,0 +1,22 @@
+{
+    "name": "Project_Grads",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dockerup": "docker-compose -f dev-docker-compose.yml up --build",
+        "dockerdown": "docker-compose -f dev-docker-compose.yml down --rmi all"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FACxBeamery/grads-final-project.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/FACxBeamery/grads-final-project/issues"
+    },
+    "homepage": "https://github.com/FACxBeamery/grads-final-project#readme"
+}
