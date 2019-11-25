@@ -18,5 +18,8 @@
     "bugs": {
         "url": "https://github.com/FACxBeamery/grads-final-project/issues"
     },
-    "homepage": "https://github.com/FACxBeamery/grads-final-project#readme"
+    "homepage": "https://github.com/FACxBeamery/grads-final-project#readme",
+    "dependencies": {
+        "eslint-config-prettier": "^6.7.0"
+    }
 }
