@@ -3,6 +3,6 @@ services:
     - docker
 install:
     - docker --version
-    - docker-compose build
+    - docker-compose -f dev-docker-compose.yml build
 test:
     - npm test
