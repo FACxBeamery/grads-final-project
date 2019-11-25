@@ -1,5 +1,5 @@
 const ObjectID = require("mongodb").ObjectID;
-[
+module.exports = [
     {
         _id: ObjectID("507f1f77bcf86cd799439011"),
         firstName: "Steven",
