@@ -1,7 +1,10 @@
 const assert = require("assert");
 const mongoClient = require("mongodb").MongoClient;
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/db";
-
+const dummyAdmins = require("./dummyData/dummyAdmins");
+const dummyEmployees = require("./dummyData/dummyEmployees");
+const dummyQuestions = require("./dummyData/dummyQuestions");
+const dummySurveys = require("./dummyData/dummySurveys");
 const connectionConfig = {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -21,26 +24,9 @@ const initDb = () => {
 
                 // _db.dropDatabase();
 
-                _db.collection("Surveys").deleteMany({});
-                _db.collection("Questions").deleteMany({});
-                _db.collection("Employees").deleteMany({});
-                _db.collection("Admins").deleteMany({});
+                refreshDb(_db);
 
-                _db.collection("Surveys").insertOne({
-                    message: "Created Surveys collection!"
-                });
-
-                _db.collection("Questions").insertOne({
-                    message: "Created Questions collection!"
-                });
-
-                _db.collection("Employees").insertOne({
-                    message: "Created Employees collection!"
-                });
-
-                _db.collection("Admins").insertOne({
-                    message: "Created Admins collection!"
-                });
+                populateDb(_db);
 
                 resolve(_db);
             }
@@ -53,6 +39,19 @@ const initDb = () => {
 
         mongoClient.connect(mongoUri, connectionConfig, dbConnect);
     });
+};
+
+const refreshDb = db => {
+    db.collection("Surveys").deleteMany({});
+    db.collection("Questions").deleteMany({});
+    db.collection("Employees").deleteMany({});
+    db.collection("Admins").deleteMany({});
+};
+const populateDb = db => {
+    db.collection("Surveys").insertMany(dummySurveys);
+    db.collection("Questions").insertMany(dummyQuestions);
+    db.collection("Employees").insertMany(dummyEmployees);
+    db.collection("Admins").insertMany(dummyAdmins);
 };
 
 const getDb = () => {
