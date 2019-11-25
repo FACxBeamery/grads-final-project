@@ -1,10 +1,28 @@
 {
-    "name": "Project_Grads",
+    "name": "project_grads",
     "version": "1.0.0",
     "description": "",
     "main": "localDatabaseConnection.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest",
+        "lint": "./node_modules/eslint/bin/eslint.js ."
+    },
+    "jest": {
+        "coverageThreshold": {
+            "global": {
+                "branches": "${COVERAGE_THRESHOLD}",
+                "functions": "${COVERAGE_THRESHOLD}",
+                "lines": "${COVERAGE_THRESHOLD}",
+                "statements": "${COVERAGE_THRESHOLD}"
+            }
+        },
+        "collectCoverageFrom": [
+            "**/*.{js,jsx}",
+            "!**/serviceWorker.js",
+            "!src/index.js",
+            "!**/node_modules/**",
+            "!**/vendor/**"
+        ]
     },
     "repository": {
         "type": "git",
@@ -26,6 +44,7 @@
         "mongodb": "^3.3.4"
     },
     "devDependencies": {
+        "eslint": "^6.7.1",
         "jest": "^24.9.0",
         "supertest": "^4.0.2"
     }

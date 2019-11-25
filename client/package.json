@@ -12,11 +12,29 @@
         "react-dom": "^16.12.0",
         "react-scripts": "3.2.0"
     },
+    "jest": {
+        "coverageThreshold": {
+            "global": {
+                "branches": "${COVERAGE_THRESHOLD}",
+                "functions": "${COVERAGE_THRESHOLD}",
+                "lines": "${COVERAGE_THRESHOLD}",
+                "statements": "${COVERAGE_THRESHOLD}"
+            }
+        },
+        "collectCoverageFrom": [
+            "**/*.{js,jsx}",
+            "!**/serviceWorker.js",
+            "!src/index.js",
+            "!**/node_modules/**",
+            "!**/vendor/**"
+        ]
+    },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "./node_modules/eslint/bin/eslint.js ."
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -36,6 +54,7 @@
     "devDependencies": {
         "@testing-library/dom": "^6.10.1",
         "@testing-library/jest-dom": "^4.2.4",
-        "@testing-library/react": "^9.3.2"
+        "@testing-library/react": "^9.3.2",
+        "eslint": "^6.7.1"
     }
 }

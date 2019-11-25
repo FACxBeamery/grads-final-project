@@ -21,7 +21,7 @@ services:
             - MORGAN=combined
             - NODE_ENV=development
         env_file:
-            - .env
+            - ./server/.env
         # Port mapping
         ports:
             - 4000:4000
