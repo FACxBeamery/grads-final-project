@@ -1,11 +1,11 @@
 set -e
 export CI=TRUE
 echo
-echo ---------------------
-echo LINT SERVER
-echo ---------------------
-echo
-npm run lint
+# echo ---------------------
+# echo LINT SERVER
+# echo ---------------------
+# echo
+# npm run lint
 echo
 echo ------------------
 echo  RUN SERVER TESTS
