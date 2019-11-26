@@ -1,6 +1,12 @@
 set -e
 export CI=TRUE
 echo
+echo ---------------------
+echo LINT CLIENT
+echo ---------------------
+echo
+npm run lint
+echo
 echo ------------------
 echo  BUILD CLIENT
 echo ------------------
