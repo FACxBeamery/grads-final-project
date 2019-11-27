@@ -66,7 +66,7 @@ const Options = ({ questionIndex }) => {
       {options.map((option, optionIndex) => {
         return (
           <Option
-            key={option.text}
+            key={Math.random()}
             optionIndex={optionIndex}
             questionIndex={questionIndex}
           />
