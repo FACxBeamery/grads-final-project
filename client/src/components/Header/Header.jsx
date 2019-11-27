@@ -7,7 +7,11 @@ import Box from '@material-ui/core/Box';
 
 const Header = () => {
   return (
-    <AppBar data-testid='app-bar' className={styles['header-bar']}>
+    <AppBar
+      data-testid='app-bar'
+      position='static'
+      className={styles['header-bar']}
+    >
       <Box className={styles['header-title']}>
         <h2 className={styles['header-title-vibe']}>Vibe@</h2>
 
