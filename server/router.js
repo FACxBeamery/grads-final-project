@@ -13,7 +13,7 @@ router.get('/test', (req, res) =>
 );
 
 // router.get("/surveys", getSurveys)
-// router.post("/surveys", postSurveys)
+router.post('/surveys', postSurveys);
 // router.patch("/surveys", patchSurveys)
 // router.get("/employees", getEmployees)
 // router.post("/employees", postEmployees)
