@@ -1,0 +1,33 @@
+.svg-box {
+  background: white;
+  border-radius: 50%;
+  width: 200px;
+}
+
+.circle-background,
+.circle-progress {
+  fill: none;
+}
+
+.circle-background {
+  stroke: #ddd;
+}
+
+.circle-progress {
+  stroke: #f15852;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.circle-progress:hover {
+  stroke: #8a8a8a;
+}
+
+.circle-text {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.circle-text--smaller {
+  font-size: 0.5rem;
+}
