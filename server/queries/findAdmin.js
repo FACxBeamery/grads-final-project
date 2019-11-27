@@ -6,6 +6,7 @@ const findAdmin = async (username) => {
   try {
     return await adminsCollection.findOne({
       username: username,
+      type: 'admin',
     });
   } catch (e) {
     return new Error(e.message);
