@@ -7,7 +7,7 @@ const router = express();
 // const patchSurveys = require('./handlers/patchSurveys');
 // const postEmployees = require('./handlers/postEmployees');
 // const getEmployees = require('./handlers/getEmployees');
-// const postAdmins = require('./handlers/postAdmins');
+const postAdmins = require('./handlers/postAdmins');
 const postLogin = require('./handlers/postLogin');
 
 router.get('/test', (req, res) =>
@@ -19,7 +19,7 @@ router.get('/test', (req, res) =>
 // router.patch('/surveys', patchSurveys);
 // router.get('/employees', getEmployees);
 // router.post('/employees', postEmployees);
-// router.post('/admins', postAdmins);
+router.post('/admins', postAdmins);
 router.post('/login', postLogin);
 
 module.exports = router;
