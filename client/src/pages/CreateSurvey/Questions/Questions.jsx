@@ -9,10 +9,14 @@ import {
   FormControl,
   MenuItem,
   Checkbox,
+  Box,
+  FormControlLabel,
+  Typography,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Options from '../Options/Options';
 
-const Question = ({ questionIndex }) => {
+const Question = ({ questionIndex, question }) => {
   const { title, type, required, commentsEnabled } = useSelector(
     (state) => state.createSurveyReducer.questions[questionIndex],
   );
@@ -20,10 +24,12 @@ const Question = ({ questionIndex }) => {
   const dispatch = useDispatch();
 
   const setQuestionData = (event, inputType) => {
+    event.persist();
     const payload = {};
     payload.index = questionIndex;
     payload[event.target.name] =
       inputType === 'checkbox' ? event.target.checked : event.target.value;
+
     dispatch({ type: 'SET_QUESTION_DATA', payload });
   };
 
@@ -35,68 +41,98 @@ const Question = ({ questionIndex }) => {
 
   return (
     <>
-      {/* QUESTION NUMBER */}
-      <h2>{`Q${questionIndex + 1}`}</h2>
-      {/*  QUESTION TITLE */}
-      <TextField
-        required
-        error={title.length < 5 || title.length > 100}
-        helperText={
-          title < 5 ||
-          (title > 100 && 'Title must be between 5 and 100 characters!')
-        }
-        value={title}
-        name='title'
-        label='Question'
-        onChange={setQuestionData}
-      />
-      {/*  QUESTION TYPE SELECT */}
-      <FormControl>
-        <InputLabel id='question-type-select'>Question type: </InputLabel>
-        <Select
-          labelId='question-type-select'
-          id='question-type-select'
-          value={type}
-          onChange={setQuestionData}
-          name='type'
-        >
-          <MenuItem value='text'>Text</MenuItem>
-          <MenuItem value='multichoice'>Multichoice</MenuItem>
-        </Select>
-      </FormControl>
+      <Box display='flex' justifyContent='space-between' alignItems='center'>
+        <Box>
+          {/* QUESTION NUMBER */}
+          <Typography variant='p'>{`Q${questionIndex + 1}`}</Typography>
+          {/*  QUESTION TITLE */}
+          <TextField
+            required
+            error={title.length < 5 || title.length > 100}
+            helperText={
+              title < 5 ||
+              (title > 100 && 'Title must be between 5 and 100 characters!')
+            }
+            value={title}
+            name='title'
+            label='Question'
+            onChange={setQuestionData}
+          />
+        </Box>
+        <Box justifySelf='flex-end'>
+          <Button
+            type='button'
+            color='secondary'
+            onClick={handleDeleteQuestion}
+            startIcon={<DeleteIcon />}
+          >
+            Delete question
+          </Button>
+        </Box>
+      </Box>
 
-      {/*  QUESTION REQUIRED CHECKBOX */}
-      <FormControl>
-        <InputLabel id='question-required-checkbox'>Required: </InputLabel>
-        <Checkbox
-          checked={required}
-          onChange={(e) => setQuestionData(e, 'checkbox')}
-          value='required'
-          name='required'
-          labelId='question-required-checkbox'
-          inputProps={{
-            'aria-label': 'Question required?',
-          }}
-        />
-      </FormControl>
-      {/*  COMMENTS ENABLED CHECKBOX */}
-      {/* TODO make comments enabled work */}
-      <FormControl>
-        <InputLabel id='comments-enabled-checkbox'>Allow comments: </InputLabel>
-        <Checkbox
-          checked={commentsEnabled}
-          onChange={(e) => setQuestionData(e, 'checkbox')}
-          value='commentsEnabled'
-          name='commentsEnabled'
-          labelId='comments-enabled-checkbox'
-          inputProps={{
-            'aria-label': 'Allow comments: ',
-          }}
-        />
-      </FormControl>
-      <Button type='button' onClick={handleDeleteQuestion}>
-        DELETE QUESTION
-      </Button>
+      {/*  CHECKBOXES DIV */}
+      <Box
+        display='flex'
+        alignSelf='center'
+        // width={0.5}
+        justifyContent='space-around'
+        alignItems='flex-end'
+      >
+        {/*  QUESTION TYPE SELECT */}
+        <Box mr={8}>
+          <FormControl>
+            <InputLabel id='question-type-select'>Type:</InputLabel>
+            <Select
+              labelid='question-type-select'
+              id='question-type-select'
+              value={type}
+              onChange={setQuestionData}
+              name='type'
+            >
+              <MenuItem value='text'>Text</MenuItem>
+              <MenuItem value='multichoice'>Multichoice</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        {/*  QUESTION REQUIRED CHECKBOX */}
+        <Box mr={4}>
+          <FormControlLabel
+            label='Required'
+            control={(
+<Checkbox
+                checked={required}
+                onChange={(e) => setQuestionData(e, 'checkbox')}
+                value='required'
+                name='required'
+                labelid='question-required-checkbox'
+                inputProps={{
+                  'aria-label': 'Question required?',
+                }}
+              />
+)}
+          />
+        </Box>
+        {/*  COMMENTS ENABLED CHECKBOX */}
+        {/* TODO make comments enabled work */}
+        <Box>
+          <FormControlLabel
+            control={(
+<Checkbox
+                checked={commentsEnabled}
+                onChange={(e) => setQuestionData(e, 'checkbox')}
+                value='commentsEnabled'
+                name='commentsEnabled'
+                labelid='comments-enabled-checkbox'
+                inputProps={{
+                  'aria-label': 'Allow comments: ',
+                }}
+              />
+)}
+            label='Allow Comments'
+          />
+        </Box>
+      </Box>
 
       {type === 'multichoice' ? (
         <Options questionIndex={questionIndex} />
@@ -116,15 +152,31 @@ const QuestionsList = () => {
   };
   const { questions } = useSelector((state) => state.createSurveyReducer);
 
+  if (questions.length < 1) {
+    handleNewQuestionClick();
+  }
   return (
-    <>
+    <Box mx={4} my={2} display='flex' flexDirection='column'>
       {questions.map((question, questionIndex) => {
-        return <Question key={question.title} questionIndex={questionIndex} />;
+        return (
+          <Question
+            key={Math.random()}
+            question={question}
+            questionIndex={questionIndex}
+          />
+        );
       })}
-      <Button type='button' onClick={handleNewQuestionClick}>
-        Add question
-      </Button>
-    </>
+      <Box alignSelf='flex-start'>
+        <Button
+          type='button'
+          variant='outlined'
+          color='secondary'
+          onClick={handleNewQuestionClick}
+        >
+          Add question
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
