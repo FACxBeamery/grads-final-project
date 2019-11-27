@@ -10,87 +10,12 @@ import {
   MenuItem,
   Checkbox,
 } from '@material-ui/core';
-
-const Option = ({ optionIndex, questionIndex }) => {
-  const dispatch = useDispatch();
-  const { questions } = useSelector((state) => state.createSurveyReducer);
-
-  const { options } = questions[questionIndex];
-  const { text } = options[optionIndex];
-
-  const setOptionText = (event) => {
-    const payload = {};
-    payload.questionIndex = questionIndex;
-    payload.optionIndex = optionIndex;
-    payload.text = event.target.value;
-    dispatch({ type: 'SET_OPTION_DATA', payload });
-  };
-
-  const handleDeleteOption = () => {
-    const payload = {};
-    payload.questionIndex = questionIndex;
-    payload.optionIndex = optionIndex;
-    dispatch({ type: 'DELETE_OPTION', payload });
-  };
-  return (
-    <>
-      <TextField
-        required
-        error={text.length < 1}
-        helperText={text.length < 1 ? 'Answer must not be empty!' : ''}
-        value={text}
-        name='text'
-        onChange={setOptionText}
-      />
-      <Button type='button' onClick={handleDeleteOption}>
-        DELETE ANSWER
-      </Button>
-    </>
-  );
-};
-
-Option.propTypes = {
-  optionIndex: PropTypes.number.isRequired,
-  questionIndex: PropTypes.number.isRequired,
-};
-
-const Options = ({ questionIndex }) => {
-  const dispatch = useDispatch();
-  const { questions } = useSelector((state) => state.createSurveyReducer);
-  const { options } = questions[questionIndex];
-
-  const handleNewOptionClick = () => {
-    const payload = {};
-    payload.index = questionIndex;
-    dispatch({ type: 'NEW_OPTION', payload });
-  };
-
-  if (options.length < 1) {
-    handleNewOptionClick();
-  }
-
-  return (
-    // TODO ADD ANSWERS h2
-    <>
-      {options.map((option, optionIndex) => {
-        return (
-          <Option optionIndex={optionIndex} questionIndex={questionIndex} />
-        );
-      })}
-      <Button type='button' onClick={handleNewOptionClick}>
-        Add answer
-      </Button>
-    </>
-  );
-};
-
-Options.propTypes = {
-  questionIndex: PropTypes.number.isRequired,
-};
+import Options from '../Options/Options';
 
 const Question = ({ questionIndex }) => {
-  const { questions } = useSelector((state) => state.createSurveyReducer);
-  const { title, type, required, commentsEnabled } = questions[questionIndex];
+  const { title, type, required, commentsEnabled } = useSelector(
+    (state) => state.createSurveyReducer.questions[questionIndex],
+  );
 
   const dispatch = useDispatch();
 
@@ -117,9 +42,8 @@ const Question = ({ questionIndex }) => {
         required
         error={title.length < 5 || title.length > 100}
         helperText={
-          title < 5 || title > 100
-            ? 'Title must be between 5 and 100 characters!'
-            : ''
+          title < 5 ||
+          (title > 100 && 'Title must be between 5 and 100 characters!')
         }
         value={title}
         name='title'
@@ -195,7 +119,7 @@ const QuestionsList = () => {
   return (
     <>
       {questions.map((question, questionIndex) => {
-        return <Question questionIndex={questionIndex} />;
+        return <Question key={question.title} questionIndex={questionIndex} />;
       })}
       <Button type='button' onClick={handleNewQuestionClick}>
         Add question

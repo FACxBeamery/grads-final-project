@@ -7,7 +7,7 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
-import QuestionsList from './Questions';
+import QuestionsList from './Questions/Questions';
 
 const CreateSurvey = () => {
   const dispatch = useDispatch();
