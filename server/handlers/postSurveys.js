@@ -1,4 +1,3 @@
-const { getDB } = require('../databaseConnection');
 const addQuestions = require('../queries/addQuestions');
 const createSurvey = require('../queries/createSurvey');
 /* Survey schema:
@@ -28,17 +27,16 @@ const createSurvey = require('../queries/createSurvey');
 
 const postSurveys = async (req, res) => {
   const surveyObj = req.body;
-  const questions = [...surveyObj.questions];
-  const db = getDB();
+  const questions = JSON.parse(surveyObj.questions);
+  console.log('questions: ', questions, typeof questions);
 
   try {
-    const questionIds = await addQuestions(
-      questions,
-      db.collection('questions'),
-    );
-    await createSurvey(surveyObj, questionIds, db.collection('surveys'));
+    const questionIds = await addQuestions(questions);
+    await createSurvey(surveyObj, questionIds);
     res.send(200);
   } catch (e) {
     res.status(500).send(e.message);
   }
 };
+
+module.exports = postSurveys;
