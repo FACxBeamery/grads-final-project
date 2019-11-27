@@ -14,7 +14,7 @@ const Main = () => {
         <Route exact path='/admin' component={Dashboard} />
         <Route exact path='/admin/surveys/create' component={CreateSurvey} />
         <Route path='/admin/surveys/:id' component={SurveyDetail} />
-        <Route path='/:id' component={TakeSurvey} />
+        <Route path='/takesurvey' component={TakeSurvey} />
       </Switch>
     </main>
   );
