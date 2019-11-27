@@ -24,33 +24,26 @@ const SurveyCard = ({ survey }) => {
   } = survey;
   const percentage = Math.floor((responses.length / recipients.length) * 100);
   return (
-    <Grid item xs={4} component={Card} className={styles.card}>
+    <Grid item xs={5} component={Card} className={styles.card}>
       {/* <Card> */}
       <CardContent>
         <Typography color='textSecondary' gutterBottom variant='subtitle2'>
           SURVEY
         </Typography>
-        {/* <Box display={'flex'}> */}
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <Typography variant='h5'>{title}</Typography>
-            {/* <Grid item xs zeroMinWidth> */}
-            <Typography color='textSecondary' variant='body2'>
-              {description}
-            </Typography>
-            {/* </Grid> */}
-          </Grid>
-          <Grid item xs={2}>
-            <ProgressWheel
-              strokeWidth={'8'}
-              sqSize={'70'}
-              percentage={percentage || 0}
-              numerator={responses.length}
-              denominator={recipients.length}
-            />
-          </Grid>
-        </Grid>
-        {/* </Box> */}
+        <Box container display={'flex'} justifyContent='space-between' mb={4}>
+          <Typography variant='h6'>{title}</Typography>
+
+          <ProgressWheel
+            strokeWidth={'8'}
+            sqSize={'80'}
+            percentage={percentage || 0}
+            numerator={responses.length}
+            denominator={recipients.length}
+          />
+        </Box>
+        <Typography color='textSecondary' variant='body2'>
+          {description}
+        </Typography>
       </CardContent>
       <CardActions className={styles['actions']}>
         <Button color='secondary' size='small'>
@@ -58,7 +51,6 @@ const SurveyCard = ({ survey }) => {
         </Button>
         <Chip label='Active' className={styles['active']} />
       </CardActions>
-      {/* </Card> */}
     </Grid>
   );
 };
