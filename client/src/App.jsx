@@ -34,6 +34,12 @@ const theme = createMuiTheme({
     button: {
       fontFamily: 'Merriweather Sans',
     },
+    p: {
+      fontFamily: 'Merriweather Sans',
+    },
+    span: {
+      fontFamily: 'Merriweather Sans',
+    },
   },
 });
 
