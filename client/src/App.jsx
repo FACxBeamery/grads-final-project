@@ -16,7 +16,10 @@ const theme = createMuiTheme({
     secondary: {
       main: '#F15852',
     },
-    // error: will use the default color
+    active: {
+      backgroundColor: '#69BE28',
+    },
+    // to use active use style={theme.palette.active}
   },
   typography: {
     h1: {
