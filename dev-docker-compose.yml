@@ -28,6 +28,7 @@ services:
         # Volumes to mount
         volumes:
             - ./server:/app/server
+            - /app/server/node_modules/
         # Run command
         # Nodemon for hot reloading (-L flag required for polling in Docker)
         command: nodemon -L server.js
