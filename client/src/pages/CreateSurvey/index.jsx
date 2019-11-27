@@ -1,6 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { TextField, Button, Switch } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Switch,
+  FormControl,
+  InputLabel,
+} from '@material-ui/core';
+import QuestionsList from './Questions';
 
 const CreateSurvey = () => {
   const dispatch = useDispatch();
@@ -10,14 +17,9 @@ const CreateSurvey = () => {
       inputType === 'switch' ? event.target.checked : event.target.value;
     dispatch({ type: 'SET_METADATA', payload });
   };
-  const {
-    title,
-    description,
-    recipients,
-    disclaimer,
-    anonymous,
-    questions,
-  } = useSelector((state) => state.createSurveyReducer);
+  const { title, description, recipients, disclaimer, anonymous } = useSelector(
+    (state) => state.createSurveyReducer,
+  );
   const handleSubmit = () => {};
   return (
     <form onSubmit={handleSubmit}>
@@ -30,6 +32,7 @@ const CreateSurvey = () => {
             : ''
         }
         value={title}
+        name='title'
         label='Survey title'
         onChange={setMetadata}
       />
@@ -42,6 +45,7 @@ const CreateSurvey = () => {
             : ''
         }
         value={description}
+        name='description'
         label='Enter a description'
         onChange={setMetadata}
       />
@@ -49,6 +53,7 @@ const CreateSurvey = () => {
         required
         value={recipients[0]}
         label='PLACEHOLDER FOR RECIPIENTS'
+        name='recipients'
         onChange={setMetadata}
       />
       <TextField
@@ -60,16 +65,23 @@ const CreateSurvey = () => {
             : ''
         }
         value={disclaimer}
+        name='disclaimer'
         label='How will this data be used?'
         onChange={setMetadata}
       />
-      <Switch
-        checked={anonymous}
-        onChange={(e) => setMetadata(e, 'switch')}
-        value='anonymous'
-        label='Make survey anonymous'
-        inputProps={{ 'aria-label': 'Make survey anonymous' }}
-      />
+      <FormControl>
+        <InputLabel id='anonymous-switch'>Anonymous</InputLabel>
+
+        <Switch
+          checked={anonymous}
+          onChange={(e) => setMetadata(e, 'switch')}
+          value='anonymous'
+          name='anonymous'
+          labelId='anonymous-switch'
+          inputProps={{ 'aria-label': 'Make survey anonymous' }}
+        />
+      </FormControl>
+      <QuestionsList />
       <Button type='submit' color='secondary'>
         Create Survey
       </Button>
