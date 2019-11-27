@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider, Button } from '@material-ui/core';
-import { store } from './store';
+import store from './store';
 import { Provider } from 'react-redux';
 import Main from './components/Main/Main';
 import Header from './components/Header/Header';

@@ -1,4 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 import { reducer } from './reducer/reducer';
+import createSurveyReducer from './reducer/createSurveyReducer';
 
-export const store = createStore(combineReducers({ reducer }));
+const store = createStore(combineReducers({ reducer, createSurveyReducer }));
+export default store;
