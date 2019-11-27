@@ -25,6 +25,12 @@ const mappedQuestions = (questions, payload, editOptions) => {
   );
 };
 
+const objectWithoutKey = (obj, key) => {
+  const newObj = { ...obj };
+  delete newObj[key];
+  return newObj;
+};
+
 const createSurverReducer = (state = initalState, action) => {
   const { payload } = action;
   const defaultQuestion = {
@@ -48,7 +54,9 @@ const createSurverReducer = (state = initalState, action) => {
       return {
         ...state,
         questions: state.questions.map((question, index) =>
-          index === payload.index ? { ...question, ...payload } : question,
+          index === payload.index
+            ? { ...question, ...objectWithoutKey(payload, 'index') }
+            : question,
         ),
       };
     case 'DELETE_QUESTION':
