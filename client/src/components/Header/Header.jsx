@@ -1,7 +1,7 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import styles from './Header.module.css';
-import Typography from '@material-ui/core/Typography';
+//import Typography from '@material-ui/core/Typography';
 // TODO make header component
 
 const Header = () => {
