@@ -1,0 +1,16 @@
+.header-bar {
+  height: auto;
+}
+.header-title {
+  display: flex;
+  align-self: center;
+}
+.header-title-vibe {
+  flex-direction: row;
+  font-family: 'Merriweather';
+}
+.header-title-beamery {
+  flex-direction: row;
+  font-family: 'Merriweather';
+  color: #f15852;
+}
