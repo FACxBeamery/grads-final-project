@@ -1,6 +1,6 @@
+const Joi = require('@hapi/joi');
 const addQuestions = require('../queries/addQuestions');
 const createSurvey = require('../queries/createSurvey');
-const Joi = require('joi');
 /* Survey schema:
     {
         id: ObjectID (auto generated)
@@ -65,7 +65,7 @@ const postSurveys = async (req, res) => {
   const questions = JSON.parse(surveyObj.questions);
   // replace questions string with the questions array created above
   // so joi can validate properly
-  const surveyObjForValidation = { ...surveyObj, questions: questions };
+  const surveyObjForValidation = { ...surveyObj, questions };
   Joi.validate(
     surveyObjForValidation,
     surveyObjectSchema,

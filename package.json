@@ -22,9 +22,11 @@
     },
     "homepage": "https://github.com/FACxBeamery/grads-final-project#readme",
     "dependencies": {
+        "@hapi/joi": "^16.1.8",
         "airbnb": "0.0.2",
         "eslint-config-airbnb": "^18.0.1",
         "eslint-config-prettier": "^6.7.0",
+        "joi": "^14.3.1",
         "mongo": "^0.1.0"
     }
 }

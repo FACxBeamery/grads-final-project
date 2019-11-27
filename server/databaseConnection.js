@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const assert = require('assert');
 const mongoClient = require('mongodb').MongoClient;
 const dummyAdmins = require('./dummyData/dummyAdmins');
@@ -12,7 +13,21 @@ const connectionConfig = {
   useUnifiedTopology: true,
 };
 
-let _db, _client;
+let _db;
+let _client;
+
+const refreshDb = (db) => {
+  db.collection('Surveys').deleteMany({});
+  db.collection('Questions').deleteMany({});
+  db.collection('Employees').deleteMany({});
+  db.collection('Admins').deleteMany({});
+};
+const populateDb = (db) => {
+  db.collection('Surveys').insertMany(dummySurveys);
+  db.collection('Questions').insertMany(dummyQuestions);
+  db.collection('Employees').insertMany(dummyEmployees);
+  db.collection('Admins').insertMany(dummyAdmins);
+};
 
 const initDb = () => {
   return new Promise((resolve, reject) => {
@@ -42,19 +57,6 @@ const initDb = () => {
 
     mongoClient.connect(mongoUri, connectionConfig, dbConnect);
   });
-};
-
-const refreshDb = (db) => {
-  db.collection('Surveys').deleteMany({});
-  db.collection('Questions').deleteMany({});
-  db.collection('Employees').deleteMany({});
-  db.collection('Admins').deleteMany({});
-};
-const populateDb = (db) => {
-  db.collection('Surveys').insertMany(dummySurveys);
-  db.collection('Questions').insertMany(dummyQuestions);
-  db.collection('Employees').insertMany(dummyEmployees);
-  db.collection('Admins').insertMany(dummyAdmins);
 };
 
 const getDb = () => {

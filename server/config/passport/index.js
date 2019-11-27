@@ -2,6 +2,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
+const findAdmin = require('../../queries/findAdmin');
+
 const getJWTSecret = require('../../utils/getJWTSecret');
 
 module.exports = (passport) => {
@@ -13,10 +15,9 @@ module.exports = (passport) => {
         passwordField: 'password',
         session: false,
       },
-      (username, password, done) => {
+      async (username, password, done) => {
         try {
-          console.log('username = ', username);
-          console.log('password = ', password);
+          // TODO not working currently
           if (username === undefined) {
             return done(null, false, { message: 'Empty username.' });
           }
@@ -24,18 +25,16 @@ module.exports = (passport) => {
           if (password === undefined) {
             return done(null, false, { message: 'Empty password.' });
           }
+          // -----
 
-          if (username === 'test' && password === 'test') {
-            return done(null, username);
+          const result = await findAdmin(username, password);
+
+          if (result) {
+            return done(null, result);
           }
-
-          if (username !== 'test' || password !== 'test') {
-            return done(null, false, {
-              message: 'Bad credentials. Username and password do not match.',
-            });
-          }
-
-          return done(null, false, { message: 'Cannot authenticate user.' });
+          return done(null, false, {
+            message: 'Bad credentials. Username and password do not match.',
+          });
         } catch (err) {
           return done(err);
         }

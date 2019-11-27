@@ -1,10 +1,8 @@
-/* eslint-disable no-console */
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const getJWTSecret = require('../utils/getJWTSecret');
 
 const postLogin = (req, res, next) => {
-  console.log('before passport authenticate');
   passport.authenticate(
     'login',
     {
@@ -12,8 +10,7 @@ const postLogin = (req, res, next) => {
       badRequestMessage: 'Username and/or password cannot be empty!', // replaces Missing credentials
       // failureFlash: true,
     },
-    (err, users, info) => {
-      console.log('request from inside postLogin', req);
+    (err, user, info) => {
       try {
         const jwtSecret = getJWTSecret();
         if (err) {
@@ -28,10 +25,7 @@ const postLogin = (req, res, next) => {
           }
 
           res.status(403).send(info.message);
-        } else if (users) {
-          // todos: stubbed but mongo call required.
-          const user = { id: 1 }; // todos: will be the admins id from mongo.
-
+        } else if (user) {
           const token = jwt.sign({ id: user.id }, jwtSecret, {
             expiresIn: 60 * 60,
           });

@@ -1,15 +1,16 @@
 const { getDb } = require('../databaseConnection');
 
-const findAdmin = async (username) => {
+const findAdmin = async (username, password) => {
   const db = getDb();
   const adminsCollection = await db.collection('Admins');
   try {
     return await adminsCollection.findOne({
-      username: username,
+      username,
+      password,
       type: 'admin',
     });
-  } catch (e) {
-    return new Error(e.message);
+  } catch (err) {
+    return new Error(err.message);
   }
 };
 
