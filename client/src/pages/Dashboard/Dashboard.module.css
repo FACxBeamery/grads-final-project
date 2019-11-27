@@ -21,3 +21,13 @@
   flex-direction: column;
   justify-content: space-between; */
 }
+
+.row {
+  background: white;
+  transition: background 0.5s;
+  cursor: pointer;
+}
+
+.row:hover {
+  background: #f3cccb7a;
+}
