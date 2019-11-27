@@ -11,7 +11,6 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// app.use(bodyParser);
 app.use(passportStrategies.initialize());
 app.use(router);
 

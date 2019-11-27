@@ -1,60 +1,61 @@
 {
-    "name": "project_grads",
-    "version": "1.0.0",
-    "description": "",
-    "main": "localDatabaseConnection.js",
-    "scripts": {
-        "test": "jest",
-        "lint": "./node_modules/eslint/bin/eslint.js ."
+  "name": "project_grads",
+  "version": "1.0.0",
+  "description": "",
+  "main": "localDatabaseConnection.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "./node_modules/eslint/bin/eslint.js ."
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": "${COVERAGE_THRESHOLD}",
+        "functions": "${COVERAGE_THRESHOLD}",
+        "lines": "${COVERAGE_THRESHOLD}",
+        "statements": "${COVERAGE_THRESHOLD}"
+      }
     },
-    "jest": {
-        "coverageThreshold": {
-            "global": {
-                "branches": "${COVERAGE_THRESHOLD}",
-                "functions": "${COVERAGE_THRESHOLD}",
-                "lines": "${COVERAGE_THRESHOLD}",
-                "statements": "${COVERAGE_THRESHOLD}"
-            }
-        },
-        "collectCoverageFrom": [
-            "**/*.{js,jsx}",
-            "!**/serviceWorker.js",
-            "!src/index.js",
-            "!**/node_modules/**",
-            "!**/vendor/**"
-        ]
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/FACxBeamery/grads-final-project.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/FACxBeamery/grads-final-project/issues"
-    },
-    "homepage": "https://github.com/FACxBeamery/grads-final-project#readme",
-    "dependencies": {
-        "@hapi/boom": "^8.0.1",
-        "@hapi/joi": "^16.1.8",
-        "axios": "^0.19.0",
-        "body-parser": "^1.19.0",
-        "dotenv": "^8.2.0",
-        "eslint-config-airbnb": "^18.0.1",
-        "eslint-config-prettier": "^6.7.0",
-        "express": "^4.17.1",
-        "jsonwebtoken": "^8.5.1",
-        "mongodb": "^3.3.4",
-        "passport": "^0.4.0",
-        "passport-jwt": "^4.0.0",
-        "passport-local": "^1.0.0"
-    },
-    "devDependencies": {
-        "eslint": "^6.1.0",
-        "eslint-config-airbnb-base": "^14.0.0",
-        "eslint-plugin-import": "^2.18.2",
-        "jest": "^24.9.0",
-        "supertest": "^4.0.2"
-    }
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/serviceWorker.js",
+      "!src/index.js",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FACxBeamery/grads-final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FACxBeamery/grads-final-project/issues"
+  },
+  "homepage": "https://github.com/FACxBeamery/grads-final-project#readme",
+  "dependencies": {
+    "@hapi/boom": "^8.0.1",
+    "@hapi/joi": "^16.1.8",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.7.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "joi": "^14.3.1",
+    "mongodb": "^3.3.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2",
+    "axios": "^0.19.0"
+  }
 }
