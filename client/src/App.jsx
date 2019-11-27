@@ -18,6 +18,23 @@ const theme = createMuiTheme({
     },
     // error: will use the default color
   },
+  typography: {
+    h1: {
+      fontFamily: 'Merriweather',
+    },
+    h2: {
+      fontFamily: 'Merriweather Sans',
+    },
+    h3: {
+      fontFamily: 'Merriweather Sans',
+    },
+    h4: {
+      fontFamily: 'Merriweather Sans',
+    },
+    button: {
+      fontFamily: 'Merriweather Sans',
+    },
+  },
 });
 
 const App = () => {
