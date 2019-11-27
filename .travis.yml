@@ -1,0 +1,8 @@
+language: node_js
+services:
+    - docker
+install:
+    - docker --version
+    - docker-compose --version
+test:
+    - npm test
