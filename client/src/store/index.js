@@ -1,4 +1,7 @@
 import { createStore, combineReducers } from 'redux';
 import { reducer } from './reducer/reducer';
+import dashboardReducer from './reducer/dashboardReducer';
 
-export const store = createStore(combineReducers({ reducer }));
+const store = createStore(combineReducers({ reducer, dashboardReducer }));
+
+export default store;
