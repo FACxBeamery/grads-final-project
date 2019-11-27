@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const ObjectID = require("mongodb").ObjectID;
 module.exports = [
     {
