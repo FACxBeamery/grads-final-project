@@ -16,6 +16,7 @@ const CreateSurvey = () => {
     recipients,
     disclaimer,
     anonymous,
+    // eslint-disable-next-line
     questions,
   } = useSelector((state) => state.createSurveyReducer);
   const handleSubmit = () => {};

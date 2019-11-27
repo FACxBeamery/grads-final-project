@@ -15,6 +15,7 @@ with the ObjectIds from the questions collection, and sends to the DB
   } catch (e) {
     return new Error(e.message);
   }
+
   if (acknowledged === false) {
     return new Error('Query not acknowledged');
   } else {
