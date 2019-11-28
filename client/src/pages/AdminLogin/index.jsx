@@ -45,11 +45,19 @@ const AdminLogin = () => {
 
     if (auth && token) {
       window.localStorage.setItem('jwt_token', token);
-      setLoginOnPost(auth);
+      const payload = {
+        message,
+        variant: 'success',
+      };
+      dispatch({ type: 'OPEN_SNACKBAR', payload });
+    } else {
+      const payload = {
+        message,
+        variant: 'error',
+      };
+      dispatch({ type: 'OPEN_SNACKBAR', payload });
     }
-
-    console.log(message);
-    console.log(window.localStorage.getItem('jwt_token'));
+    setLoginOnPost(auth);
   };
 
   return (
