@@ -1,8 +1,8 @@
 import React from 'react';
-import theme from './theme';
-import { ThemeProvider, Button } from '@material-ui/core';
-import store from './store';
 import { Provider } from 'react-redux';
+import { ThemeProvider, Button } from '@material-ui/core';
+import theme from './theme';
+import store from './store';
 import Main from './components/Main/Main';
 import Header from './components/Header/Header';
 
@@ -11,7 +11,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Header />
+        {<Header />}
         <Main />
         <Button color='primary' variant='contained' type='submit'>
           Submit
