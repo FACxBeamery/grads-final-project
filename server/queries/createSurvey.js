@@ -15,6 +15,7 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
       return new Error('Query not acknowledged');
     }
   } catch (e) {
+    console.log("There's been an error doing the survey query");
     return new Error(e.message);
   }
 };

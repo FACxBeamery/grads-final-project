@@ -29,41 +29,43 @@ const Joi = require('joi');
 const postSurveys = async (req, res) => {
   console.log('postSurveys handler running');
 
-  const surveyObjectSchema = Joi.object().keys({
-    title: Joi.string()
-      .min(5)
-      .max(100)
-      .required(),
-    description: Joi.string()
-      .min(5)
-      .max(140)
-      .required(),
-    status: Joi.string().valid('created', 'published', 'closed'),
-    dateCreated: Joi.string(),
-    dateToPublish: Joi.string(),
-    datePublished: Joi.string(),
-    dateToClose: Joi.string(),
-    dateClosed: Joi.string(),
-    anonymous: Joi.boolean(),
-    recipients: Joi.array().items(
-      Joi.object().keys({ employeeId: Joi.string(), completed: Joi.boolean() }),
-    ),
-    questions: Joi.array().items(
-      Joi.object().keys({ position: Joi.number().integer() }),
-    ),
-    responses: Joi.array().items(
-      Joi.object().keys({
-        answers: Joi.array().items(
-          Joi.object().keys({
-            answer: Joi.alternatives().try(Joi.number(), Joi.string()),
-            comment: Joi.string().allow(null),
-          }),
-        ),
-      }),
-    ),
-  });
+  const surveyObjectSchema = Joi.object();
+  // !! ------ ONLY UNCOMMENT THIS ONCE SURVEY EDITOR IS FINISHED --- !!
+  //   const surveyObjectSchema = Joi.object().keys({
+  //     title: Joi.string()
+  //       .min(5)
+  //       .max(100)
+  //       .required(),
+  //     description: Joi.string()
+  //       .min(5)
+  //       .max(140)
+  //       .required(),
+  //     status: Joi.string().valid('created', 'published', 'closed'),
+  //     dateCreated: Joi.string(),
+  //     dateToPublish: Joi.string(),
+  //     datePublished: Joi.string(),
+  //     dateToClose: Joi.string(),
+  //     dateClosed: Joi.string(),
+  //     anonymous: Joi.boolean(),
+  //     recipients: Joi.array().items(
+  //       Joi.object().keys({ employeeId: Joi.string(), completed: Joi.boolean() }),
+  //     ),
+  //     questions: Joi.array().items(
+  //       Joi.object().keys({ position: Joi.number().integer() }),
+  //     ),
+  //     responses: Joi.array().items(
+  //       Joi.object().keys({
+  //         answers: Joi.array().items(
+  //           Joi.object().keys({
+  //             answer: Joi.alternatives().try(Joi.number(), Joi.string()),
+  //             comment: Joi.string().allow(null),
+  //           }),
+  //         ),
+  //       }),
+  //     ),
+  //   });
   const surveyObj = req.body;
-  console.log(surveyObj, typeof surveyObj);
+
   const questions = surveyObj.questions;
   console.log(questions, typeof questions);
 
@@ -76,6 +78,7 @@ const postSurveys = async (req, res) => {
     surveyObjectSchema,
     async (err, result) => {
       if (err) {
+        console.log('Joi validation failed');
         res.send(err.message);
       } else {
         try {

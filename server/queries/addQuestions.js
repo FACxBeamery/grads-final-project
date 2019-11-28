@@ -20,6 +20,7 @@ const addQuestions = async (questionsArray) => {
       return new Error('Query not acknowledged');
     }
   } catch (e) {
+    console.log('Error adding to questions collection');
     return new Error(e.message);
   }
 };
