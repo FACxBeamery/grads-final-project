@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,7 +17,9 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import Options from '../Options/Options';
 
-const Question = ({ questionIndex, question }) => {
+// TODO FIX WEIRD LINTING ERRORS
+// TODO fix annoying state update typing thing
+const Question = ({ questionIndex }) => {
   const { title, type, required, commentsEnabled } = useSelector(
     (state) => state.createSurveyReducer.questions[questionIndex],
   );
@@ -44,7 +47,7 @@ const Question = ({ questionIndex, question }) => {
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <Box>
           {/* QUESTION NUMBER */}
-          <Typography variant='p'>{`Q${questionIndex + 1}`}</Typography>
+          <Typography>{`Q${questionIndex + 1}`}</Typography>
           {/*  QUESTION TITLE */}
           <TextField
             required
@@ -78,6 +81,7 @@ const Question = ({ questionIndex, question }) => {
         // width={0.5}
         justifyContent='space-around'
         alignItems='flex-end'
+        mb={4}
       >
         {/*  QUESTION TYPE SELECT */}
         <Box mr={8}>
@@ -99,8 +103,8 @@ const Question = ({ questionIndex, question }) => {
         <Box mr={4}>
           <FormControlLabel
             label='Required'
-            control={(
-<Checkbox
+            control={
+              <Checkbox
                 checked={required}
                 onChange={(e) => setQuestionData(e, 'checkbox')}
                 value='required'
@@ -110,15 +114,15 @@ const Question = ({ questionIndex, question }) => {
                   'aria-label': 'Question required?',
                 }}
               />
-)}
+            }
           />
         </Box>
         {/*  COMMENTS ENABLED CHECKBOX */}
         {/* TODO make comments enabled work */}
         <Box>
           <FormControlLabel
-            control={(
-<Checkbox
+            control={
+              <Checkbox
                 checked={commentsEnabled}
                 onChange={(e) => setQuestionData(e, 'checkbox')}
                 value='commentsEnabled'
@@ -128,7 +132,7 @@ const Question = ({ questionIndex, question }) => {
                   'aria-label': 'Allow comments: ',
                 }}
               />
-)}
+            }
             label='Allow Comments'
           />
         </Box>
