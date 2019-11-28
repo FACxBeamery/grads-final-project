@@ -64,10 +64,14 @@ const postSurveys = async (req, res) => {
   //     ),
   //   });
   const surveyObj = req.body;
-  const questions = JSON.parse(surveyObj.questions);
+  console.log(surveyObj, typeof surveyObj);
+  const questions = surveyObj.questions;
+  console.log(questions, typeof questions);
+
   // replace questions string with the questions array created above
   // so joi can validate properly
-  const surveyObjForValidation = { ...surveyObj, questions: questions };
+  const surveyObjForValidation = { ...surveyObj };
+
   Joi.validate(
     surveyObjForValidation,
     surveyObjectSchema,
@@ -76,9 +80,13 @@ const postSurveys = async (req, res) => {
         res.send(err.message);
       } else {
         try {
-          const questionIds = await addQuestions(questions);
+          const questionIdsObject = await addQuestions(questions);
+          console.log('questionIdsObject: ', questionIdsObject);
+          const questionIds = Object.values(questionIdsObject);
+
+          console.log('questionIds', questionIds);
           await createSurvey(surveyObj, questionIds);
-          res.send(200);
+          res.sendStatus(200);
         } catch (e) {
           res.status(500).send(e.message);
         }
