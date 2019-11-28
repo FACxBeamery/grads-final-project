@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -172,6 +172,7 @@ const QuestionsList = () => {
       {questions.map((question, questionIndex) => {
         return (
           <Question
+            // eslint-disable-next-line react/no-array-index-key
             key={questionIndex}
             question={question}
             questionIndex={questionIndex}
