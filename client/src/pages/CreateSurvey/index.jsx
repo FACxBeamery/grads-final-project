@@ -1,11 +1,10 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   TextField,
   Button,
   Switch,
-  FormControl,
-  InputLabel,
   Box,
   FormControlLabel,
 } from '@material-ui/core';
@@ -75,8 +74,8 @@ const CreateSurvey = () => {
           onChange={setMetadata}
         />
         <FormControlLabel
-          control={(
-<Switch
+          control={
+            <Switch
               checked={anonymous}
               onChange={(e) => setMetadata(e, 'switch')}
               value='anonymous'
@@ -84,7 +83,7 @@ const CreateSurvey = () => {
               labelid='anonymous-switch'
               inputProps={{ 'aria-label': 'Make survey anonymous' }}
             />
-)}
+          }
           label='Anonymous'
         />
         <QuestionsList />
