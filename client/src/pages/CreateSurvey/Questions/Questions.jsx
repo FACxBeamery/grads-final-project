@@ -18,8 +18,6 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import Options from '../Options/Options';
 
-// TODO FIX WEIRD LINTING ERRORS
-// TODO fix annoying state update typing thing
 const Question = ({ questionIndex }) => {
   const { title, type, required, commentsEnabled } = useSelector(
     (state) => state.createSurveyReducer.questions[questionIndex],
@@ -100,6 +98,9 @@ const Question = ({ questionIndex }) => {
                 value={type}
                 onChange={setQuestionData}
                 name='type'
+                inputProps={{
+                  'data-testid': 'select-id',
+                }}
               >
                 <MenuItem value='text'>Text</MenuItem>
                 <MenuItem value='multichoice'>Multichoice</MenuItem>
