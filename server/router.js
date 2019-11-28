@@ -12,7 +12,7 @@ router.get('/test', (req, res) =>
   res.status(200).send('Successful connection to back end!'),
 );
 
-// router.get("/surveys", getSurveys)
+router.get('/surveys', getSurveys);
 router.post('/surveys', postSurveys);
 // router.patch("/surveys", patchSurveys)
 // router.get("/employees", getEmployees)
