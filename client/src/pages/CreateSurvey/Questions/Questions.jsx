@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -33,7 +33,6 @@ const Question = ({ questionIndex }) => {
     payload.index = questionIndex;
     payload[event.target.name] =
       inputType === 'checkbox' ? event.target.checked : event.target.value;
-
     dispatch({ type: 'SET_QUESTION_DATA', payload });
   };
 
@@ -167,12 +166,13 @@ const QuestionsList = () => {
   if (questions.length < 1) {
     handleNewQuestionClick();
   }
+
   return (
     <Box mx={4} my={2} display='flex' flexDirection='column'>
       {questions.map((question, questionIndex) => {
         return (
           <Question
-            key={Math.random()}
+            key={questionIndex}
             question={question}
             questionIndex={questionIndex}
           />

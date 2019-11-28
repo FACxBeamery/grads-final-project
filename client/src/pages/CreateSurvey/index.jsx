@@ -15,12 +15,14 @@ import QuestionsList from './Questions/Questions';
 
 const CreateSurvey = () => {
   const dispatch = useDispatch();
+
   const setMetadata = (event, inputType) => {
     const payload = {};
     payload[event.target.name] =
       inputType === 'switch' ? event.target.checked : event.target.value;
     dispatch({ type: 'SET_METADATA', payload });
   };
+
   const { title, description, recipients, disclaimer, anonymous } = useSelector(
     (state) => state.createSurveyReducer,
   );

@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { TextField, Button, Typography, Box } from '@material-ui/core';
 
 const Option = ({ optionIndex, questionIndex }) => {
+  const [isEditing, setEditing] = useState(true);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    console.log(inputRef.current.childNodes[0].childNodes[0]);
+    if (isEditing) {
+      inputRef.current.childNodes[0].childNodes[0].focus(); //inputRef.current.focus()
+    }
+  }, [isEditing]);
   const dispatch = useDispatch();
   const { questions } = useSelector((state) => state.createSurveyReducer);
 
@@ -12,6 +21,7 @@ const Option = ({ optionIndex, questionIndex }) => {
 
   const setOptionText = (event) => {
     const payload = { questionIndex, optionIndex, text: event.target.value };
+    setEditing((isEditing) => !isEditing);
     dispatch({ type: 'SET_OPTION_DATA', payload });
   };
 
@@ -39,6 +49,7 @@ const Option = ({ optionIndex, questionIndex }) => {
         helperText={optionIsEmptyString && 'Answer must not be empty!'}
         value={text}
         name='text'
+        ref={inputRef}
         onChange={setOptionText}
       />
       <Box alignSelf='flex-end'>
@@ -80,7 +91,7 @@ const Options = ({ questionIndex }) => {
         {options.map((option, optionIndex) => {
           return (
             <Option
-              key={Math.random()}
+              key={optionIndex}
               optionIndex={optionIndex}
               questionIndex={questionIndex}
             />
