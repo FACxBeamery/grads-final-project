@@ -23,3 +23,5 @@ initDb()
   .catch((error) =>
     console.error(`An error occured when starting Express server: ${error}.`),
   );
+
+module.exports = app;

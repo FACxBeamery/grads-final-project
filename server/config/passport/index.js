@@ -2,7 +2,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
-const findAdmin = require('../../queries/findAdmin');
+const findAdminByCredentials = require('../../queries/findAdminByCredentials');
+const findAdminById = require('../../queries/findAdminById');
 
 const getJWTSecret = require('../../utils/getJWTSecret');
 
@@ -27,7 +28,7 @@ module.exports = (passport) => {
           }
           // -----
 
-          const result = await findAdmin(username, password);
+          const result = await findAdminByCredentials(username, password); // result is the entire admin document (_id, username, password, type, employeeId).
 
           if (result) {
             return done(null, result);
@@ -49,11 +50,11 @@ module.exports = (passport) => {
 
   passport.use(
     'jwt',
-    new JWTStrategy(opts, (jwtPayload, done) => {
+    new JWTStrategy(opts, async (jwtPayload, done) => {
       try {
-        if (jwtPayload.id === 1) {
-          // todo: check jwtPayload should equal the admin id.
-          done(null, 'admin username');
+        const user = await findAdminById(jwtPayload.id); // result is the entire admin document (_id, username, password, type, employeeId).
+        if (user) {
+          done(null, user);
         } else {
           done(null, false);
         }

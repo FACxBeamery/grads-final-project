@@ -1,12 +1,12 @@
+const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
-const findAdmin = async (username, password) => {
-  const db = getDb();
+const findAdminById = async (_id) => {
+  const db = await getDb();
   const adminsCollection = await db.collection('Admins');
   try {
     return await adminsCollection.findOne({
-      username,
-      password,
+      _id: ObjectID(_id),
       type: 'admin',
     });
   } catch (err) {
@@ -14,4 +14,4 @@ const findAdmin = async (username, password) => {
   }
 };
 
-module.exports = findAdmin;
+module.exports = findAdminById;

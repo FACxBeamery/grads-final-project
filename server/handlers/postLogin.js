@@ -26,7 +26,8 @@ const postLogin = (req, res, next) => {
 
           res.status(403).send(info.message);
         } else if (user) {
-          const token = jwt.sign({ id: user.id }, jwtSecret, {
+          // eslint-disable-next-line no-underscore-dangle
+          const token = jwt.sign({ id: user._id }, jwtSecret, {
             expiresIn: 60 * 60,
           });
           res.status(200).json({
@@ -35,7 +36,7 @@ const postLogin = (req, res, next) => {
             message: 'Credentials verified and user logged in.',
           });
         } else {
-          res.status(403).send('User could not be authenticated.');
+          res.status(403).send('User could not be authenticated.'); // fallback condition
         }
       } catch (error) {
         res.status(500).json({ message: error.message });

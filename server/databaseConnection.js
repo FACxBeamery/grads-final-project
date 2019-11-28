@@ -35,11 +35,9 @@ const initDb = () => {
       if (error) {
         reject(error);
       } else {
-        console.log('Initializing database!');
+        // console.log('Initializing database!');
         _client = client;
         _db = client.db();
-
-        // _db.dropDatabase();
 
         if (NODE_ENV !== 'production') {
           refreshDb(_db);
