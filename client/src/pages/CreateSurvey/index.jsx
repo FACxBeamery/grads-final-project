@@ -26,7 +26,7 @@ const CreateSurvey = () => {
     ...useSelector((state) => state.createSurveyReducer),
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     try {
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
@@ -34,7 +34,6 @@ const CreateSurvey = () => {
     }
   };
 
-  console.log(surveyForSending);
   return (
     <form onSubmit={handleSubmit}>
       <Box display='flex' flexDirection='column' my={8}>
