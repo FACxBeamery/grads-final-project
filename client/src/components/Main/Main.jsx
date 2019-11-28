@@ -15,7 +15,7 @@ const Main = () => {
     <main>
       <Switch>
         <Route exact path='/admin/login'>
-          {auth ? <Redirect push to='/admin/dashboard' /> : <AdminLogin />}
+          {auth ? <Redirect to='/admin/dashboard' /> : <AdminLogin />}
         </Route>
         {/* <Route exact path='/admin' component={Dashboard} /> */}
         <Route exact path='/admin/surveys/create' component={CreateSurvey} />

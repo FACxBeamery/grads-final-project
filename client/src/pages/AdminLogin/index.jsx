@@ -7,12 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import ADMIN_ACTIONS from '../../store/actions/adminLoginActions';
+import SNACKBAR_ACTIONS from '../../store/actions/snackbarActions';
 
 import useStyles from './styles';
 import Copyright from '../../components/Copyright';
 
 const AdminLogin = () => {
   const { SET_LOGIN } = ADMIN_ACTIONS;
+  const { OPEN_SNACKBAR } = SNACKBAR_ACTIONS;
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -49,13 +51,13 @@ const AdminLogin = () => {
         message,
         variant: 'success',
       };
-      dispatch({ type: 'OPEN_SNACKBAR', payload });
+      dispatch({ type: OPEN_SNACKBAR, payload });
     } else {
       const payload = {
         message,
         variant: 'error',
       };
-      dispatch({ type: 'OPEN_SNACKBAR', payload });
+      dispatch({ type: OPEN_SNACKBAR, payload });
     }
     setLoginOnPost(auth);
   };
