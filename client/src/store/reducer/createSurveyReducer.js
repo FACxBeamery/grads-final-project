@@ -1,10 +1,22 @@
+const defaultOption = {
+  text: undefined,
+};
+
+const defaultQuestion = {
+  title: undefined,
+  type: 'text',
+  required: false,
+  commentsEnabled: false,
+  options: [defaultOption],
+};
+
 const initalState = {
   title: undefined,
   description: undefined,
   recipients: [],
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
-  questions: [],
+  questions: [defaultQuestion],
 };
 
 const changeOptionText = (options, payload) => {
@@ -33,17 +45,6 @@ const objectWithoutKey = (obj, key) => {
 
 const createSurverReducer = (state = initalState, action) => {
   const { payload } = action;
-  const defaultQuestion = {
-    title: undefined,
-    type: 'text',
-    required: false,
-    commentsEnabled: false,
-    options: [],
-  };
-
-  const defaultOption = {
-    text: undefined,
-  };
 
   switch (action.type) {
     case 'SET_METADATA':
