@@ -26,5 +26,9 @@
         "eslint-config-airbnb": "^18.0.1",
         "eslint-config-prettier": "^6.7.0",
         "mongo": "^0.1.0"
+    },
+    "devDependencies": {
+        "enzyme": "^3.10.0",
+        "enzyme-adapter-react-16": "^1.15.1"
     }
 }

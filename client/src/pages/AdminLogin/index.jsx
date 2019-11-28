@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -11,38 +11,41 @@ import SNACKBAR_ACTIONS from '../../store/actions/snackbarActions';
 
 import useStyles from './styles';
 import Copyright from '../../components/Copyright';
+import loginAdmin from './apiCalls';
 
 const AdminLogin = () => {
+  const [helperText, setHelperText] = useState('');
+
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
   const { SET_LOGIN } = ADMIN_ACTIONS;
   const { OPEN_SNACKBAR } = SNACKBAR_ACTIONS;
-  const classes = useStyles();
 
-  const dispatch = useDispatch();
   const setLoginOnChange = (event) => {
+    setHelperText('');
     const payload = {
       [event.target.name]: event.target.value,
     };
     dispatch({ type: SET_LOGIN, payload });
   };
+
   const setLoginOnPost = (auth) => {
     const payload = {
       auth,
     };
     dispatch({ type: SET_LOGIN, payload });
   };
+
   const { username, password } = useSelector(
     (state) => state.adminLoginReducer,
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // TODO unstub api call response
-    const response = {
-      auth: true,
-      token: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUxOWYxZjc3YmNmODZjZDc5OTQzOTE3MyIsImlhdCI6MTU3NDkzNzgyOSwiZXhwIjoxNTc0OTQxNDI5fQ.XfwpCljmFN9KAruZMWna6uxbW9e4gTU7XTxT-vEJsN4`,
-      message: 'Credentials verified and user logged in.',
-    };
+    const response = await loginAdmin(username, password);
     const { auth, token, message } = response;
 
     if (auth && token) {
@@ -52,15 +55,66 @@ const AdminLogin = () => {
         variant: 'success',
       };
       dispatch({ type: OPEN_SNACKBAR, payload });
+      setHelperText('');
     } else {
       const payload = {
         message,
         variant: 'error',
       };
       dispatch({ type: OPEN_SNACKBAR, payload });
+      setHelperText(message);
     }
     setLoginOnPost(auth);
   };
+
+  // Elements
+  const usernameInputField = (
+    <TextField
+      variant='outlined'
+      margin='normal'
+      required
+      fullWidth
+      id='email'
+      label='Email Address'
+      name='username'
+      autoComplete='email'
+      value={username}
+      onChange={setLoginOnChange}
+      color='secondary'
+      error={helperText !== ''}
+    />
+  );
+
+  const passwordInputField = (
+    <TextField
+      variant='outlined'
+      margin='normal'
+      required
+      fullWidth
+      name='password'
+      label='Password'
+      type='password'
+      id='password'
+      value={password}
+      onChange={setLoginOnChange}
+      autoComplete='current-password'
+      color='secondary'
+      error={helperText !== ''}
+      helperText={helperText}
+    />
+  );
+
+  const submitLoginButton = (
+    <Button
+      type='submit'
+      fullWidth
+      variant='contained'
+      color='secondary'
+      className={classes.submit}
+    >
+      Sign In
+    </Button>
+  );
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -69,42 +123,9 @@ const AdminLogin = () => {
           Welcome.
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email Address'
-            name='username'
-            autoComplete='email'
-            value={username}
-            onChange={setLoginOnChange}
-            color='secondary'
-          />
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            value={password}
-            onChange={setLoginOnChange}
-            autoComplete='current-password'
-            color='secondary'
-          />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='secondary'
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
+          {usernameInputField}
+          {passwordInputField}
+          {submitLoginButton}
         </form>
       </div>
       <Box mt={8}>
