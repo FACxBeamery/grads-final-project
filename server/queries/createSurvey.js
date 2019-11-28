@@ -1,6 +1,7 @@
 const { getDb } = require('../databaseConnection');
+
 const createSurvey = async (surveyObj, newQuestionsArray) => {
-  /* takes the survey object from the front end, replaces the questions 
+  /* takes the survey object from the front end, replaces the questions
         with the ObjectIds from the questions collection, and sends to the DB
         */
 
@@ -11,8 +12,12 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
     const { acknowledged, surveyId } = await surveysCollection.insertOne(
       newSurveyObj,
     );
+
     if (acknowledged === false) {
       return new Error('Query not acknowledged');
+    } else {
+      // all working
+      return 'success';
     }
   } catch (e) {
     return new Error(e.message);
