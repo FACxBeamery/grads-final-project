@@ -8,6 +8,8 @@ import {
   Switch,
   Box,
   FormControlLabel,
+  Typography,
+  Divider,
 } from '@material-ui/core';
 import QuestionsList from './Questions/Questions';
 
@@ -37,13 +39,18 @@ const CreateSurvey = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Box display='flex' flexDirection='column' my={8}>
+        <Box mb={4}>
+          <Typography variant='h1'>Survey Editor</Typography>
+        </Box>
+        <Typography variant='h4'>Start building your survey...</Typography>
         <TextField
           margin='normal'
           required
-          error={title.length < 5 || title.length > 100}
+          error={title && (title.length < 10 || title.length > 30)}
           helperText={
-            title < 5 ||
-            (title > 100 && 'Title must be between 5 and 100 characters!')
+            title &&
+            (title.length < 10 || title.length > 30) &&
+            'Title must be between 10 and 30 characters!'
           }
           value={title}
           name='title'
@@ -53,11 +60,13 @@ const CreateSurvey = () => {
         <TextField
           margin='normal'
           required
-          error={description.length < 5 || description.length > 140}
+          error={
+            description && (description.length < 30 || description.length > 280)
+          }
           helperText={
-            description < 5 || description > 140
-              ? 'Description must be between 5 and 140 characters!'
-              : ''
+            description &&
+            (description.length < 30 || description.length > 280) &&
+            'Description must be between 30 and 280 characters!'
           }
           value={description}
           name='description'
@@ -98,6 +107,7 @@ const CreateSurvey = () => {
           }
           label='Anonymous'
         />
+        <Divider variant='middle' />
         <QuestionsList />
         <Box alignSelf='center' mt={8}>
           <Button type='submit' variant='contained' color='secondary'>

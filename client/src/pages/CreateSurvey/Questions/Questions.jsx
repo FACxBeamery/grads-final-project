@@ -13,6 +13,7 @@ import {
   Box,
   FormControlLabel,
   Typography,
+  Divider,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Options from '../Options/Options';
@@ -44,103 +45,110 @@ const Question = ({ questionIndex }) => {
 
   return (
     <>
-      <Box display='flex' justifyContent='space-between' alignItems='center'>
-        <Box>
-          {/* QUESTION NUMBER */}
-          <Typography>{`Q${questionIndex + 1}`}</Typography>
-          {/*  QUESTION TITLE */}
-          <TextField
-            required
-            error={title.length < 5 || title.length > 100}
-            helperText={
-              title < 5 ||
-              (title > 100 && 'Title must be between 5 and 100 characters!')
-            }
-            value={title}
-            name='title'
-            label='Question'
-            onChange={setQuestionData}
-          />
-        </Box>
-        <Box justifySelf='flex-end'>
-          <Button
-            type='button'
-            color='secondary'
-            onClick={handleDeleteQuestion}
-            startIcon={<DeleteIcon />}
-          >
-            Delete question
-          </Button>
-        </Box>
-      </Box>
+      <Box my={2}>
+        <Box
+          display='flex'
+          justifyContent='space-between'
+          alignItems='flex-start'
+        >
+          <Box flex={1} mb={2}>
+            {/* QUESTION NUMBER */}
+            <Typography variant='h4'>{`Q${questionIndex + 1}`}</Typography>
+            {/*  QUESTION TITLE */}
 
-      {/*  CHECKBOXES DIV */}
-      <Box
-        display='flex'
-        alignSelf='center'
-        // width={0.5}
-        justifyContent='space-around'
-        alignItems='flex-end'
-        mb={4}
-      >
-        {/*  QUESTION TYPE SELECT */}
-        <Box mr={8}>
-          <FormControl>
-            <InputLabel id='question-type-select'>Type:</InputLabel>
-            <Select
-              labelid='question-type-select'
-              id='question-type-select'
-              value={type}
+            <TextField
+              fullWidth
+              required
+              error={title && (title.length < 10 || title.length > 140)}
+              helperText={
+                title &&
+                (title.length < 10 || title.length > 140) &&
+                'Title must be between 10 and 140 characters!'
+              }
+              value={title}
+              name='title'
+              label='Question'
               onChange={setQuestionData}
-              name='type'
+            />
+          </Box>
+          <Box justifySelf='flex-end'>
+            <Button
+              type='button'
+              color='secondary'
+              onClick={handleDeleteQuestion}
+              startIcon={<DeleteIcon />}
             >
-              <MenuItem value='text'>Text</MenuItem>
-              <MenuItem value='multichoice'>Multichoice</MenuItem>
-            </Select>
-          </FormControl>
+              Delete question
+            </Button>
+          </Box>
         </Box>
-        {/*  QUESTION REQUIRED CHECKBOX */}
-        <Box mr={4}>
-          <FormControlLabel
-            label='Required'
-            control={
-              <Checkbox
-                checked={required}
-                onChange={(e) => setQuestionData(e, 'checkbox')}
-                value='required'
-                name='required'
-                labelid='question-required-checkbox'
-                inputProps={{
-                  'aria-label': 'Question required?',
-                }}
-              />
-            }
-          />
-        </Box>
-        {/*  COMMENTS ENABLED CHECKBOX */}
-        {/* TODO make comments enabled work */}
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={commentsEnabled}
-                onChange={(e) => setQuestionData(e, 'checkbox')}
-                value='commentsEnabled'
-                name='commentsEnabled'
-                labelid='comments-enabled-checkbox'
-                inputProps={{
-                  'aria-label': 'Allow comments: ',
-                }}
-              />
-            }
-            label='Allow Comments'
-          />
-        </Box>
-      </Box>
 
-      {type === 'multichoice' ? (
-        <Options questionIndex={questionIndex} />
-      ) : null}
+        {/*  CHECKBOXES DIV */}
+        <Box
+          display='flex'
+          alignSelf='center'
+          justifyContent='space-around'
+          alignItems='flex-end'
+          mb={4}
+        >
+          {/*  QUESTION TYPE SELECT */}
+          <Box mr={8}>
+            <FormControl>
+              <InputLabel id='question-type-select'>Type:</InputLabel>
+              <Select
+                labelid='question-type-select'
+                id='question-type-select'
+                value={type}
+                onChange={setQuestionData}
+                name='type'
+              >
+                <MenuItem value='text'>Text</MenuItem>
+                <MenuItem value='multichoice'>Multichoice</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          {/*  QUESTION REQUIRED CHECKBOX */}
+          <Box mr={4}>
+            <FormControlLabel
+              label='Required'
+              control={
+                <Checkbox
+                  checked={required}
+                  onChange={(e) => setQuestionData(e, 'checkbox')}
+                  value='required'
+                  name='required'
+                  labelid='question-required-checkbox'
+                  inputProps={{
+                    'aria-label': 'Question required?',
+                  }}
+                />
+              }
+            />
+          </Box>
+          {/*  COMMENTS ENABLED CHECKBOX */}
+          {/* TODO make comments enabled work */}
+          <Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={commentsEnabled}
+                  onChange={(e) => setQuestionData(e, 'checkbox')}
+                  value='commentsEnabled'
+                  name='commentsEnabled'
+                  labelid='comments-enabled-checkbox'
+                  inputProps={{
+                    'aria-label': 'Allow comments: ',
+                  }}
+                />
+              }
+              label='Allow Comments'
+            />
+          </Box>
+        </Box>
+
+        {type === 'multichoice' && <Options questionIndex={questionIndex} />}
+      </Box>
+      <Divider variant='middle' />
     </>
   );
 };
@@ -170,7 +178,7 @@ const QuestionsList = () => {
           />
         );
       })}
-      <Box alignSelf='flex-start'>
+      <Box alignSelf='flex-start' my={2}>
         <Button
           type='button'
           variant='outlined'

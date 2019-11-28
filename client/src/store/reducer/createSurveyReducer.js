@@ -1,6 +1,6 @@
 const initalState = {
-  title: '',
-  description: '',
+  title: undefined,
+  description: undefined,
   recipients: [],
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
@@ -34,7 +34,7 @@ const objectWithoutKey = (obj, key) => {
 const createSurverReducer = (state = initalState, action) => {
   const { payload } = action;
   const defaultQuestion = {
-    title: '',
+    title: undefined,
     type: 'text',
     required: false,
     commentsEnabled: false,
@@ -42,7 +42,7 @@ const createSurverReducer = (state = initalState, action) => {
   };
 
   const defaultOption = {
-    text: '',
+    text: undefined,
   };
 
   switch (action.type) {

@@ -22,7 +22,7 @@ const Option = ({ optionIndex, questionIndex }) => {
     dispatch({ type: 'DELETE_OPTION', payload });
   };
 
-  const optionExists = text.length;
+  const optionIsEmptyString = text === '';
   return (
     <Box
       display='flex'
@@ -34,8 +34,9 @@ const Option = ({ optionIndex, questionIndex }) => {
       <TextField
         fullWidth
         required
-        error={!optionExists}
-        helperText={!optionExists && 'Answer must not be empty!'}
+        label='Answer text'
+        error={optionIsEmptyString}
+        helperText={optionIsEmptyString && 'Answer must not be empty!'}
         value={text}
         name='text'
         onChange={setOptionText}
@@ -71,8 +72,10 @@ const Options = ({ questionIndex }) => {
 
   return (
     // TODO ADD ANSWERS h2
-    <Box display='flex' justifyContent='space-between'>
-      <Typography>ANSWERS:</Typography>
+    <Box display='flex' justifyContent='flex-end'>
+      <Box mr={4}>
+        <Typography variant='h6'>ANSWERS:</Typography>
+      </Box>
       <Box display='flex' flexDirection='column' flexGrow={0.8}>
         {options.map((option, optionIndex) => {
           return (
