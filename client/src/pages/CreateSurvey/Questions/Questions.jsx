@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -20,6 +20,16 @@ import Options from '../Options/Options';
 // TODO FIX WEIRD LINTING ERRORS
 // TODO fix annoying state update typing thing
 const Question = ({ questionIndex }) => {
+  const [isEditing, setEditing] = useState(true);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    console.log(inputRef);
+    if (isEditing) {
+      inputRef.current.childNodes[1].childNodes['0'].focus(); //inputRef.current.focus();
+    }
+  }, [isEditing]);
+
   const { title, type, required, commentsEnabled } = useSelector(
     (state) => state.createSurveyReducer.questions[questionIndex],
   );
@@ -33,6 +43,7 @@ const Question = ({ questionIndex }) => {
     payload[event.target.name] =
       inputType === 'checkbox' ? event.target.checked : event.target.value;
 
+    setEditing(!isEditing);
     dispatch({ type: 'SET_QUESTION_DATA', payload });
   };
 
@@ -59,6 +70,7 @@ const Question = ({ questionIndex }) => {
             value={title}
             name='title'
             label='Question'
+            ref={inputRef}
             onChange={setQuestionData}
           />
         </Box>
@@ -159,12 +171,13 @@ const QuestionsList = () => {
   if (questions.length < 1) {
     handleNewQuestionClick();
   }
+
   return (
     <Box mx={4} my={2} display='flex' flexDirection='column'>
       {questions.map((question, questionIndex) => {
         return (
           <Question
-            key={Math.random()}
+            key={questionIndex}
             question={question}
             questionIndex={questionIndex}
           />
