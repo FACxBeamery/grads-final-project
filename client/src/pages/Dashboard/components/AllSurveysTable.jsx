@@ -1,10 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import PropTypes from 'prop-types';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@material-ui/core';
 
 import styles from './AllSurveysTable.module.css';
 
@@ -23,6 +26,7 @@ const AllSurveysTable = ({ surveys, history }) => {
       <TableHead>
         <TableRow>
           {cells.map((cell, idx) => {
+            // eslint-disable-next-line react/no-array-index-key
             return <TableCell key={idx}>{cell}</TableCell>;
           })}
         </TableRow>
@@ -41,7 +45,7 @@ const AllSurveysTable = ({ surveys, history }) => {
           return (
             <TableRow
               key={title}
-              className={styles['row']}
+              className={styles.row}
               onClick={() => history.push(`admin/surveys/${_id}`)}
             >
               <TableCell scope='row'>{title}</TableCell>
@@ -55,6 +59,12 @@ const AllSurveysTable = ({ surveys, history }) => {
       </TableBody>
     </Table>
   );
+};
+
+AllSurveysTable.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  surveys: PropTypes.array.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 export default withRouter(AllSurveysTable);

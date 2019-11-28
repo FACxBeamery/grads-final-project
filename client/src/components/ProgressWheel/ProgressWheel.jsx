@@ -1,5 +1,8 @@
 // https://codepen.io/bbrady/pen/ozrjKE
 import React from 'react';
+
+import PropTypes from 'prop-types';
+
 import styles from './ProgressWheel.module.css';
 
 const ProgressWheel = ({
@@ -66,6 +69,14 @@ const ProgressWheel = ({
       </text>
     </svg>
   );
+};
+
+ProgressWheel.propTypes = {
+  strokeWidth: PropTypes.string.isRequired,
+  sqSize: PropTypes.string.isRequired,
+  percentage: PropTypes.number.isRequired,
+  numerator: PropTypes.number.isRequired,
+  denominator: PropTypes.number.isRequired,
 };
 
 export default ProgressWheel;

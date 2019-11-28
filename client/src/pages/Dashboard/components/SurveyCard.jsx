@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
   Card,
   CardActions,
@@ -20,26 +21,22 @@ const SurveyCard = ({ survey }) => {
   const percentage = Math.floor((responses.length / recipients.length) * 100);
   return (
     <Grid item xs={5} component={Card} className={styles.card}>
-      <Box
-        display={'flex'}
-        flexDirection='column'
-        justifyContent='space-between'
-      >
+      <Box display='flex' flexDirection='column' justifyContent='space-between'>
         <CardContent>
           <Typography color='textSecondary' gutterBottom variant='subtitle2'>
             SURVEY
           </Typography>
-          <Box display={'flex'} mb={1}>
-            <Box display={'flex'} flexDirection='column'>
+          <Box display='flex' mb={1}>
+            <Box display='flex' flexDirection='column'>
               <Typography variant='h6'>{title}</Typography>
               <Typography color='textSecondary' variant='body2'>
                 {description}
               </Typography>
             </Box>
-            <Box display={'flex'}>
+            <Box display='flex'>
               <ProgressWheel
-                strokeWidth={'10'}
-                sqSize={'100'}
+                strokeWidth='10'
+                sqSize='100'
                 percentage={percentage || 0}
                 numerator={responses.length}
                 denominator={recipients.length}
@@ -47,7 +44,7 @@ const SurveyCard = ({ survey }) => {
             </Box>
           </Box>
         </CardContent>
-        <CardActions className={styles['actions']}>
+        <CardActions className={styles.actions}>
           <Button color='secondary' size='small'>
             <Link
               className={styles.link}
@@ -58,11 +55,22 @@ const SurveyCard = ({ survey }) => {
               View
             </Link>
           </Button>
-          <Chip label='Active' className={styles['active']} />
+          <Chip label='Active' className={styles.active} />
         </CardActions>
       </Box>
     </Grid>
   );
+};
+
+SurveyCard.propTypes = {
+  survey: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    recipients: PropTypes.array,
+    responses: PropTypes.array,
+  }).isRequired,
+  // history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 export default SurveyCard;

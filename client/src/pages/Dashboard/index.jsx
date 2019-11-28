@@ -15,13 +15,13 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const getSurveys = async () => {
-      try {
-        const { data } = await axios.get('/surveys');
-        const allSurveysData = data;
-        dispatch({ type: 'SET_SURVEYS', payload: allSurveysData });
-      } catch (error) {
-        throw error;
-      }
+      // try {
+      const { data } = await axios.get('/surveys');
+      const allSurveysData = data;
+      dispatch({ type: 'SET_SURVEYS', payload: allSurveysData });
+      // } catch (error) {
+      //   throw error;
+      // }
     };
     getSurveys();
   }, [dispatch]);
@@ -31,11 +31,12 @@ const Dashboard = () => {
   const SurveyCards = () => {
     return (
       <Grid container>
-        {surveys.map((survey, idx) => {
-          if (survey.status === 'published') {
-            return <SurveyCard key={idx} survey={survey} />;
-          }
-        })}
+        {surveys
+          .filter((survey) => survey.status === 'published')
+          .map((survey, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <SurveyCard key={idx} survey={survey} />
+          ))}
       </Grid>
     );
   };
@@ -50,7 +51,7 @@ const Dashboard = () => {
   const DashboardButton = () => {
     return (
       <Button
-        onClick={(e) => {
+        onClick={() => {
           setActiveSurveys(!activeSurveys);
         }}
         color='secondary'
@@ -66,7 +67,7 @@ const Dashboard = () => {
         <Typography variant='h2'>{title}</Typography>
       </Box>
       {activeSurveys ? <SurveyCards /> : <SurveyTable />}
-      <Box display={'flex'} justifyContent='center' my={4}>
+      <Box display='flex' justifyContent='center' my={4}>
         <DashboardButton />
       </Box>
     </Box>

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import Dashboard from './index.jsx';
+import Dashboard from './index';
 
 const mockStore = configureStore([]);
 
@@ -20,6 +20,7 @@ describe('Testing Dashboard', () => {
 
   it('should alternate between two button texts', () => {
     const { getByText } = render(
+      // eslint-disable-next-line react/jsx-filename-extension
       <BrowserRouter>
         <Provider store={store}>
           <Dashboard />
