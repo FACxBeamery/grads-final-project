@@ -1,45 +1,30 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import styles from '../Dashboard.module.css';
 
-const formatDate = (unix) => {
-  if (unix) {
-    // Convert timestamp to milliseconds
-    const date = new Date(unix * 1000);
+import styles from './AllSurveysTable.module.css';
 
-    // Year
-    const year = date.getFullYear();
+import formatDate from '../../../utils/formatDate';
 
-    // Month
-    const month = date.getMonth() + 1;
-
-    // Day
-    const day = date.getDate();
-
-    // Display date time in MM-dd-yyyy h:m:s format
-    const convdataTime = `${day}/${month}/${year}`;
-
-    return convdataTime;
-  } else {
-    return '';
-  }
-};
-
-const AllSurveysTable = ({ surveys }) => {
+const AllSurveysTable = ({ surveys, history }) => {
+  const cells = [
+    'Survey',
+    'Responses',
+    'Date Published',
+    'Date to Close',
+    'Status',
+  ];
   return (
-    // <Paper>
-    <Table aria-label='simple table'>
+    <Table aria-label='all surveys table' className={styles.table}>
       <TableHead>
         <TableRow>
-          <TableCell>Survey</TableCell>
-          {/* <TableCell>Title</TableCell> */}
-          <TableCell>Date Published</TableCell>
-          <TableCell>Date to Close</TableCell>
-          <TableCell>Responses</TableCell>
+          {cells.map((cell, idx) => {
+            return <TableCell key={idx}>{cell}</TableCell>;
+          })}
         </TableRow>
       </TableHead>
       <TableBody>
@@ -47,7 +32,6 @@ const AllSurveysTable = ({ surveys }) => {
           const {
             _id,
             title,
-            description,
             status,
             datePublished,
             dateToClose,
@@ -55,21 +39,22 @@ const AllSurveysTable = ({ surveys }) => {
             responses,
           } = survey;
           return (
-            <TableRow key={title} className={styles['row']}>
-              <TableCell component='th' scope='row'>
-                {title}
-              </TableCell>
-              {/* <TableCell >{description}</TableCell> */}
-              <TableCell>{formatDate(datePublished)}</TableCell>
-              <TableCell>{formatDate(dateToClose)}</TableCell>
-              <TableCell>{`${responses.length} /${recipients.length} respondents`}</TableCell>
+            <TableRow
+              key={title}
+              className={styles['row']}
+              onClick={() => history.push(`admin/surveys/${_id}`)}
+            >
+              <TableCell scope='row'>{title}</TableCell>
+              <TableCell>{`${responses.length}/${recipients.length} respondents`}</TableCell>
+              <TableCell>{formatDate(datePublished) || 'No date'}</TableCell>
+              <TableCell>{formatDate(dateToClose) || 'No date'}</TableCell>
+              <TableCell className={styles[status]}>{status}</TableCell>
             </TableRow>
           );
         })}
       </TableBody>
     </Table>
-    // </Paper>
   );
 };
 
-export default AllSurveysTable;
+export default withRouter(AllSurveysTable);
