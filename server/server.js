@@ -4,6 +4,7 @@ const router = require('./router.js');
 const port = process.env.PORT || 4000;
 const bodyParser = require('body-parser');
 const { initDb } = require('./databaseConnection.js');
+
 app.use(bodyParser());
 app.use(router);
 

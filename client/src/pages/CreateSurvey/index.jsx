@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 import {
   TextField,
   Button,
@@ -20,7 +21,19 @@ const CreateSurvey = () => {
   const { title, description, recipients, disclaimer, anonymous } = useSelector(
     (state) => state.createSurveyReducer,
   );
-  const handleSubmit = () => {};
+  const surveyForSending = {
+    ...useSelector((state) => state.createSurveyReducer),
+  };
+
+  const handleSubmit = async (event) => {
+    try {
+      await axios.post('/surveys', surveyForSending);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+
+  console.log(surveyForSending);
   return (
     <form onSubmit={handleSubmit}>
       <TextField

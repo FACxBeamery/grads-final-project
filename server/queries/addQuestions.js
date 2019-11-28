@@ -9,6 +9,7 @@ const addQuestions = async (questionsArray) => {
       questionsArray,
     );
     if (acknowledged === true) {
+      console.log('Questions added to DB!');
       return insertedIds; // array of ObjectIds for each question
     } else {
       return new Error('Query not acknowledged');

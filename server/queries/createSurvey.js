@@ -17,6 +17,7 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
   } catch (e) {
     return new Error(e.message);
   }
+  console.log('Survey added to DB!');
 };
 
 module.exports = createSurvey;
