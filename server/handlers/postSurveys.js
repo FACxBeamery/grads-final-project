@@ -81,10 +81,7 @@ const postSurveys = async (req, res) => {
       } else {
         try {
           const questionIdsObject = await addQuestions(questions);
-          console.log('questionIdsObject: ', questionIdsObject);
           const questionIds = Object.values(questionIdsObject);
-
-          console.log('questionIds', questionIds);
           await createSurvey(surveyObj, questionIds);
           res.sendStatus(200);
         } catch (e) {
