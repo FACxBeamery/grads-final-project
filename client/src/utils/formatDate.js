@@ -16,9 +16,8 @@ const formatDate = (unixTime) => {
     const ddmmyyyyDate = `${day}/${month}/${year}`;
 
     return ddmmyyyyDate;
-  } else {
-    return null;
   }
+  return `input is not unix`;
 };
 
 export default formatDate;
