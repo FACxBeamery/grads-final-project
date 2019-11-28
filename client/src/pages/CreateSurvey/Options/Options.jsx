@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Typography, Box } from '@material-ui/core';
 
 const Option = ({ optionIndex, questionIndex }) => {
   const dispatch = useDispatch();
@@ -24,8 +24,15 @@ const Option = ({ optionIndex, questionIndex }) => {
 
   const optionExists = text.length;
   return (
-    <>
+    <Box
+      display='flex'
+      flexDirection='column'
+      style={{ backgroundColor: '#fafafa' }}
+      mb={2}
+      p={2}
+    >
       <TextField
+        fullWidth
         required
         error={!optionExists}
         helperText={!optionExists && 'Answer must not be empty!'}
@@ -33,10 +40,12 @@ const Option = ({ optionIndex, questionIndex }) => {
         name='text'
         onChange={setOptionText}
       />
-      <Button type='button' onClick={handleDeleteOption}>
-        DELETE ANSWER
-      </Button>
-    </>
+      <Box alignSelf='flex-end'>
+        <Button type='button' color='secondary' onClick={handleDeleteOption}>
+          DELETE
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
@@ -62,20 +71,30 @@ const Options = ({ questionIndex }) => {
 
   return (
     // TODO ADD ANSWERS h2
-    <>
-      {options.map((option, optionIndex) => {
-        return (
-          <Option
-            key={Math.random()}
-            optionIndex={optionIndex}
-            questionIndex={questionIndex}
-          />
-        );
-      })}
-      <Button type='button' onClick={handleNewOptionClick}>
-        Add answer
-      </Button>
-    </>
+    <Box display='flex' justifyContent='space-between'>
+      <Typography>ANSWERS:</Typography>
+      <Box display='flex' flexDirection='column' flexGrow={0.8}>
+        {options.map((option, optionIndex) => {
+          return (
+            <Option
+              key={Math.random()}
+              optionIndex={optionIndex}
+              questionIndex={questionIndex}
+            />
+          );
+        })}
+        <Box alignSelf='flex-end'>
+          <Button
+            type='button'
+            variant='outlined'
+            color='secondary'
+            onClick={handleNewOptionClick}
+          >
+            Add answer
+          </Button>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
