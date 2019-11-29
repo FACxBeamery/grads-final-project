@@ -29,7 +29,7 @@ const SurveyCard = ({ survey }) => {
   } = survey;
   const percentage = responses.length / recipients.length;
   return (
-    <Grid item xs={12} sm={6} md={3} component={Card} className={styles.card}>
+    <Grid item xs={12} sm={6} md={4} component={Card} className={styles.card}>
       <Box display='flex' flexDirection='column' justifyContent='space-between'>
         <CardContent>
           <Box display='flex' justifyContent='space-between'>
