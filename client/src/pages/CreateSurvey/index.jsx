@@ -52,7 +52,7 @@ const CreateSurvey = () => {
           helperText={
             title &&
             (title.length < 10 || title.length > 60) &&
-            'Title must be between 10 and 30 characters!'
+            'Title must be between 10 and 60 characters!'
           }
           value={title}
           name='title'
