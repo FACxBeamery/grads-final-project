@@ -19,6 +19,7 @@ const TakeSurvey = () => {
 
       dispatch({ type: 'SET_SURVEY', payload: response.data });
       dispatch({ type: 'SET_QUESTIONS', payload: response.data.questions });
+      dispatch({ type: 'SET_INITIAL_ANSWERS' });
     };
     getSurvey();
   }, [dispatch]);
