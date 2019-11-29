@@ -12,6 +12,7 @@ import {
   Divider,
 } from '@material-ui/core';
 import QuestionsList from './Questions/QuestionsList';
+import RecipientsList from './RecipientsList';
 
 const CreateSurvey = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,30 @@ const CreateSurvey = () => {
   const { title, description, recipients, disclaimer, anonymous } = useSelector(
     (state) => state.createSurveyReducer,
   );
+
+  const textFields = [
+    {
+      label: 'Survey title',
+      name: 'title',
+      state: title,
+      min: 10,
+      max: 60,
+    },
+    {
+      label: 'Enter a description',
+      name: 'description',
+      state: description,
+      min: 30,
+      max: 280,
+    },
+    {
+      label: 'How will this data be used?',
+      name: 'disclaimer',
+      state: disclaimer,
+      min: 5,
+      max: 140,
+    },
+  ];
   const surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
@@ -45,57 +70,38 @@ const CreateSurvey = () => {
           <Typography variant='h1'>Survey Editor</Typography>
         </Box>
         <Typography variant='h4'>Start building your survey...</Typography>
-        <TextField
-          margin='normal'
-          required
-          error={title && (title.length < 10 || title.length > 60)}
-          helperText={
-            title &&
-            (title.length < 10 || title.length > 60) &&
-            'Title must be between 10 and 60 characters!'
-          }
-          value={title}
-          name='title'
-          label='Survey title'
-          onChange={setMetadata}
-        />
-        <TextField
-          margin='normal'
-          required
-          error={
-            description && (description.length < 30 || description.length > 280)
-          }
-          helperText={
-            description &&
-            (description.length < 30 || description.length > 280) &&
-            'Description must be between 30 and 280 characters!'
-          }
-          value={description}
-          name='description'
-          label='Enter a description'
-          onChange={setMetadata}
-        />
-        <TextField
-          required
-          value={recipients[0]}
-          label='PLACEHOLDER FOR RECIPIENTS'
-          name='recipients'
-          onChange={setMetadata}
-        />
-        <TextField
-          margin='normal'
-          required
-          error={disclaimer.length < 5 || disclaimer.length > 140}
-          helperText={
-            disclaimer < 5 || disclaimer > 140
-              ? 'You must provide a disclaimer'
-              : ''
-          }
-          value={disclaimer}
-          name='disclaimer'
-          label='How will this data be used?'
-          onChange={setMetadata}
-        />
+        {textFields.map((field, idx) => {
+          const { label, name, state, min, max } = field;
+          return (
+            <TextField
+              // eslint-disable-next-line react/no-array-index-key
+              key={idx}
+              margin='normal'
+              required
+              error={state && (state.length < min || state.length > max)}
+              helperText={
+                state &&
+                (state.length < min || state.length > max) &&
+                `Field ${name} must be between ${min} and ${max} characters!`
+              }
+              value={state}
+              name={name}
+              label={label}
+              onChange={setMetadata}
+            />
+          );
+        })}
+
+        <Box display='flex' alignItems='baseline' my={8}>
+          <TextField
+            fullWidth
+            required
+            value={recipients && 'No recipients added yet'}
+            label='Recipients'
+            name='recipients'
+          />
+          <RecipientsList />
+        </Box>
         <FormControlLabel
           control={
             <Switch
