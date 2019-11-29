@@ -7,7 +7,6 @@ const initalState = {
 };
 
 const takeSurveyReducer = (state = initalState, action) => {
-  console.log(state, 'STATE');
   switch (action.type) {
     case 'NEXT_STEP':
       return {
