@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { Typography, Button, Grid, Box } from '@material-ui/core';
@@ -59,7 +60,20 @@ const Dashboard = () => {
   };
   return (
     <Box>
-      <Typography variant='h1'>Dashboard</Typography>
+      <Box display='flex' justifyContent='space-between' alignItems='center'>
+        <Typography variant='h1'>Dashboard</Typography>
+        <Button
+          component={Link}
+          to={{
+            pathname: `/admin/surveys/create`,
+          }}
+          variant='contained'
+          color='secondary'
+        >
+          Create New Survey
+        </Button>
+      </Box>
+
       <Box my={4}>
         <Typography variant='h2'>{title}</Typography>
       </Box>
