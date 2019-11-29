@@ -1,47 +1,20 @@
+/* eslint-disable no-underscore-dangle */
 const assert = require('assert');
 const mongoClient = require('mongodb').MongoClient;
-const mongoUri = process.env.TEST
-  ? 'mongodb://localhost:27017/testdb'
-  : process.env.MONGO_URI || 'mongodb://localhost:27017/db';
 const dummyAdmins = require('./dummyData/dummyAdmins');
 const dummyEmployees = require('./dummyData/dummyEmployees');
 const dummyQuestions = require('./dummyData/dummyQuestions');
 const dummySurveys = require('./dummyData/dummySurveys');
+const mongoUri = require('./utils/mongo/getMongoUri');
+const NODE_ENV = require('./utils/getNODE_ENV')();
+
 const connectionConfig = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
 
-let _db, _client;
-
-const initDb = () => {
-  return new Promise((resolve, reject) => {
-    const dbConnect = (error, client) => {
-      if (error) {
-        reject(error);
-      } else {
-        console.log('Initializing database!');
-        _client = client;
-        _db = client.db('VibeAtBeamery');
-
-        // _db.dropDatabase();
-
-        refreshDb(_db);
-
-        populateDb(_db);
-
-        resolve(_db);
-      }
-    };
-
-    if (_db) {
-      console.warn('Trying to initialise database again!');
-      resolve(_db);
-    }
-
-    mongoClient.connect(mongoUri, connectionConfig, dbConnect);
-  });
-};
+let _db;
+let _client;
 
 const refreshDb = (db) => {
   db.collection('Surveys').deleteMany({});
@@ -54,6 +27,34 @@ const populateDb = (db) => {
   db.collection('Questions').insertMany(dummyQuestions);
   db.collection('Employees').insertMany(dummyEmployees);
   db.collection('Admins').insertMany(dummyAdmins);
+};
+
+const initDb = () => {
+  return new Promise((resolve, reject) => {
+    const dbConnect = (error, client) => {
+      if (error) {
+        reject(error);
+      } else {
+        // console.log('Initializing database!');
+        _client = client;
+        _db = client.db();
+
+        if (NODE_ENV !== 'production') {
+          refreshDb(_db);
+          populateDb(_db);
+        }
+
+        resolve(_db);
+      }
+    };
+
+    if (_db) {
+      console.warn('Trying to initialise database again!');
+      resolve(_db);
+    }
+
+    mongoClient.connect(mongoUri, connectionConfig, dbConnect);
+  });
 };
 
 const getDb = () => {

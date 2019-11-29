@@ -5,13 +5,13 @@ const addQuestions = async (questionsArray) => {
   const questionsCollection = await db.collection('Questions');
 
   try {
-    const { insertedIds } = await questionsCollection.insertMany(
+    const returnFromQuery = await questionsCollection.insertMany(
       questionsArray,
     );
-    // console.log(data);
-    // console.log('questionsCollection: ', questionsCollection);
-    if (insertedIds) {
-      console.log('Questions added to DB!');
+
+    const querySuccessful = returnFromQuery.result.ok === 1;
+    if (querySuccessful) {
+      const insertedIds = Object.values(returnFromQuery.insertedIds);
       return insertedIds; // array of ObjectIds for each question
     } else {
       //   console.log(acknowledged, questionsCollection.find());

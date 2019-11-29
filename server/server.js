@@ -1,11 +1,17 @@
+/* eslint-disable no-console */
 const express = require('express');
-const app = express();
-const router = require('./router.js');
-const port = process.env.PORT || 4000;
+const passport = require('passport');
 const bodyParser = require('body-parser');
+const passportStrategies = require('./config/passport')(passport);
+const router = require('./router.js');
 const { initDb } = require('./databaseConnection.js');
 
-app.use(bodyParser());
+const port = process.env.PORT || 4000;
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(passportStrategies.initialize());
 app.use(router);
 
 initDb()
@@ -17,3 +23,5 @@ initDb()
   .catch((error) =>
     console.error(`An error occured when starting Express server: ${error}.`),
   );
+
+module.exports = app;

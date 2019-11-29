@@ -1,6 +1,7 @@
 const { getDb } = require('../databaseConnection');
+
 const createSurvey = async (surveyObj, newQuestionsArray) => {
-  /* takes the survey object from the front end, replaces the questions 
+  /* takes the survey object from the front end, replaces the questions
         with the ObjectIds from the questions collection, and sends to the DB
         */
 
@@ -13,6 +14,9 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
 
     if (queryResult.result.ok !== 1) {
       return new Error('Query not acknowledged');
+    } else {
+      // all working
+      return 'success';
     }
   } catch (e) {
     console.log("There's been an error doing the survey query");
