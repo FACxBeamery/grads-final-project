@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Modal, Button, Box, Typography } from '@material-ui/core';
+import { Modal, Button, Box, Typography, Paper } from '@material-ui/core';
+
+import EmployeeTable from '../../../components/EmployeeTable';
 
 const RecipientsList = () => {
   const { openModal } = useSelector((state) => state.createSurveyReducer);
@@ -13,20 +15,21 @@ const RecipientsList = () => {
       >
         Add Recipients
       </Button>
+
       <Modal
         aria-labelledby='simple-modal-title'
         aria-describedby='simple-modal-description'
         open={openModal}
         onClose={() => dispatch({ type: 'TOGGLE_MODAL' })}
       >
-        <Box>
-          <Typography variant='h4' id='simple-modal-title'>
-            Recipients
-          </Typography>
-          {/* <Table /> */}
-
-          {/* <RecipientsList /> */}
-        </Box>
+        <Paper>
+          <Box>
+            <Typography variant='h4' id='simple-modal-title'>
+              Recipients
+            </Typography>
+            <EmployeeTable />
+          </Box>
+        </Paper>
       </Modal>
     </Box>
   );
