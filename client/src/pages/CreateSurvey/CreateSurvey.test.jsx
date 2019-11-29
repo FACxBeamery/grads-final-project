@@ -22,5 +22,3 @@ describe('Form works as expected', () => {
     getByText('Title must be between 10 and 60 characters!', { exact: false });
   });
 });
-
-// const response = responses[currentStep]
