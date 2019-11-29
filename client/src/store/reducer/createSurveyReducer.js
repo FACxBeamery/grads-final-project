@@ -1,10 +1,22 @@
+const defaultOption = {
+  text: undefined,
+};
+
+const defaultQuestion = {
+  title: undefined,
+  type: 'text',
+  required: false,
+  commentsEnabled: false,
+  options: [defaultOption],
+};
+
 const initalState = {
-  title: '',
-  description: '',
+  title: undefined,
+  description: undefined,
   recipients: [],
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
-  questions: [],
+  questions: [defaultQuestion],
 };
 
 const changeOptionText = (options, payload) => {
@@ -25,19 +37,14 @@ const mappedQuestions = (questions, payload, editOptions) => {
   );
 };
 
-const createSurverReducer = (state = initalState, action) => {
-  const { payload } = action;
-  const defaultQuestion = {
-    title: '',
-    type: 'text',
-    required: false,
-    commentsEnabled: false,
-    options: [],
-  };
+const objectWithoutKey = (obj, key) => {
+  const newObj = { ...obj };
+  delete newObj[key];
+  return newObj;
+};
 
-  const defaultOption = {
-    text: '',
-  };
+const createSurveyReducer = (state = initalState, action) => {
+  const { payload } = action;
 
   switch (action.type) {
     case 'SET_METADATA':
@@ -48,7 +55,9 @@ const createSurverReducer = (state = initalState, action) => {
       return {
         ...state,
         questions: state.questions.map((question, index) =>
-          index === payload.index ? { ...question, ...payload } : question,
+          index === payload.index
+            ? { ...question, ...objectWithoutKey(payload, 'index') }
+            : question,
         ),
       };
     case 'DELETE_QUESTION':
@@ -82,4 +91,4 @@ const createSurverReducer = (state = initalState, action) => {
   }
 };
 
-export default createSurverReducer;
+export default createSurveyReducer;
