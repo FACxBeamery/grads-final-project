@@ -8,13 +8,14 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
   const surveysCollection = db.collection('Surveys');
   const newSurveyObj = { ...surveyObj, questions: newQuestionsArray };
   try {
-    const { acknowledged, surveyId } = await surveysCollection.insertOne(
-      newSurveyObj,
-    );
-    if (acknowledged === false) {
+    const queryResult = await surveysCollection.insertOne(newSurveyObj);
+    console.log('Survey added to DB!');
+
+    if (queryResult.result.ok !== 1) {
       return new Error('Query not acknowledged');
     }
   } catch (e) {
+    console.log("There's been an error doing the survey query");
     return new Error(e.message);
   }
 };
