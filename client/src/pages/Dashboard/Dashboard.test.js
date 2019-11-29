@@ -1,23 +1,12 @@
 import React from 'react';
-import configureStore from 'redux-mock-store';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import store from '../../store/index';
 import Dashboard from './index';
 
-const mockStore = configureStore([]);
-
 describe('Testing Dashboard', () => {
-  let store;
-  beforeEach(() => {
-    store = mockStore({
-      dashboardReducer: {
-        surveys: [],
-      },
-    });
-  });
-
   it('should alternate between two button texts', () => {
     const { getByText } = render(
       // eslint-disable-next-line react/jsx-filename-extension
@@ -39,8 +28,8 @@ describe('Testing Dashboard', () => {
         </Provider>
       </BrowserRouter>,
     );
-    expect(getByText('Active Surveys')).toBeInTheDocument();
-    fireEvent.click(getByText('See all Surveys'));
     expect(getByText('All Surveys')).toBeInTheDocument();
+    fireEvent.click(getByText('See only Active Surveys'));
+    expect(getByText('Active Surveys')).toBeInTheDocument();
   });
 });
