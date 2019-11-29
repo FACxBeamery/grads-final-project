@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -8,9 +8,9 @@ import SurveyCard from './components/SurveyCard';
 import AllSurveysTable from './components/AllSurveysTable';
 
 const Dashboard = () => {
-  const [activeSurveys, setActiveSurveys] = useState(true);
-  const { surveys } = useSelector((state) => ({
+  const { surveys, showActiveSurveys } = useSelector((state) => ({
     surveys: state.dashboardReducer.surveys,
+    showActiveSurveys: state.dashboardReducer.showActiveSurveys,
   }));
   const dispatch = useDispatch();
   useEffect(() => {
@@ -22,13 +22,14 @@ const Dashboard = () => {
     getSurveys();
   }, [dispatch]);
 
-  const title = activeSurveys ? 'Active Surveys' : 'All Surveys';
+  const title = showActiveSurveys ? 'Active Surveys' : 'All Surveys';
 
   const SurveyCards = () => {
     return (
-      <Grid container>
+      <Grid container spacing={1}>
         {surveys
           .filter((survey) => survey.status === 'published')
+          .slice(0, 5)
           .map((survey, idx) => (
             // eslint-disable-next-line react/no-array-index-key
             <SurveyCard key={idx} survey={survey} />
@@ -48,11 +49,11 @@ const Dashboard = () => {
     return (
       <Button
         onClick={() => {
-          setActiveSurveys(!activeSurveys);
+          dispatch({ type: 'SWAP_VIEWS' });
         }}
         color='secondary'
       >
-        {activeSurveys ? 'See all Surveys' : 'See only Active Surveys'}
+        {showActiveSurveys ? 'See all Surveys' : 'See only Active Surveys'}
       </Button>
     );
   };
@@ -62,7 +63,7 @@ const Dashboard = () => {
       <Box my={4}>
         <Typography variant='h2'>{title}</Typography>
       </Box>
-      {activeSurveys ? <SurveyCards /> : <SurveyTable />}
+      {showActiveSurveys ? <SurveyCards /> : <SurveyTable />}
       <Box display='flex' justifyContent='center' my={4}>
         <DashboardButton />
       </Box>
