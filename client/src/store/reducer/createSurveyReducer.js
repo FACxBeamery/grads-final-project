@@ -43,7 +43,7 @@ const objectWithoutKey = (obj, key) => {
   return newObj;
 };
 
-const createSurverReducer = (state = initalState, action) => {
+const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
   switch (action.type) {
@@ -91,4 +91,4 @@ const createSurverReducer = (state = initalState, action) => {
   }
 };
 
-export default createSurverReducer;
+export default createSurveyReducer;
