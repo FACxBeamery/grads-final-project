@@ -17,15 +17,13 @@
   stroke-linejoin: round;
 }
 
-.circle-progress:hover {
-  stroke: #8a8a8a;
-}
-
 .circle-text {
+  font-family: 'Merriweather Sans';
   font-size: 0.8rem;
   font-weight: bold;
 }
 
 .circle-text--smaller {
+  font-family: 'Merriweather Sans';
   font-size: 0.5rem;
 }
