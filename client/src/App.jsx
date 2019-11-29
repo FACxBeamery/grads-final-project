@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { ThemeProvider, Button } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core';
 import theme from './theme';
 import store from './store';
 import Main from './components/Main/Main';
