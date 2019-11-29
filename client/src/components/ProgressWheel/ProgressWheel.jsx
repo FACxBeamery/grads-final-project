@@ -20,8 +20,8 @@ const ProgressWheel = ({
   const viewBox = `0 0 ${sqSize} ${sqSize}`;
   // Arc length at 100% coverage is the circle circumference
   const dashArray = radius * Math.PI * 2;
-  // Scale 100% coverage overlay with the actual percent
-  const dashOffset = dashArray - (dashArray * percentage) / 100;
+  // Get 0-1 percentage
+  const dashOffset = dashArray * (1 - percentage);
   return (
     <svg
       className={styles['svg-box']}
@@ -65,7 +65,7 @@ const ProgressWheel = ({
         dy='.3em'
         textAnchor='middle'
       >
-        {`resp.`}
+        {`respondents`}
       </text>
     </svg>
   );
