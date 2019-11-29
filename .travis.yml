@@ -7,6 +7,4 @@ install:
 test:
     - npm test
 env:
-    - NODE_ENV=test
-    - JWT_SECRET=dummysecret
-    - MONGO_URI=mongodb://db:27017/testdb
+    - NODE_ENV=test JWT_SECRET=dummysecret MONGO_URI=mongodb://db:27017/testdb
