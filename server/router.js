@@ -15,7 +15,7 @@ router.get('/test', (req, res) =>
 router.get('/surveys', getSurveys);
 router.post('/surveys', postSurveys);
 // router.patch("/surveys", patchSurveys)
-// router.get("/employees", getEmployees)
+router.get('/employees', getEmployees);
 // router.post("/employees", postEmployees)
 // router.post("/admins", postAdmins)
 
