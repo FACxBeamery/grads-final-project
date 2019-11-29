@@ -15,14 +15,19 @@ import QuestionsList from './Questions/QuestionsList';
 import RecipientsList from './RecipientsList';
 
 const CreateSurvey = () => {
+  const {
+    title,
+    description,
+    recipients,
+    disclaimer,
+    anonymous,
+    pageNumber,
+  } = useSelector((state) => state.createSurveyReducer);
   const dispatch = useDispatch();
 
-  const pageSize = 5;
-
   const getEmployees = async () => {
-    const { data } = await axios.get(
-      '/employees/pageS'`/employees/${pageSize}/${pageNumber}`,
-    );
+    const pageSize = 5;
+    const { data } = await axios.get(`/employees/${pageSize}/${pageNumber}`);
     dispatch({ type: 'SET_SURVEYS', payload: data });
   };
 
@@ -32,10 +37,6 @@ const CreateSurvey = () => {
       inputType === 'switch' ? event.target.checked : event.target.value;
     dispatch({ type: 'SET_METADATA', payload });
   };
-
-  const { title, description, recipients, disclaimer, anonymous } = useSelector(
-    (state) => state.createSurveyReducer,
-  );
 
   const textFields = [
     {
@@ -63,6 +64,8 @@ const CreateSurvey = () => {
   const surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
+  delete surveyForSending.employeeData;
+  delete surveyForSending.pageNumber;
 
   const handleSubmit = async () => {
     try {
