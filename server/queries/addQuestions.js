@@ -5,10 +5,13 @@ const addQuestions = async (questionsArray) => {
   questionsCollection = db.collection('Questions');
 
   try {
-    const { acknowledged, insertedIds } = await questionsCollection.insertMany(
+    const returnFromQuery = await questionsCollection.insertMany(
       questionsArray,
     );
-    if (acknowledged === true) {
+
+    const querySuccessful = returnFromQuery.result.ok === 1;
+    if (querySuccessful) {
+      const insertedIds = Object.values(returnFromQuery.insertedIds);
       return insertedIds; // array of ObjectIds for each question
     } else {
       return new Error('Query not acknowledged');

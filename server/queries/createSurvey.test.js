@@ -1,5 +1,4 @@
-const { initDb, closeDb, refreshDb } = require('../databaseConnection');
-const { ObjectID } = require('mongodb');
+const { initDb, closeDb } = require('../databaseConnection');
 const createSurvey = require('./createSurvey');
 
 beforeAll(() => {
