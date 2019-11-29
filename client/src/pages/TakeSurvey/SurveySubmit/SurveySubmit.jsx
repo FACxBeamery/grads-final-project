@@ -5,11 +5,11 @@ import { Box, Typography, Button } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 
 const SurveySubmit = () => {
-  const responses = useSelector((state) => state.takeSurveyReducer.responses);
+  const answers = useSelector((state) => state.takeSurveyReducer.answers);
 
   //   const handleSurveySubmit = (event) => {
   //     event.preventDefault();
-  //     // POST request with responses
+  //     // POST request with answers => responses + employee ID
   //   };
   return (
     <Box>
