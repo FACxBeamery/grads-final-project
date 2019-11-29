@@ -11,7 +11,7 @@ import {
   Typography,
   Divider,
 } from '@material-ui/core';
-import QuestionsList from './Questions/Questions';
+import QuestionsList from './Questions/QuestionsList';
 
 const CreateSurvey = () => {
   const dispatch = useDispatch();
