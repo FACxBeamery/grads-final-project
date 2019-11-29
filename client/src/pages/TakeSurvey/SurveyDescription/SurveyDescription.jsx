@@ -6,12 +6,12 @@ import { useSelector } from 'react-redux';
 
 const SurveyDescription = () => {
   const survey = useSelector((state) => state.takeSurveyReducer.survey);
-  const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
+  //const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
 
   return (
-    <Box>
-      <Typography variant='h3'>{survey.title}</Typography>
-      <Typography variant='h4'>{survey.description}</Typography>
+    <Box display='flex' flexDirection='column'>
+      <Typography variant='h4'>{survey.title}</Typography>
+      <Typography variant='h5'>{survey.description}</Typography>
     </Box>
   );
 };
