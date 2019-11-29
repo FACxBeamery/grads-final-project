@@ -6,3 +6,6 @@ install:
     - docker-compose --version
 test:
     - npm test
+env:
+    global:
+        - NODE_ENV=test JWT_SECRET=dummysecret MONGO_URI=mongodb://db:27017/testdb
