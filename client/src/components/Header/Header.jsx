@@ -1,7 +1,6 @@
 import React from 'react';
 import { AppBar, Box } from '@material-ui/core';
 import styles from './Header.module.css';
-// TODO make header component
 
 const Header = () => {
   return (
