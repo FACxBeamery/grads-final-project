@@ -9,14 +9,23 @@ import styles from './UserProgressStepper.module.css';
 const UserProgressStepper = () => {
   const dispatch = useDispatch();
   const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
-  const QuestionsArray = [1, 2, 3, 4, 5, 6];
-  const numberOfSteps = QuestionsArray.length;
+  const questions = useSelector((state) => state.takeSurveyReducer.questions);
+  // const QuestionsArray = [1, 2, 3, 4, 5, 6];
+  const numberOfSteps = questions.length + 1;
 
   const nextQuestion = () => {
     dispatch({ type: 'NEXT_STEP' });
+    dispatch({
+      type: 'SET_ACTIVE_QUESTION',
+    });
+
+    //TODO condition for not being able to skip a required question
   };
   const previousQuestion = () => {
     dispatch({ type: 'PREVIOUS_STEP' });
+    dispatch({
+      type: 'SET_ACTIVE_QUESTION',
+    });
   };
 
   return (
