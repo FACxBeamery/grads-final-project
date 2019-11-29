@@ -19,6 +19,7 @@ const initalState = {
   questions: [defaultQuestion],
   openModal: false,
   employeeData: undefined,
+  pageNumber: 1,
 };
 
 const changeOptionText = (options, payload) => {
