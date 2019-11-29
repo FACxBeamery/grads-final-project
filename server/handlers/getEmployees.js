@@ -2,7 +2,9 @@ const readEmployees = require('../queries/readEmployees');
 
 const getEmployees = async (req, res) => {
   try {
-    const result = await readEmployees();
+    const pageSize = Number(req.params.pagesize);
+    const pageNumber = Number(req.params.pagenumber);
+    const result = await readEmployees(pageSize, pageNumber);
     res.status(200).json(result);
   } catch (err) {
     res
