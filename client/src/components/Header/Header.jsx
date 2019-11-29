@@ -3,7 +3,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import styles from './Header.module.css';
 // import Typography from '@material-ui/core/Typography';
-// TODO make header component
 
 const Header = () => {
   return (
