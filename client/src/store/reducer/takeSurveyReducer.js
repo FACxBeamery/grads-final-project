@@ -3,10 +3,11 @@ const initalState = {
   survey: [],
   questions: [],
   activeQuestion: 'start',
-  responses: [],
+  answers: [],
 };
 
 const takeSurveyReducer = (state = initalState, action) => {
+  console.log(state, 'STATE');
   switch (action.type) {
     case 'NEXT_STEP':
       return {
@@ -49,7 +50,21 @@ const takeSurveyReducer = (state = initalState, action) => {
     case 'ADD_RESPONSE':
       return {
         ...state,
-        responses: action.payload,
+        answers: state.answers.map((response) =>
+          response.questionId === action.payload.questionId
+            ? { ...response, answer: action.payload.answer }
+            : response,
+        ),
+      };
+    case 'SET_INITIAL_ANSWERS':
+      return {
+        ...state,
+        answers: state.questions.map((question) => {
+          return {
+            questionId: question.id,
+            answer: null,
+          };
+        }),
       };
     default:
       return state;
