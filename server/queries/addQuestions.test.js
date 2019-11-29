@@ -50,6 +50,5 @@ it('Testing that adding questions to the questions collection works', async () =
   ];
 
   const result = await addQuestions(dummyQuestions);
-  console.log(result);
   expect(result.length).toBe(2);
 });

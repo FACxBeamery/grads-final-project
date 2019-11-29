@@ -39,5 +39,4 @@ it('Testing that adding a new survey works', async () => {
 
   const result = await createSurvey(dummySurvey, dummyQuestionsArray);
   expect(result).toEqual('success');
-  //expect(result).toBeUndefined(); // undefined result means successful query as nothing was returned (query only returns errors)
 });
