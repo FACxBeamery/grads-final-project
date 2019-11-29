@@ -23,6 +23,7 @@ const CreateSurvey = () => {
   );
   const surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
+    dateCreated: new Date(Date.now()).toUTCString(),
   };
 
   const handleSubmit = async (event) => {
