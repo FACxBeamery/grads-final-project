@@ -16,7 +16,7 @@ router.get('/test', (req, res) =>
 // router.get("/surveys", getSurveys)
 router.get('/surveys/:id', getSurveyAndQuestions);
 router.post('/surveys', postSurveys);
-// router.patch("/surveys", patchSurveys)
+router.patch('/surveys', patchSurveys);
 // router.get("/employees", getEmployees)
 // router.post("/employees", postEmployees)
 // router.post("/admins", postAdmins)
