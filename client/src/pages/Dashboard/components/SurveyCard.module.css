@@ -14,3 +14,7 @@
   color: #f15852;
   text-decoration: none;
 }
+
+.italic {
+  font-style: italic;
+}
