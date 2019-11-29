@@ -71,7 +71,6 @@ const Options = ({ questionIndex }) => {
   }
 
   return (
-    // TODO ADD ANSWERS h2
     <Box display='flex' justifyContent='flex-end'>
       <Box mr={4}>
         <Typography variant='h6'>ANSWERS:</Typography>
