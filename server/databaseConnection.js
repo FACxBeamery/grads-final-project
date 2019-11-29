@@ -17,21 +17,25 @@ let _db;
 let _client;
 
 const refreshDb = (db) => {
-  db.collection('Surveys').deleteMany({});
-  db.collection('Questions').deleteMany({});
-  db.collection('Employees').deleteMany({});
-  db.collection('Admins').deleteMany({});
+  return Promise.all([
+    db.collection('Surveys').deleteMany({}),
+    db.collection('Questions').deleteMany({}),
+    db.collection('Employees').deleteMany({}),
+    db.collection('Admins').deleteMany({}),
+  ]);
 };
 const populateDb = (db) => {
-  db.collection('Surveys').insertMany(dummySurveys);
-  db.collection('Questions').insertMany(dummyQuestions);
-  db.collection('Employees').insertMany(dummyEmployees);
-  db.collection('Admins').insertMany(dummyAdmins);
+  return Promise.all([
+    db.collection('Surveys').insertMany(dummySurveys),
+    db.collection('Questions').insertMany(dummyQuestions),
+    db.collection('Employees').insertMany(dummyEmployees),
+    db.collection('Admins').insertMany(dummyAdmins),
+  ]);
 };
 
 const initDb = () => {
   return new Promise((resolve, reject) => {
-    const dbConnect = (error, client) => {
+    const dbConnect = async (error, client) => {
       if (error) {
         reject(error);
       } else {
@@ -40,8 +44,8 @@ const initDb = () => {
         _db = client.db();
 
         if (NODE_ENV !== 'production') {
-          refreshDb(_db);
-          populateDb(_db);
+          await refreshDb(_db);
+          await populateDb(_db);
         }
 
         resolve(_db);
