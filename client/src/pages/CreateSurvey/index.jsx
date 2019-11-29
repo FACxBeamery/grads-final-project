@@ -16,6 +16,15 @@ import QuestionsList from './Questions/QuestionsList';
 const CreateSurvey = () => {
   const dispatch = useDispatch();
 
+  const pageSize = 5;
+
+  const getEmployees = async () => {
+    const { data } = await axios.get(
+      '/employees/pageS'`/employees/${pageSize}/${pageNumber}`,
+    );
+    dispatch({ type: 'SET_SURVEYS', payload: data });
+  };
+
   const setMetadata = (event, inputType) => {
     const payload = {};
     payload[event.target.name] =
