@@ -17,6 +17,7 @@ const initalState = {
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
   questions: [defaultQuestion],
+  employeeData: undefined,
 };
 
 const changeOptionText = (options, payload) => {
@@ -49,6 +50,8 @@ const createSurveyReducer = (state = initalState, action) => {
   switch (action.type) {
     case 'SET_METADATA':
       return { ...state, ...payload };
+    case 'SET_EMPLOYEE_DATA':
+      return { ...state, employeeData: payload };
     case 'NEW_QUESTION':
       return { ...state, questions: [...state.questions, defaultQuestion] };
     case 'SET_QUESTION_DATA':
