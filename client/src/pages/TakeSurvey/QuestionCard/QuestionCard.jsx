@@ -39,7 +39,7 @@ const MultichoiceQuestion = () => {
     (state) => state.takeSurveyReducer.activeQuestion,
   );
   return (
-    <Box>
+    <Box display='flex' flexDirection='column' alignSelf='flex-start'>
       <Typography>{activeQuestion.title}</Typography>
       <Box display='flex' flexDirection='column' alignItems='center'>
         <MultichoiceQuestionOptions />
@@ -70,10 +70,13 @@ const TextQuestion = () => {
     });
   };
   return (
-    <Box display='flex' flexDirection='column' alignItems='center'>
+    <Box display='flex' flexDirection='column' alignSelf='flex-start'>
       <Typography>{activeQuestion.title}</Typography>
       <Box style={{ backgroundColor: '#E5E5E5' }} key={activeStep}>
         <TextField
+          autoFocus
+          required
+          autoComplete='off'
           value={currentAnswerText}
           margin='normal'
           key={activeStep}
@@ -92,7 +95,7 @@ const QuestionCard = () => {
   );
 
   return (
-    <Box>
+    <Box alignSelf='center' justifyContent='center'>
       {activeQuestion.type === 'multichoice' ? <MultichoiceQuestion /> : null}
 
       {activeQuestion.type === 'text' ? <TextQuestion /> : null}

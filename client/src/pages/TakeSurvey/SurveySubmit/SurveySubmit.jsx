@@ -12,8 +12,8 @@ const SurveySubmit = () => {
   //     // POST request with answers => responses + employee ID
   //   };
   return (
-    <Box>
-      <Typography variant='h3'>
+    <Box alignSelf='center' justifyContent='center'>
+      <Typography variant='h4'>
         You've finished the survey 🎉 Thanks for your time
       </Typography>
       <Button

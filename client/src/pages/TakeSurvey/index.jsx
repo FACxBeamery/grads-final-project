@@ -4,6 +4,7 @@ import QuestionCard from './QuestionCard/QuestionCard';
 import SurveyDescription from './SurveyDescription/SurveyDescription';
 import SurveySubmit from './SurveySubmit/SurveySubmit';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box } from '@material-ui/core';
 import axios from 'axios';
 
 const TakeSurvey = () => {
@@ -25,11 +26,12 @@ const TakeSurvey = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <Box display='flex' flexDirection='column'>
+      {' '}
       <UserProgressStepper />
       {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
       {activeQuestion === 'end' ? <SurveySubmit /> : null}
-    </>
+    </Box>
   );
 };
 

@@ -9,7 +9,7 @@ const SurveyDescription = () => {
   //const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <Box alignSelf='center' justifyContent='center'>
       <Typography variant='h4'>{survey.title}</Typography>
       <Typography variant='h5'>{survey.description}</Typography>
     </Box>
