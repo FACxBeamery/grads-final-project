@@ -17,7 +17,9 @@ const SurveySubmit = () => {
         You've finished the survey 🎉 Thanks for your time
       </Typography>
       <Button
-      //onClick={handleSurveySubmit}
+        variant='contained'
+        color='secondary'
+        //onClick={handleSurveySubmit}
       >
         Submit My Responses
       </Button>
