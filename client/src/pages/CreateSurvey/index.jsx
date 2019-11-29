@@ -48,10 +48,10 @@ const CreateSurvey = () => {
         <TextField
           margin='normal'
           required
-          error={title && (title.length < 10 || title.length > 30)}
+          error={title && (title.length < 10 || title.length > 60)}
           helperText={
             title &&
-            (title.length < 10 || title.length > 30) &&
+            (title.length < 10 || title.length > 60) &&
             'Title must be between 10 and 30 characters!'
           }
           value={title}

@@ -19,7 +19,7 @@ describe('Form works as expected', () => {
 
     fireEvent.change(titleInput, { target: { value: 'a' } });
 
-    getByText('Title must be between 10 and 30 characters!', { exact: false });
+    getByText('Title must be between 10 and 60 characters!', { exact: false });
   });
 });
 
