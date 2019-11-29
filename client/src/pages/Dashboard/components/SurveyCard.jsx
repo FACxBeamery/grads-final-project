@@ -18,9 +18,9 @@ import styles from './SurveyCard.module.css';
 
 const SurveyCard = ({ survey }) => {
   const { _id, title, description, recipients, responses } = survey;
-  const percentage = Math.floor((responses.length / recipients.length) * 100);
+  const percentage = responses.length / recipients.length;
   return (
-    <Grid item xs={5} component={Card} className={styles.card}>
+    <Grid item xs={12} sm={4} md={3} component={Card} className={styles.card}>
       <Box display='flex' flexDirection='column' justifyContent='space-between'>
         <CardContent>
           <Typography color='textSecondary' gutterBottom variant='subtitle2'>
