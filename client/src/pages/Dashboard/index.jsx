@@ -15,13 +15,9 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const getSurveys = async () => {
-      // try {
       const { data } = await axios.get('/surveys');
       const allSurveysData = data;
       dispatch({ type: 'SET_SURVEYS', payload: allSurveysData });
-      // } catch (error) {
-      //   throw error;
-      // }
     };
     getSurveys();
   }, [dispatch]);
