@@ -1,15 +1,14 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
-import styles from './Header.module.css';
 import Box from '@material-ui/core/Box';
-//import Typography from '@material-ui/core/Typography';
-// TODO make header component
+import styles from './Header.module.css';
+// import Typography from '@material-ui/core/Typography';
 
 const Header = () => {
   return (
     <AppBar
-      data-testid='app-bar'
       position='static'
+      data-testid='app-bar'
       className={styles['header-bar']}
     >
       <Box className={styles['header-title']}>
