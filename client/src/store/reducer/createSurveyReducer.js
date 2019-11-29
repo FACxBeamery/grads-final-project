@@ -17,6 +17,7 @@ const initalState = {
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
   questions: [defaultQuestion],
+  openModal: false,
 };
 
 const changeOptionText = (options, payload) => {
@@ -47,6 +48,8 @@ const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
   switch (action.type) {
+    case 'TOGGLE_MODAL':
+      return { ...state, openModal: !state.openModal };
     case 'SET_METADATA':
       return { ...state, ...payload };
     case 'NEW_QUESTION':
