@@ -1,0 +1,29 @@
+.svg-box {
+  border-radius: 50%;
+}
+
+.circle-background,
+.circle-progress {
+  fill: none;
+}
+
+.circle-background {
+  stroke: #ddd;
+}
+
+.circle-progress {
+  stroke: #f15852;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.circle-text {
+  font-family: 'Merriweather Sans';
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.circle-text--smaller {
+  font-family: 'Merriweather Sans';
+  font-size: 0.5rem;
+}

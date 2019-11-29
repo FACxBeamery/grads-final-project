@@ -1,0 +1,22 @@
+.row {
+  background: white;
+  transition: background 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.row:hover {
+  background: #b4dbff7a;
+}
+
+.published {
+  color: #3078ff !important;
+}
+
+.closed {
+  color: red !important;
+}
+
+.created {
+  color: yellowgreen !important;
+}
