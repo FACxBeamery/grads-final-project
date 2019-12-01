@@ -22,6 +22,7 @@ const refreshDb = (db) => {
     db.collection('Questions').deleteMany({}),
     db.collection('Employees').deleteMany({}),
     db.collection('Admins').deleteMany({}),
+    db.dropDatabase(),
   ]);
 };
 const populateDb = (db) => {
