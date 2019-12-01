@@ -45,9 +45,7 @@ const AdminLogin = () => {
     e.preventDefault();
 
     // TODO unstub api call response
-    console.log('here username and password:', username, password);
     const response = await loginAdmin(username, password);
-    console.log('response: ', response);
     const { auth, token, message } = response;
 
     if (auth && token) {

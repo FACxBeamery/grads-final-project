@@ -1,11 +1,11 @@
 language: node_js
 services:
-    - docker
+  - docker
 install:
-    - docker --version
-    - docker-compose --version
+  - docker --version
+  - docker-compose --version
 test:
-    - npm test
+  - npm test
 env:
-    global:
-        - NODE_ENV=test JWT_SECRET=dummysecret MONGO_URI=mongodb://db:27017/testdb
+  global:
+    - NODE_ENV=development JWT_SECRET=dummysecret MONGO_URI=mongodb://db:27017/testdb
