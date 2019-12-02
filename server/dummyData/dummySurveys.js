@@ -7,6 +7,7 @@ module.exports = [
     description:
       'A survey description that is about 1 sentence long yeah blah blah',
     status: 'draft',
+    disclaimer: 'some disclaimer',
     dateCreated: 1573826615,
     dateToPublish: 1574345041,
     datePublished: '',
@@ -51,6 +52,7 @@ module.exports = [
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
     status: 'published',
+    disclaimer: 'some disclaimer',
     dateCreated: 1572617513,
     dateToPublish: 1574259113,
     datePublished: 1574259113,
@@ -228,6 +230,7 @@ module.exports = [
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
     status: 'closed',
+    disclaimer: 'some disclaimer',
     dateCreated: 1572617513,
     dateToPublish: 1574259113,
     datePublished: 1574259113,
