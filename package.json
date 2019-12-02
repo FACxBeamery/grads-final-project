@@ -5,8 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "npm run test:client && npm run test:server",
-        "test:client": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=80 client bash ./travis_tests.sh",
-        "test:server": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=40 server bash ./travis_tests.sh",
+        "test:client": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=80  client bash ./travis_tests.sh",
+        "test:server": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=40 NODE_ENV=test JWT_SECRET=dummysecret MONGO_URI=mongodb://db:27017/testdb server bash ./travis_tests.sh",
         "dockerup": "docker-compose -f dev-docker-compose.yml up --build",
         "dockerdown": "docker-compose -f dev-docker-compose.yml down --rmi all"
     },
