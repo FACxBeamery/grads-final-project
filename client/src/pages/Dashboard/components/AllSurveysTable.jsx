@@ -13,15 +13,19 @@ import {
 import styles from './AllSurveysTable.module.css';
 
 import formatDate from '../../../utils/formatDate';
+import sortArrayByObjsKey from '../../../utils/sortArrayByObjsKey';
 
 const AllSurveysTable = ({ surveys, history }) => {
   const cells = [
     'Survey',
+    'Description',
     'Responses',
     'Date Published',
     'Date to Close',
     'Status',
   ];
+
+  const sortedSurveys = sortArrayByObjsKey(surveys, 'status', 'descending');
   return (
     <Paper>
       <Table aria-label='all surveys table' className={styles.table}>
@@ -34,7 +38,7 @@ const AllSurveysTable = ({ surveys, history }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {surveys.map((survey) => {
+          {sortedSurveys.map((survey) => {
             const {
               _id,
               title,
@@ -43,6 +47,7 @@ const AllSurveysTable = ({ surveys, history }) => {
               dateToClose,
               recipients,
               responses,
+              description,
             } = survey;
             return (
               <TableRow
@@ -51,6 +56,7 @@ const AllSurveysTable = ({ surveys, history }) => {
                 onClick={() => history.push(`admin/surveys/${_id}`)}
               >
                 <TableCell scope='row'>{title}</TableCell>
+                <TableCell>{description}</TableCell>
                 <TableCell>{`${responses.length}/${recipients.length} respondents`}</TableCell>
                 <TableCell>{formatDate(datePublished) || 'No date'}</TableCell>
                 <TableCell>{formatDate(dateToClose) || 'No date'}</TableCell>
