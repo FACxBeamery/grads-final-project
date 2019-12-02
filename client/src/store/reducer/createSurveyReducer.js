@@ -1,9 +1,9 @@
 const defaultOption = {
-  text: undefined,
+  text: '',
 };
 
 const defaultQuestion = {
-  title: undefined,
+  title: '',
   type: 'text',
   required: false,
   commentsEnabled: false,
@@ -17,6 +17,7 @@ const initalState = {
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
   questions: [defaultQuestion],
+  dateCreated: Date.now(),
 };
 
 const changeOptionText = (options, payload) => {
@@ -35,6 +36,22 @@ const mappedQuestions = (questions, payload, editOptions) => {
       ? { ...question, options: editOptions(question.options, payload) }
       : question,
   );
+};
+
+const switchQuestions = (questions, firstIndex, secondIndex) => {
+  const switchedQuestionList = [...questions];
+  const elementToMove = switchedQuestionList[secondIndex];
+  switchedQuestionList[secondIndex] = switchedQuestionList[firstIndex];
+  switchedQuestionList[firstIndex] = elementToMove;
+  return switchedQuestionList;
+};
+
+const switchOptions = (options, firstIndex, secondIndex) => {
+  const switchedOptionsList = [...options];
+  const elementToMove = switchedOptionsList[secondIndex];
+  switchedOptionsList[secondIndex] = switchedOptionsList[firstIndex];
+  switchedOptionsList[firstIndex] = elementToMove;
+  return switchedOptionsList;
 };
 
 const objectWithoutKey = (obj, key) => {
@@ -85,6 +102,56 @@ const createSurveyReducer = (state = initalState, action) => {
       return {
         ...state,
         questions: mappedQuestions(state.questions, payload, deleteOption),
+      };
+    case 'MOVE_QUESTION_UP':
+      return {
+        ...state,
+        questions: switchQuestions(
+          state.questions,
+          payload.index,
+          payload.index - 1,
+        ),
+      };
+    case 'MOVE_QUESTION_DOWN':
+      return {
+        ...state,
+        questions: switchQuestions(
+          state.questions,
+          payload.index,
+          payload.index + 1,
+        ),
+      };
+    case 'MOVE_OPTION_UP':
+      return {
+        ...state,
+        questions: state.questions.map((question, index) =>
+          index === payload.questionIndex
+            ? {
+                ...question,
+                options: switchOptions(
+                  question.options,
+                  payload.optionIndex,
+                  payload.optionIndex - 1,
+                ),
+              }
+            : question,
+        ),
+      };
+    case 'MOVE_OPTION_DOWN':
+      return {
+        ...state,
+        questions: state.questions.map((question, index) =>
+          index === payload.questionIndex
+            ? {
+                ...question,
+                options: switchOptions(
+                  question.options,
+                  payload.optionIndex,
+                  payload.optionIndex + 1,
+                ),
+              }
+            : question,
+        ),
       };
     default:
       return state;
