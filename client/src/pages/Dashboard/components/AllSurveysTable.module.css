@@ -10,13 +10,13 @@
 }
 
 .published {
-  color: #3078ff !important;
+  color: #2c70f0 !important;
 }
 
 .closed {
   color: red !important;
 }
 
-.created {
-  color: yellowgreen !important;
+.draft {
+  color: #646464 !important;
 }
