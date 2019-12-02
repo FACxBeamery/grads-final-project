@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather|Merriweather+Sans:300,400,400i,700,800&display=swap');
 body {
+  margin: 0;
   -webkit-font-smoothing: antialiased;
+  margin: 0;
   -moz-osx-font-smoothing: grayscale;
 }

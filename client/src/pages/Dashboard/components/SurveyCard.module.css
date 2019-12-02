@@ -1,0 +1,20 @@
+.actions {
+  justify-content: space-between;
+}
+
+.active {
+  background: rgb(169, 235, 169) !important;
+}
+
+.card {
+  margin: 16px !important;
+}
+
+.link {
+  color: #f15852;
+  text-decoration: none;
+}
+
+.italic {
+  font-style: italic;
+}
