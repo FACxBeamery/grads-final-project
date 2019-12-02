@@ -38,20 +38,12 @@ const mappedQuestions = (questions, payload, editOptions) => {
   );
 };
 
-const switchQuestions = (questions, firstIndex, secondIndex) => {
-  const switchedQuestionList = [...questions];
-  const elementToMove = switchedQuestionList[secondIndex];
-  switchedQuestionList[secondIndex] = switchedQuestionList[firstIndex];
-  switchedQuestionList[firstIndex] = elementToMove;
-  return switchedQuestionList;
-};
-
-const switchOptions = (options, firstIndex, secondIndex) => {
-  const switchedOptionsList = [...options];
-  const elementToMove = switchedOptionsList[secondIndex];
-  switchedOptionsList[secondIndex] = switchedOptionsList[firstIndex];
-  switchedOptionsList[firstIndex] = elementToMove;
-  return switchedOptionsList;
+const switchArrayItems = (array, firstIndex, secondIndex) => {
+  const switchedList = [...array];
+  const elementToMove = switchedList[secondIndex];
+  switchedList[secondIndex] = switchedList[firstIndex];
+  switchedList[firstIndex] = elementToMove;
+  return switchedList;
 };
 
 const objectWithoutKey = (obj, key) => {
@@ -106,7 +98,7 @@ const createSurveyReducer = (state = initalState, action) => {
     case 'MOVE_QUESTION_UP':
       return {
         ...state,
-        questions: switchQuestions(
+        questions: switchArrayItems(
           state.questions,
           payload.index,
           payload.index - 1,
@@ -115,7 +107,7 @@ const createSurveyReducer = (state = initalState, action) => {
     case 'MOVE_QUESTION_DOWN':
       return {
         ...state,
-        questions: switchQuestions(
+        questions: switchArrayItems(
           state.questions,
           payload.index,
           payload.index + 1,
