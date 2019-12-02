@@ -13,15 +13,16 @@ import {
   Box,
   FormControlLabel,
   Typography,
-  Divider,
+  IconButton,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import Options from '../Options/Options';
 
 const Question = ({ questionIndex }) => {
   const { title, type, required, commentsEnabled } = useSelector(
     (state) => state.createSurveyReducer.questions[questionIndex],
   );
+  const { questions } = useSelector((state) => state.createSurveyReducer);
 
   const dispatch = useDispatch();
 
@@ -40,12 +41,49 @@ const Question = ({ questionIndex }) => {
     dispatch({ type: 'DELETE_QUESTION', payload });
   };
 
+  const handleUpClick = () => {
+    const payload = {};
+    payload.index = questionIndex;
+    dispatch({ type: 'MOVE_QUESTION_UP', payload });
+  };
+
+  const handleDownClick = () => {
+    const payload = {};
+    payload.index = questionIndex;
+    dispatch({ type: 'MOVE_QUESTION_DOWN', payload });
+  };
+
   return (
-    <>
-      <Box my={2}>
+    <Box display='flex'>
+      <Box
+        py={4}
+        display='flex'
+        flexDirection='column'
+        justifyContent='space-between'
+      >
+        {/* Only render up button if not first item */}
+        {/* Otherwise render placeholder for styling */}
+        {questionIndex !== 0 ? (
+          <IconButton onClick={handleUpClick}>
+            <ArrowUpward />
+          </IconButton>
+        ) : (
+          <IconButton />
+        )}
+        {/* Only render down button if not last item  */}
+        {/* Otherwise render placeholder for styling */}
+        {questions.length - 1 !== questionIndex ? (
+          <IconButton onClick={handleDownClick}>
+            <ArrowDownward />
+          </IconButton>
+        ) : (
+          <IconButton />
+        )}
+      </Box>
+      <Box my={2} p={2} style={{ backgroundColor: '#fafafa' }} flex={1}>
         <Box
           display='flex'
-          justifyContent='space-between'
+          justifyContent='space-around'
           alignItems='flex-start'
         >
           <Box flex={1} mb={2}>
@@ -56,11 +94,11 @@ const Question = ({ questionIndex }) => {
             <TextField
               fullWidth
               required
-              error={title && (title.length < 10 || title.length > 140)}
+              error={title && title.length > 280}
               helperText={
                 title &&
-                (title.length < 10 || title.length > 140) &&
-                'Title must be between 10 and 140 characters!'
+                title.length > 280 &&
+                'Question must be less than 280 characters!'
               }
               value={title}
               name='title'
@@ -73,7 +111,7 @@ const Question = ({ questionIndex }) => {
               type='button'
               color='secondary'
               onClick={handleDeleteQuestion}
-              startIcon={<DeleteIcon />}
+              startIcon={<Delete />}
             >
               Delete question
             </Button>
@@ -147,8 +185,7 @@ const Question = ({ questionIndex }) => {
 
         {type === 'multichoice' && <Options questionIndex={questionIndex} />}
       </Box>
-      <Divider variant='middle' />
-    </>
+    </Box>
   );
 };
 
