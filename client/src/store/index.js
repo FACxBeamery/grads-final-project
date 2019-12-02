@@ -12,8 +12,6 @@ const store = createStore(
   combineReducers({
     reducer,
     createSurveyReducer,
-
-    dashboardReducer,
     takeSurveyReducer,
 
     adminLoginReducer,
