@@ -9,10 +9,8 @@ const formatDate = (unixTime) => {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const ddmmyyyyDate = `${day}/${month}/${year}`;
-
     return ddmmyyyyDate;
   }
   return undefined;
 };
-
 export default formatDate;

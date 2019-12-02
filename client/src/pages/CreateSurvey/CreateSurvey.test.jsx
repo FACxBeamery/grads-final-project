@@ -17,8 +17,10 @@ describe('Form works as expected', () => {
 
     const titleInput = inputs[0];
 
-    fireEvent.change(titleInput, { target: { value: 'a' } });
+    const longString = 'a'.repeat(61);
 
-    getByText('Title must be between 10 and 60 characters!', { exact: false });
+    fireEvent.change(titleInput, { target: { value: longString } });
+
+    getByText('Title must be less than 60 characters!', { exact: false });
   });
 });
