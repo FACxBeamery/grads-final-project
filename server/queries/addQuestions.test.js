@@ -13,14 +13,14 @@ it('Testing that adding questions to the questions collection works', async () =
   const dummyQuestions = [
     {
       id: ObjectID('707f1f42bcf86dd799439011'),
-      title: 'Please describe your first week in few sentences',
+      title: 'Please describe your first week in one or two sentences',
       type: 'text',
       required: true,
       commentEnabled: true,
     },
     {
       id: ObjectID('707f1f87bcf86dd799439021'),
-      title: 'How did you feel at work this week?',
+      title: 'How was your week?',
       type: 'multichoice',
       required: true,
       commentEnabled: true,

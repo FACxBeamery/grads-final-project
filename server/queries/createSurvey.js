@@ -15,7 +15,6 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
     if (queryResult.result.ok !== 1) {
       return new Error('Query not acknowledged');
     } else {
-      // all working
       return 'success';
     }
   } catch (e) {
