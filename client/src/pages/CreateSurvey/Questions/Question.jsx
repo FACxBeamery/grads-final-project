@@ -53,6 +53,8 @@ const Question = ({ questionIndex }) => {
     dispatch({ type: 'MOVE_QUESTION_DOWN', payload });
   };
 
+  const isNotFirstQuestion = questionIndex !== 0;
+  const isNotLastQuestion = questions.length - 1 !== questionIndex;
   return (
     <Box display='flex'>
       <Box
@@ -61,18 +63,14 @@ const Question = ({ questionIndex }) => {
         flexDirection='column'
         justifyContent='space-between'
       >
-        {/* Only render up button if not first item */}
-        {/* Otherwise render placeholder for styling */}
-        {questionIndex !== 0 ? (
+        {isNotFirstQuestion ? (
           <IconButton onClick={handleUpClick}>
             <ArrowUpward />
           </IconButton>
         ) : (
           <IconButton />
         )}
-        {/* Only render down button if not last item  */}
-        {/* Otherwise render placeholder for styling */}
-        {questions.length - 1 !== questionIndex ? (
+        {isNotLastQuestion ? (
           <IconButton onClick={handleDownClick}>
             <ArrowDownward />
           </IconButton>
