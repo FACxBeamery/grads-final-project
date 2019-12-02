@@ -27,7 +27,6 @@ const TakeSurvey = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      {' '}
       <UserProgressStepper />
       {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
       {activeQuestion === 'end' ? <SurveySubmit /> : null}
