@@ -1,5 +1,7 @@
+const ObjectID = require('mongodb').ObjectID;
 module.exports = [
   {
+    id: ObjectID('507f1f77bcf86cd799439011'),
     firstName: 'Steven',
     lastName: 'Bianchi',
     jobTitle: 'VP People',
@@ -14,6 +16,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439012'),
     firstName: 'Thomas',
     lastName: 'Kostrzewski',
     jobTitle: 'Graduate Software Engineer',
@@ -28,6 +31,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439013'),
     firstName: 'Antonio',
     lastName: 'Gargaro',
     jobTitle: 'Graduate Software Engineer',
@@ -42,6 +46,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439014'),
     firstName: 'Lyndsey',
     lastName: 'Scott',
     jobTitle: 'Graduate Software Engineer',
@@ -56,6 +61,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439015'),
     firstName: 'João',
     lastName: 'Viana',
     jobTitle: 'Graduate Software Engineer',
@@ -70,6 +76,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439016'),
     firstName: 'Tom',
     lastName: 'Galligan',
     jobTitle: 'Graduate Software Engineer',
@@ -84,6 +91,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439017'),
     firstName: 'Martha',
     lastName: 'Lambert',
     jobTitle: 'Graduate Software Engineer',
@@ -98,6 +106,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439018'),
     firstName: 'Harshada',
     lastName: 'Shimpi',
     jobTitle: 'QA Engineer',
@@ -112,6 +121,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439019'),
     firstName: 'Jeff',
     lastName: 'Lu',
     jobTitle: 'Head of Talent Acquisition',
@@ -126,6 +136,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439023'),
     firstName: 'Rachel',
     lastName: 'Skelton',
     jobTitle: 'HR and Talent manager',
@@ -140,6 +151,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439033'),
     firstName: 'Takveen',
     lastName: 'Bashir',
     jobTitle: 'Senior Technical Recruiter',
@@ -154,6 +166,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439043'),
     firstName: 'Milo',
     lastName: 'Abel',
     jobTitle: 'Recruiting Programs & Operations Associate',
@@ -168,6 +181,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439053'),
     firstName: 'Minesh',
     lastName: 'Shah',
     jobTitle: 'Junior Software Engineer',
@@ -182,6 +196,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439063'),
     firstName: 'Adam',
     lastName: 'Rabinovitch',
     jobTitle: 'Lead Technical Recruiter',
@@ -196,6 +211,7 @@ module.exports = [
     office: 'London',
   },
   {
+    id: ObjectID('507f1f77bcf86cd799439073'),
     firstName: 'Natasha',
     lastName: 'Lees',
     jobTitle: 'Commercial Recruiting Lead',

@@ -1,6 +1,13 @@
 import React from 'react';
+<<<<<<< HEAD
 import { useSelector } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+=======
+// import { useSelector } from 'react-redux';
+// import { Switch, Route, Redirect } from 'react-router-dom';
+
+import { Switch, Route } from 'react-router-dom';
+>>>>>>> master
 import { Box } from '@material-ui/core';
 import AdminLogin from '../../pages/AdminLogin';
 import Dashboard from '../../pages/Dashboard';
@@ -9,9 +16,14 @@ import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 const Main = () => {
+<<<<<<< HEAD
   const { data } = useSelector((state) => state.adminLoginReducer);
   const { auth } = data;
   const { snackbar } = useSelector((state) => state.snackbarReducer);
+=======
+  // const { auth } = useSelector((state) => state.adminLoginReducer);
+  // const snackbar = useSelector((state) => state.snackbarReducer);
+>>>>>>> master
 
   return (
     <main>
@@ -26,7 +38,10 @@ const Main = () => {
           <Route path='/:id' component={TakeSurvey} />
         </Switch>
       </Box>
+<<<<<<< HEAD
       {snackbar}
+=======
+>>>>>>> master
     </main>
   );
 };

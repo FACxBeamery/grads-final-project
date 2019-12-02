@@ -14,6 +14,11 @@ router.get('/test', (req, res) =>
   res.status(200).send('Successful connection to back end!'),
 );
 
+<<<<<<< HEAD
+=======
+router.post('/login', postLogin);
+// router.get("/surveys", getSurveys)
+>>>>>>> master
 router.get('/surveys', getSurveys);
 router.post('/surveys', postSurveys);
 // router.patch("/surveys", patchSurveys)
