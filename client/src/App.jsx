@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider, Box } from '@material-ui/core';
 import { Provider } from 'react-redux';
 import theme from './theme';
 
@@ -11,7 +11,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Header />
+        <Box mb={5}>
+          <Header />
+        </Box>
         <Main />
       </ThemeProvider>
     </Provider>
