@@ -1,3 +1,3 @@
 module.exports = {
-    extends: ['airbnb', 'airbnb/hooks', 'prettier'],
+  extends: ['airbnb', 'airbnb/hooks', 'prettier'],
 };
