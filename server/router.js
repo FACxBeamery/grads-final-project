@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express();
 
-// const getSurveys = require('./handlers/getSurveys');
+const getSurveys = require('./handlers/getSurveys');
 const postSurveys = require('./handlers/postSurveys');
 // const patchSurveys = require('./handlers/patchSurveys');
 // const postEmployees = require('./handlers/postEmployees');

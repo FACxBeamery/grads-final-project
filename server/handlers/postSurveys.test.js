@@ -84,13 +84,12 @@ describe('Testing POST to the /surveys endpoint', () => {
     return done();
   });
 
-  // it('Responds with 500 if an inappropriate body is POSTed to /surveys', (done) => {
-  //   request('http://localhost:4000')
-  //     .post('/surveys')
-  //     .send('An invalid body')
-  //     .set('Accept', 'application/json')
-  //     .expect(500)
-  //     .expect('Content-Type', /json/);
-  //   return done();
-  // });
+  it('Responds with 500 if an inappropriate body is POSTed to /surveys', (done) => {
+    request('http://localhost:4000')
+      .post('/surveys')
+      .send('An invalid body')
+      .set('Accept', 'application/json')
+      .expect(500);
+    return done();
+  });
 });
