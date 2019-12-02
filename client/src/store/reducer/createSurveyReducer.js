@@ -120,7 +120,7 @@ const createSurveyReducer = (state = initalState, action) => {
           index === payload.questionIndex
             ? {
                 ...question,
-                options: switchOptions(
+                options: switchArrayItems(
                   question.options,
                   payload.optionIndex,
                   payload.optionIndex - 1,
@@ -136,7 +136,7 @@ const createSurveyReducer = (state = initalState, action) => {
           index === payload.questionIndex
             ? {
                 ...question,
-                options: switchOptions(
+                options: switchArrayItems(
                   question.options,
                   payload.optionIndex,
                   payload.optionIndex + 1,
