@@ -1,4 +1,7 @@
 import React from 'react';
+// import { useSelector } from 'react-redux';
+// import { Switch, Route, Redirect } from 'react-router-dom';
+
 import { Switch, Route } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import AdminLogin from '../../pages/AdminLogin';
@@ -8,6 +11,9 @@ import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 const Main = () => {
+  // const { auth } = useSelector((state) => state.adminLoginReducer);
+  // const snackbar = useSelector((state) => state.snackbarReducer);
+
   return (
     <main>
       <Box mx={4}>
