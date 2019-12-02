@@ -10,15 +10,20 @@ const UserProgressStepper = () => {
   const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
   const questions = useSelector((state) => state.takeSurveyReducer.questions);
 
-  const numberOfSteps = questions.length + 2;
+  const activeQuestion = useSelector(
+    (state) => state.takeSurveyReducer.activeQuestion,
+  );
+  const enableNext = useSelector((state) => state.takeSurveyReducer.enableNext);
 
+  const numberOfSteps = questions.length + 2;
   const nextQuestion = () => {
     dispatch({ type: 'NEXT_STEP' });
     dispatch({
       type: 'SET_ACTIVE_QUESTION',
     });
-
-    //TODO condition for not being able to skip a required question
+    dispatch({
+      type: 'DISABLE_NEXT',
+    });
   };
   const previousQuestion = () => {
     dispatch({ type: 'PREVIOUS_STEP' });
@@ -38,7 +43,10 @@ const UserProgressStepper = () => {
           <Button
             size='small'
             onClick={nextQuestion}
-            disabled={activeStep === 5}
+            disabled={
+              (activeQuestion.required === true && enableNext === false) ||
+              activeStep === numberOfSteps - 1
+            }
           >
             <KeyboardArrowRight />
           </Button>

@@ -7,12 +7,19 @@ const MultichoiceQuestionOptions = () => {
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
+  const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
+
+  const currentAnswer = useSelector(
+    (state) => state.takeSurveyReducer.answers[activeStep - 1].answer,
+  );
 
   const dispatch = useDispatch();
+
   const handleButtonClick = (event) => {
     event.preventDefault();
-
-    console.log(event.target.innerText);
+    dispatch({
+      type: 'ENABLE_NEXT',
+    });
     dispatch({
       type: 'ADD_RESPONSE',
       payload: {
@@ -22,16 +29,38 @@ const MultichoiceQuestionOptions = () => {
       },
     });
   };
-  return activeQuestion.options.map((option) => (
-    <Button
-      style={{ backgroundColor: '#E5E5E5' }}
-      value={option.text}
-      key={option.text}
-      onClick={handleButtonClick}
-    >
-      {option.text}
-    </Button>
-  ));
+
+  return activeQuestion.options.map((option) => {
+    const buttonColor = currentAnswer
+      ? currentAnswer.toLowerCase() === option.text
+        ? '#201E5A'
+        : '#e8e8e8'
+      : '#e8e8e8';
+    const buttonTextColor = currentAnswer
+      ? currentAnswer.toLowerCase() === option.text
+        ? '#fff'
+        : 'black'
+      : 'black';
+
+    return (
+      <Box mb={2}>
+        <Button
+          size='large'
+          style={{
+            backgroundColor: buttonColor,
+            width: '40vw',
+            color: buttonTextColor,
+          }}
+          value={option.text}
+          key={option.text}
+          onClick={handleButtonClick}
+          margin='normal'
+        >
+          {option.text}
+        </Button>
+      </Box>
+    );
+  });
 };
 
 const MultichoiceQuestion = () => {
@@ -39,9 +68,9 @@ const MultichoiceQuestion = () => {
     (state) => state.takeSurveyReducer.activeQuestion,
   );
   return (
-    <Box display='flex' flexDirection='column' alignSelf='flex-start'>
-      <Typography>{activeQuestion.title}</Typography>
-      <Box display='flex' flexDirection='column' alignItems='center'>
+    <Box mt={4} display='flex' flexDirection='column' alignSelf='flex-start'>
+      <Typography variant='h5'>{activeQuestion.title}</Typography>
+      <Box mt={2} display='flex' flexDirection='column' alignItems='center'>
         <MultichoiceQuestionOptions />
       </Box>
     </Box>
@@ -54,12 +83,14 @@ const TextQuestion = () => {
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
-  console.log(activeStep, 'ACTIVE STEP');
 
   const currentAnswerText = useSelector(
     (state) => state.takeSurveyReducer.answers[activeStep - 1].answer,
   );
   const handleTextInput = (event) => {
+    dispatch({
+      type: 'ENABLE_NEXT',
+    });
     dispatch({
       type: 'ADD_RESPONSE',
       payload: {
@@ -70,17 +101,17 @@ const TextQuestion = () => {
     });
   };
   return (
-    <Box display='flex' flexDirection='column' alignSelf='flex-start'>
-      <Typography>{activeQuestion.title}</Typography>
-      <Box style={{ backgroundColor: '#E5E5E5' }} key={activeStep}>
+    <Box mt={4} display='flex' flexDirection='column' alignSelf='flex-start'>
+      <Typography variant='h5'>{activeQuestion.title}</Typography>
+      <Box mt={2} key={activeStep}>
         <TextField
           autoFocus
+          fullWidth
           required
           autoComplete='off'
           value={currentAnswerText}
           margin='normal'
           key={activeStep}
-          required
           name='text-input-question'
           onChange={handleTextInput}
         />

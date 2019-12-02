@@ -4,8 +4,10 @@ const initalState = {
   questions: [],
   activeQuestion: 'start',
   answers: [],
+  enableNext: true,
 };
 
+// [e5e5e5,e5e5e55, ]
 const takeSurveyReducer = (state = initalState, action) => {
   switch (action.type) {
     case 'NEXT_STEP':
@@ -65,6 +67,20 @@ const takeSurveyReducer = (state = initalState, action) => {
           };
         }),
       };
+
+    case 'ENABLE_NEXT':
+      return {
+        ...state,
+
+        enableNext: true,
+      };
+    case 'DISABLE_NEXT':
+      return {
+        ...state,
+
+        enableNext: false,
+      };
+
     default:
       return state;
   }
