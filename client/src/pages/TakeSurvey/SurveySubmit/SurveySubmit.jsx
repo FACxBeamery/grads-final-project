@@ -12,20 +12,30 @@ const SurveySubmit = () => {
   //     // POST request with answers => responses + employee ID
   //   };
   return (
-    <Box alignSelf='center' justifyContent='center'>
-      <Typography variant='h4'>
-        You've finished the survey 🎉 Thanks for your time
-      </Typography>
-      <Button
-        variant='contained'
-        color='secondary'
-        //onClick={handleSurveySubmit}
-      >
-        Submit My Responses
-      </Button>
-      <Typography variant='h5'>
-        Made with ❤️ by Beamery Graduate Team
-      </Typography>
+    <Box
+      mt={4}
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      justifyContent='space-between'
+    >
+      <Box mb={2}>
+        <Typography variant='h4'>
+          You've finished the survey 🎉 Thanks for your time.
+        </Typography>
+      </Box>
+      <Box mb={2}>
+        <Button
+          variant='contained'
+          color='secondary'
+          //onClick={handleSurveySubmit}
+        >
+          Submit My Responses
+        </Button>
+      </Box>
+      <Box>
+        <Typography>Made with ❤️ by Beamery Graduate Team</Typography>
+      </Box>
     </Box>
   );
 };
