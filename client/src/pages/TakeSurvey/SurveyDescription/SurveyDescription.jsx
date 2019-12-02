@@ -6,12 +6,14 @@ import { useSelector } from 'react-redux';
 
 const SurveyDescription = () => {
   const survey = useSelector((state) => state.takeSurveyReducer.survey);
-  //const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
 
   return (
-    <Box alignSelf='center' justifyContent='center'>
-      <Typography variant='h4'>{survey.title}</Typography>
+    <Box mt={4} alignItems='center' justifyContent='space-between'>
+      <Box mb={2}>
+        <Typography variant='h3'>{survey.title}</Typography>
+      </Box>
       <Typography variant='h5'>{survey.description}</Typography>
+      {/* <Typography variant='h5'>{survey.disclaimer}</Typography> */}
     </Box>
   );
 };
