@@ -1,6 +1,10 @@
 const formatDate = (unixTime) => {
   if (unixTime) {
-    const date = new Date(unixTime * 1000);
+    let time = unixTime;
+    if (typeof unixTime === 'string') {
+      time = Number(time);
+    }
+    const date = new Date(time);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -8,7 +12,7 @@ const formatDate = (unixTime) => {
 
     return ddmmyyyyDate;
   }
-  return `input is not unix`;
+  return undefined;
 };
 
 export default formatDate;
