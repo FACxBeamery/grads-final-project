@@ -25,13 +25,17 @@ const TakeSurvey = () => {
     getSurvey();
   }, [dispatch]);
 
-  return (
-    <Box display='flex' flexDirection='column'>
-      <UserProgressStepper />
-      {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
-      {activeQuestion === 'end' ? <SurveySubmit /> : null}
-    </Box>
-  );
+  const TakeSurvey = () => {
+    return (
+      <Box display='flex' flexDirection='column'>
+        <UserProgressStepper />
+        {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
+        {activeQuestion === 'end' ? <SurveySubmit /> : null}
+      </Box>
+    );
+  };
+
+  return <TakeSurvey />;
 };
 
 export default TakeSurvey;
