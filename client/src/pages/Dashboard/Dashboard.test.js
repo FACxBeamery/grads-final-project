@@ -12,7 +12,7 @@ const dummyData = [
     title: 'Graduates Onboarding',
     description:
       'A survey description that is about 1 sentence long yeah blah blah',
-    status: 'created',
+    status: 'draft',
     dateCreated: 1573826615,
     dateToPublish: 1574345041,
     datePublished: '',
@@ -334,7 +334,7 @@ describe('Testing Dashboard', () => {
     );
     expect(getByText('See all Surveys')).toBeInTheDocument();
     fireEvent.click(getByText('See all Surveys'));
-    expect(getByText('See only Active Surveys')).toBeInTheDocument();
+    expect(getByText('See only Active and Draft Surveys')).toBeInTheDocument();
     mockAxiosGet.mockRestore();
   });
   it('should alternate between two title texts', () => {
@@ -348,8 +348,9 @@ describe('Testing Dashboard', () => {
       </BrowserRouter>,
     );
     expect(getByText('All Surveys')).toBeInTheDocument();
-    fireEvent.click(getByText('See only Active Surveys'));
+    fireEvent.click(getByText('See only Active and Draft Surveys'));
     expect(getByText('Active Surveys')).toBeInTheDocument();
+    expect(getByText('Draft Surveys')).toBeInTheDocument();
     mockAxiosGet.mockRestore();
   });
 });

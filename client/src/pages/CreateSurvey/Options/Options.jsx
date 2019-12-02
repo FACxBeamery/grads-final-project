@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { TextField, Button, Typography, Box } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  IconButton,
+} from '@material-ui/core';
+import { ArrowUpward, ArrowDownward } from '@material-ui/icons';
 
 const Option = ({ optionIndex, questionIndex }) => {
   const dispatch = useDispatch();
@@ -22,29 +29,67 @@ const Option = ({ optionIndex, questionIndex }) => {
     dispatch({ type: 'DELETE_OPTION', payload });
   };
 
-  const optionIsEmptyString = text === '';
+  const handleUpClick = () => {
+    const payload = {};
+    payload.questionIndex = questionIndex;
+    payload.optionIndex = optionIndex;
+
+    dispatch({ type: 'MOVE_OPTION_UP', payload });
+  };
+
+  const handleDownClick = () => {
+    const payload = {};
+    payload.questionIndex = questionIndex;
+    payload.optionIndex = optionIndex;
+    dispatch({ type: 'MOVE_OPTION_DOWN', payload });
+  };
+
+  const isNotFirstQuestion = optionIndex !== 0;
+  const isNotLastQuestion = options.length - 1 !== optionIndex;
   return (
-    <Box
-      display='flex'
-      flexDirection='column'
-      style={{ backgroundColor: '#fafafa' }}
-      mb={2}
-      p={2}
-    >
-      <TextField
-        fullWidth
-        required
-        label='Answer text'
-        error={optionIsEmptyString}
-        helperText={optionIsEmptyString && 'Answer must not be empty!'}
-        value={text}
-        name='text'
-        onChange={setOptionText}
-      />
-      <Box alignSelf='flex-end'>
-        <Button type='button' color='secondary' onClick={handleDeleteOption}>
-          DELETE
-        </Button>
+    <Box display='flex'>
+      <Box
+        py={4}
+        display='flex'
+        flexDirection='column'
+        justifyContent='space-between'
+      >
+        {isNotFirstQuestion ? (
+          <IconButton onClick={handleUpClick}>
+            <ArrowUpward />
+          </IconButton>
+        ) : (
+          <IconButton />
+        )}
+        {isNotLastQuestion ? (
+          <IconButton onClick={handleDownClick}>
+            <ArrowDownward />
+          </IconButton>
+        ) : (
+          <IconButton />
+        )}
+      </Box>
+      <Box
+        flex={1}
+        display='flex'
+        flexDirection='column'
+        style={{ backgroundColor: '#e8e8e8' }}
+        mb={2}
+        p={2}
+      >
+        <TextField
+          fullWidth
+          required
+          label='Answer text'
+          value={text}
+          name='text'
+          onChange={setOptionText}
+        />
+        <Box alignSelf='flex-end'>
+          <Button type='button' color='secondary' onClick={handleDeleteOption}>
+            DELETE
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

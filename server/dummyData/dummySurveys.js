@@ -5,7 +5,7 @@ module.exports = [
     title: 'Graduates Onboarding',
     description:
       'A survey description that is about 1 sentence long yeah blah blah',
-    status: 'created',
+    status: 'draft',
     disclaimer: 'some disclaimer',
     dateCreated: 1573826615,
     dateToPublish: 1574345041,
