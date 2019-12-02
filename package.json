@@ -27,7 +27,8 @@
         "eslint-config-airbnb": "^18.0.1",
         "eslint-config-prettier": "^6.7.0",
         "joi": "^14.3.1",
-        "mongo": "^0.1.0"
+        "mongo": "^0.1.0",
+        "redux-thunk": "^2.3.0"
     },
     "devDependencies": {
         "enzyme": "^3.10.0",

@@ -5,7 +5,7 @@ const getAdmins = (req, res, next) => {
     if (err) {
       throw new Error(err);
     }
-    if (info !== undefined) {
+    if (info) {
       res.status(401).json({ message: info.message });
     } else if (user.username === req.query.username) {
       if (user) {

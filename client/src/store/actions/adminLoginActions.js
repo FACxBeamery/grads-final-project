@@ -1,3 +1,4 @@
 const SET_LOGIN = 'SET_LOGIN';
+const SET_HELPER_TEXT = 'SET_HELPER_TEXT';
 
-export default { SET_LOGIN };
+export default { SET_LOGIN, SET_HELPER_TEXT };

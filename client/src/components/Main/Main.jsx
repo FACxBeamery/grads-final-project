@@ -9,15 +9,16 @@ import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 const Main = () => {
-  const { auth } = useSelector((state) => state.adminLoginReducer);
-  const snackbar = useSelector((state) => state.snackbarReducer);
+  const { data } = useSelector((state) => state.adminLoginReducer);
+  const { auth } = data;
+  const { snackbar } = useSelector((state) => state.snackbarReducer);
 
   return (
     <main>
       <Box mx={4}>
         <Switch>
           <Route exact path='/admin/login'>
-            {auth ? <Redirect to='/admin/dashboard' /> : <AdminLogin />}
+            {auth ? <Redirect to='/admin' /> : <AdminLogin />}
           </Route>
           <Route exact path='/admin' component={Dashboard} />
           <Route exact path='/admin/surveys/create' component={CreateSurvey} />

@@ -1,17 +1,25 @@
 /* eslint-disable react/require-default-props */
 import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import CloseIcon from '@material-ui/icons/Close';
-import { amber, green } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
+import { IconButton } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import WarningIcon from '@material-ui/icons/Warning';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  Error as ErrorIcon,
+  Info as InfoIcon,
+  Close as CloseIcon,
+  CheckCircle as CheckCircleIcon,
+  Warning as WarningIcon,
+} from '@material-ui/icons';
+import { amber, green } from '@material-ui/core/colors';
+
+import SNACKBAR_ACTIONS from '../../store/actions/snackbarActions';
+
+const { SET_SNACKBAR_OPEN } = SNACKBAR_ACTIONS;
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -46,9 +54,14 @@ const useStyles1 = makeStyles((theme) => ({
   },
 }));
 
-function MySnackbarContentWrapper(props) {
+const MySnackbarContentWrapper = ({
+  className,
+  message,
+  onClose,
+  variant,
+  ...other
+}) => {
   const classes = useStyles1();
-  const { className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
   return (
@@ -76,7 +89,7 @@ function MySnackbarContentWrapper(props) {
       {...other}
     />
   );
-}
+};
 
 MySnackbarContentWrapper.propTypes = {
   className: PropTypes.string,
@@ -85,19 +98,28 @@ MySnackbarContentWrapper.propTypes = {
   variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
 };
 
-export default function CustomizedSnackbars({ message, variant, timeopened }) {
-  const [open, setOpen] = React.useState(false);
+const CustomizedSnackbars = ({ message, variant, timeopened }) => {
+  // const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+
+  const { open } = useSelector((state) => state.snackbarReducer);
 
   useEffect(() => {
-    setOpen(true);
-  }, [timeopened]);
+    const payload = {
+      open: true,
+    };
+    dispatch({ type: SET_SNACKBAR_OPEN, payload });
+  }, [timeopened, dispatch]);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    const payload = {
+      open: false,
+    };
+    dispatch({ type: SET_SNACKBAR_OPEN, payload });
   };
 
   return (
@@ -121,9 +143,11 @@ export default function CustomizedSnackbars({ message, variant, timeopened }) {
       </div>
     )
   );
-}
+};
 
 CustomizedSnackbars.propTypes = {
   message: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
 };
+
+export default CustomizedSnackbars;
