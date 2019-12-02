@@ -26,6 +26,7 @@ const SurveyCard = ({ survey }) => {
     recipients,
     responses,
     dateToClose,
+    status,
   } = survey;
   const percentage = responses.length / recipients.length;
   return (
@@ -76,7 +77,10 @@ const SurveyCard = ({ survey }) => {
               View
             </Link>
           </Button>
-          <Chip label='Active' className={styles.active} />
+          <Chip
+            label={status === 'published' ? 'Active' : 'Ready to publish'}
+            className={styles.active}
+          />
         </CardActions>
       </Box>
     </Grid>
@@ -91,8 +95,8 @@ SurveyCard.propTypes = {
     recipients: PropTypes.array,
     responses: PropTypes.array,
     dateToClose: PropTypes.number,
+    status: PropTypes.string,
   }).isRequired,
-  // history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 export default SurveyCard;
