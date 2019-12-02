@@ -10,10 +10,14 @@ const SurveyDescription = () => {
   return (
     <Box mt={4} alignItems='center' justifyContent='space-between'>
       <Box mb={2}>
-        <Typography variant='h3'>{survey.title}</Typography>
+        <Typography data-testid='survey-title' variant='h3'>
+          {survey.title}
+        </Typography>
       </Box>
-      <Typography variant='h5'>{survey.description}</Typography>
-      {/* <Typography variant='h5'>{survey.disclaimer}</Typography> */}
+      <Typography data-testid='survey-description' variant='h5'>
+        {survey.description}
+      </Typography>
+      {/* <Typography data-testid="survey-disclaimer" variant='h5'>{survey.disclaimer}</Typography> */}
     </Box>
   );
 };

@@ -126,7 +126,7 @@ const QuestionCard = () => {
   );
 
   return (
-    <Box alignSelf='center' justifyContent='center'>
+    <Box alignSelf='center' data-testid='question-card' justifyContent='center'>
       {activeQuestion.type === 'multichoice' ? <MultichoiceQuestion /> : null}
 
       {activeQuestion.type === 'text' ? <TextQuestion /> : null}

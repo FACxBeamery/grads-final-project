@@ -42,6 +42,7 @@ const UserProgressStepper = () => {
         nextButton={
           <Button
             size='small'
+            data-testid='next-button'
             onClick={nextQuestion}
             disabled={
               (activeQuestion.required === true && enableNext === false) ||
@@ -54,6 +55,7 @@ const UserProgressStepper = () => {
         backButton={
           <Button
             size='small'
+            data-testid='previous-button'
             onClick={previousQuestion}
             disabled={activeStep === 0}
           >
