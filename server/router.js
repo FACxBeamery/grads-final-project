@@ -20,5 +20,6 @@ router.post('/surveys', postSurveys);
 // router.get("/employees", getEmployees)
 // router.post("/employees", postEmployees)
 router.get('/admins', getAdmins);
+router.post('/login', postLogin);
 
 module.exports = router;
