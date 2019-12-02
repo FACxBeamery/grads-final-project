@@ -1,6 +1,6 @@
 const addQuestions = require('../queries/addQuestions');
 const createSurvey = require('../queries/createSurvey');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 /* Survey schema:
     {
         id: ObjectID (auto generated)

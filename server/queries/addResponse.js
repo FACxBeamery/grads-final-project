@@ -1,5 +1,5 @@
 const { getDb } = require('../databaseConnection');
-const ObjectID = require('mongodb');
+const { ObjectID } = require('mongodb');
 
 const addResponse = async (employeeId, surveyId, anonymous, answers) => {
   console.log('Reached response query');
@@ -11,14 +11,12 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
   };
   try {
     const survey = await surveysCollection
-      .find({ _id: ObjectID(surveyId) })
+      .findOne({ _id: new ObjectID(surveyId) })
       .toArray();
-    console.log('survey: ', survey);
     const queryReturn = await surveysCollection.updateOne(
       { _id: ObjectID(surveyId) },
       { $push: { responses: responseForDb } },
     );
-    console.log(queryReturn);
 
     console.log('Response added to DB!');
     const updateSuccessful = queryReturn.result.ok === 1;
