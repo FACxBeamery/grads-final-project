@@ -25,6 +25,7 @@ const Main = () => {
           <Route path='/:id' component={TakeSurvey} />
         </Switch>
       </Box>
+      {snackbar}
     </main>
   );
 };
