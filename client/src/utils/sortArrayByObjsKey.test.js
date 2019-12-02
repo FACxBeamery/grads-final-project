@@ -1,4 +1,4 @@
-import sortArrayByProp from './sortArrayByProp';
+import sortArrayByObjsKey from './sortArrayByObjsKey';
 
 describe('Sort array by prop key and in a specific order', () => {
   it('should sort array', () => {
@@ -7,30 +7,32 @@ describe('Sort array by prop key and in a specific order', () => {
       { color: 'red', size: 'XL' },
       { color: 'black', size: 'M' },
     ];
-    expect(sortArrayByProp(arr, 'color', 'descending')).toEqual([
+    expect(sortArrayByObjsKey(arr, 'color', 'descending')).toEqual([
       { color: 'white', size: 'XXL' },
       { color: 'red', size: 'XL' },
       { color: 'black', size: 'M' },
     ]);
-    expect(sortArrayByProp(arr, 'color', 'ascending')).toEqual([
+    expect(sortArrayByObjsKey(arr, 'color', 'ascending')).toEqual([
       { color: 'black', size: 'M' },
       { color: 'red', size: 'XL' },
       { color: 'white', size: 'XXL' },
     ]);
 
-    expect(sortArrayByProp(arr, 'size', 'descending')).toEqual([
+    expect(sortArrayByObjsKey(arr, 'size', 'descending')).toEqual([
       { color: 'white', size: 'XXL' },
       { color: 'red', size: 'XL' },
       { color: 'black', size: 'M' },
     ]);
-    expect(sortArrayByProp(arr, 'size', 'ascending')).toEqual([
+    expect(sortArrayByObjsKey(arr, 'size', 'ascending')).toEqual([
       { color: 'black', size: 'M' },
       { color: 'red', size: 'XL' },
       { color: 'white', size: 'XXL' },
     ]);
-    expect(sortArrayByProp([], 'size', 'descending')).toEqual([]);
-    expect(sortArrayByProp([], 'siZe', 'desceding')).toEqual([]);
-    expect(sortArrayByProp([], 'size', 'descending')).toEqual([]);
-    expect(sortArrayByProp(undefined, 'size', 'descending')).toEqual(undefined);
+    expect(sortArrayByObjsKey([], 'size', 'descending')).toEqual([]);
+    expect(sortArrayByObjsKey([], 'siZe', 'desceding')).toEqual([]);
+    expect(sortArrayByObjsKey([], 'size', 'descending')).toEqual([]);
+    expect(sortArrayByObjsKey(undefined, 'size', 'descending')).toEqual(
+      undefined,
+    );
   });
 });

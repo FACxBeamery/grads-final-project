@@ -13,7 +13,7 @@ import {
 import styles from './AllSurveysTable.module.css';
 
 import formatDate from '../../../utils/formatDate';
-import sortArrayByProp from '../../../utils/sortArrayByProp';
+import sortArrayByObjsKey from '../../../utils/sortArrayByObjsKey';
 
 const AllSurveysTable = ({ surveys, history }) => {
   const cells = [
@@ -25,7 +25,7 @@ const AllSurveysTable = ({ surveys, history }) => {
     'Status',
   ];
 
-  const sortedSurveys = sortArrayByProp(surveys, 'status', 'descending');
+  const sortedSurveys = sortArrayByObjsKey(surveys, 'status', 'descending');
   return (
     <Paper>
       <Table aria-label='all surveys table' className={styles.table}>
