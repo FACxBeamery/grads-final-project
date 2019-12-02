@@ -6,7 +6,6 @@ const loginAdmin = async (username, password) => {
       username,
       password,
     });
-    console.log(response);
     return response;
   } catch (err) {
     return err.response;
