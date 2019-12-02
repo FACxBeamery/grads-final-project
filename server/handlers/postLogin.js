@@ -27,7 +27,7 @@ const postLogin = (req, res, next) => {
           res.status(403).json({ message: info.message });
         } else if (user) {
           // eslint-disable-next-line no-underscore-dangle
-          const token = jwt.sign({ id: user._id }, jwtSecret, {
+          const token = jwt.sign({ id: user.id }, jwtSecret, {
             expiresIn: 60 * 60,
           });
           res.status(200).json({

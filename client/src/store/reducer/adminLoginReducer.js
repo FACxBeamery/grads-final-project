@@ -15,7 +15,6 @@ const initalState = {
 
 const adminLoginReducer = (state = initalState, action) => {
   const { payload } = action;
-  console.log(payload);
   switch (action.type) {
     case SET_LOGIN:
       return { ...state, data: { ...state.data, ...payload } };

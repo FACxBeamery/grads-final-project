@@ -2,13 +2,9 @@ import { createStore, combineReducers } from 'redux';
 
 import reducer from './reducer/reducer';
 import createSurveyReducer from './reducer/createSurveyReducer';
-<<<<<<< HEAD
 import dashboardReducer from './reducer/dashboardReducer';
-=======
->>>>>>> master
 import adminLoginReducer from './reducer/adminLoginReducer';
 import snackbarReducer from './reducer/snackbarReducer';
-import dashboardReducer from './reducer/dashboardReducer';
 
 const store = createStore(
   combineReducers({
