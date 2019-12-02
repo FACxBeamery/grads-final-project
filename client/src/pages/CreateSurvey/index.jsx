@@ -12,6 +12,7 @@ import {
   Divider,
 } from '@material-ui/core';
 import QuestionsList from './Questions/QuestionsList';
+import formatDate from '../../utils/formatDate';
 
 const CreateSurvey = () => {
   const dispatch = useDispatch();
@@ -23,9 +24,14 @@ const CreateSurvey = () => {
     dispatch({ type: 'SET_METADATA', payload });
   };
 
-  const { title, description, recipients, disclaimer, anonymous } = useSelector(
-    (state) => state.createSurveyReducer,
-  );
+  const {
+    title,
+    description,
+    recipients,
+    disclaimer,
+    anonymous,
+    dateCreated,
+  } = useSelector((state) => state.createSurveyReducer);
   const surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
@@ -45,14 +51,18 @@ const CreateSurvey = () => {
           <Typography variant='h1'>Survey Editor</Typography>
         </Box>
         <Typography variant='h4'>Start building your survey...</Typography>
+        <Box my={2}>
+          <Typography>{`Date created: ${formatDate(dateCreated)}`}</Typography>
+        </Box>
+
         <TextField
           margin='normal'
           required
-          error={title && (title.length < 10 || title.length > 60)}
+          error={title && title.length > 60}
           helperText={
             title &&
-            (title.length < 10 || title.length > 60) &&
-            'Title must be between 10 and 60 characters!'
+            title.length > 60 &&
+            'Title must be less than 60 characters!'
           }
           value={title}
           name='title'
@@ -62,13 +72,11 @@ const CreateSurvey = () => {
         <TextField
           margin='normal'
           required
-          error={
-            description && (description.length < 30 || description.length > 280)
-          }
+          error={description && description.length > 280}
           helperText={
             description &&
-            (description.length < 30 || description.length > 280) &&
-            'Description must be between 30 and 280 characters!'
+            description.length > 280 &&
+            'Description must be less than 280 characters!'
           }
           value={description}
           name='description'
@@ -85,12 +93,8 @@ const CreateSurvey = () => {
         <TextField
           margin='normal'
           required
-          error={disclaimer.length < 5 || disclaimer.length > 140}
-          helperText={
-            disclaimer < 5 || disclaimer > 140
-              ? 'You must provide a disclaimer'
-              : ''
-          }
+          error={disclaimer.length < 5}
+          helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
           value={disclaimer}
           name='disclaimer'
           label='How will this data be used?'
@@ -113,7 +117,7 @@ const CreateSurvey = () => {
         <QuestionsList />
         <Box alignSelf='center' mt={8}>
           <Button type='submit' variant='contained' color='secondary'>
-            Create Survey
+            Save as draft
           </Button>
         </Box>
       </Box>
