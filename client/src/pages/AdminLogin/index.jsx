@@ -42,29 +42,37 @@ const AdminLogin = () => {
   );
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    // TODO unstub api call response
-    const response = await loginAdmin(username, password);
-    const { auth, token, message } = response;
+      // TODO unstub api call response
+      const response = await loginAdmin(username, password);
+      const { auth, token, message } = response.data;
 
-    if (auth && token) {
-      window.localStorage.setItem('jwt_token', token);
+      if (auth && token) {
+        window.localStorage.setItem('jwt_token', token);
+        const payload = {
+          message,
+          variant: 'success',
+        };
+        dispatch({ type: OPEN_SNACKBAR, payload });
+        setHelperText('');
+      } else {
+        const payload = {
+          message,
+          variant: 'error',
+        };
+        dispatch({ type: OPEN_SNACKBAR, payload });
+        setHelperText(message);
+      }
+      setLoginOnPost(auth);
+    } catch (err) {
       const payload = {
-        message,
-        variant: 'success',
-      };
-      dispatch({ type: OPEN_SNACKBAR, payload });
-      setHelperText('');
-    } else {
-      const payload = {
-        message,
+        message: 'An unexpected error occured. Try again later.',
         variant: 'error',
       };
       dispatch({ type: OPEN_SNACKBAR, payload });
-      setHelperText(message);
     }
-    setLoginOnPost(auth);
   };
 
   // Elements
