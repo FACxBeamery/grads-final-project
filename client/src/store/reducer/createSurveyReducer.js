@@ -55,6 +55,14 @@ const objectWithoutKey = (obj, key) => {
   return newObj;
 };
 
+const toggleRecipients = (array, item) => {
+  const itemIndex = array.indexOf(item);
+
+  if (itemIndex === -1) {
+    return [...array, item];
+  }
+  return array.filter((x) => x !== item);
+};
 const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
@@ -151,6 +159,19 @@ const createSurveyReducer = (state = initalState, action) => {
               }
             : question,
         ),
+      };
+    case 'TOGGLE_RECIPIENTS':
+      return {
+        ...state,
+        recipients: toggleRecipients(state.recipients, payload.id),
+      };
+    case 'TOGGLE_ALL_RECIPIENTS':
+      console.log(payload.checked, 'CHECKED');
+      return {
+        ...state,
+        recipients: payload.checked
+          ? payload.employeeData.map((person) => person.id)
+          : [],
       };
     default:
       return state;
