@@ -125,4 +125,39 @@ describe('test take survey components work together', () => {
     expect(SurveyDescriptionText).toBeInTheDocument();
     expect(SurveyTitleText).toBeInTheDocument();
   });
+
+  it('test entire user journey gets to final submit page', () => {
+    const mockAxiosGet = jest.spyOn(axios, 'get');
+    mockAxiosGet.mockImplementation(() =>
+      Promise.resolve({ data: dummySurvey }),
+    );
+    const { getByTestId, getByRole, getByText } = render(
+      <Provider store={store}>
+        <TakeSurvey />
+      </Provider>,
+    );
+
+    const NextButton = getByTestId('next-button');
+
+    fireEvent.click(NextButton);
+
+    const textQuestion = getByRole('textbox');
+    fireEvent.change(textQuestion, { target: { value: 'abc' } });
+    const NextButton2 = getByTestId('next-button');
+    fireEvent.click(NextButton2);
+
+    const multichoiceAnswer1 = getByText('meh', { exact: false });
+    const NextButton3 = getByTestId('next-button');
+    fireEvent.click(multichoiceAnswer1);
+
+    fireEvent.click(NextButton3);
+
+    const multichoiceAnswer2 = getByText('neutral', { exact: false });
+    const NextButton4 = getByTestId('next-button');
+    fireEvent.click(multichoiceAnswer2);
+    fireEvent.click(NextButton4);
+
+    const SurveySubmit = getByTestId('survey-submit');
+    expect(SurveySubmit).toBeInTheDocument();
+  });
 });
