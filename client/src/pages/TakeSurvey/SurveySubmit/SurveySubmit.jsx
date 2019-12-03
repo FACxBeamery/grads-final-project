@@ -1,17 +1,21 @@
 import React from 'react';
 
 import { Box, Typography, Button } from '@material-ui/core';
-
-import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const SurveySubmit = () => {
   const answers = useSelector((state) => state.takeSurveyReducer.answers);
-
-  //   const handleSurveySubmit = (event) => {
-  //     event.preventDefault();
-  //     // POST request with answers => responses + employee ID
-  //   };
+  // REPLACE THE BELOW WITH STATE VARIABLES
+  const surveyId = '5de52524d55c7b00681530d8';
+  const employeeId = '507f1f77bcf86cd799439073';
+  const anonymous = true;
+  const handleSurveySubmit = (event) => {
+    event.preventDefault();
+    axios.patch('/surveys', { employeeId, anonymous, surveyId, answers });
+  };
   return (
+
     <Box
       mt={4}
       display='flex'
@@ -34,10 +38,11 @@ const SurveySubmit = () => {
           Submit My Responses
         </Button>
       </Box>
-      <Box>
-        <Typography>Made with ❤️ by Beamery Graduate Team</Typography>
+     
+        <Typography>Made with ❤️ by Tom Galligan, Antonio Gargaro, Thomas Kostrzewski,
+        Martha Lambert, Lyndsey Scott, and João Viana</Typography>
       </Box>
-    </Box>
+
   );
 };
 

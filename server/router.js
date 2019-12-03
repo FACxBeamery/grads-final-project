@@ -24,7 +24,7 @@ router.post('/login', postLogin);
 router.get('/surveys', getSurveys);
 
 router.post('/surveys', postSurveys);
-// router.patch("/surveys", patchSurveys)
+router.patch('/surveys', patchSurveys);
 // router.get("/employees", getEmployees)
 // router.post("/employees", postEmployees)
 router.get('/admins', getAdmins);
