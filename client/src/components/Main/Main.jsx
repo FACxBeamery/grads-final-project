@@ -7,6 +7,7 @@ import { Box } from '@material-ui/core';
 import AdminLogin from '../../pages/AdminLogin';
 import Dashboard from '../../pages/Dashboard';
 import CreateSurvey from '../../pages/CreateSurvey';
+import EditSurvey from '../../pages/EditSurvey';
 import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
@@ -21,6 +22,7 @@ const Main = () => {
           <Route exact path='/admin/login' component={AdminLogin} />
           <Route exact path='/admin' component={Dashboard} />
           <Route exact path='/admin/surveys/create' component={CreateSurvey} />
+          <Route exact path='/admin/surveys/edit/:id' component={EditSurvey} />
           <Route path='/admin/surveys/:id' component={SurveyDetail} />
           <Route path='/:id' component={TakeSurvey} />
         </Switch>
