@@ -1,6 +1,6 @@
 export const dummy = [
   {
-    _id: '507f1f77bcf86cd799439011',
+    id: '507f1f77bcf86cd799439011',
     firstName: 'Steven',
     lastName: 'Bianchi',
     jobTitle: 'VP People',
@@ -15,7 +15,7 @@ export const dummy = [
     office: 'London',
   },
   {
-    _id: '507f1f77bcf86cd799439012',
+    id: '507f1f77bcf86cd799439012',
     firstName: 'Thomas',
     lastName: 'Kostrzewski',
     jobTitle: 'Graduate Software Engineer',
@@ -30,7 +30,7 @@ export const dummy = [
     office: 'London',
   },
   {
-    _id: '507f1f77bcf86cd799439013',
+    id: '507f1f77bcf86cd799439013',
     firstName: 'Antonio',
     lastName: 'Gargaro',
     jobTitle: 'Graduate Software Engineer',
@@ -45,7 +45,7 @@ export const dummy = [
     office: 'London',
   },
   {
-    _id: '507f1f77bcf86cd799439014',
+    id: '507f1f77bcf86cd799439014',
     firstName: 'Lyndsey',
     lastName: 'Scott',
     jobTitle: 'Graduate Software Engineer',
@@ -60,7 +60,7 @@ export const dummy = [
     office: 'London',
   },
   {
-    _id: '507f1f77bcf86cd799439015',
+    id: '507f1f77bcf86cd799439015',
     firstName: 'João',
     lastName: 'Viana',
     jobTitle: 'Graduate Software Engineer',
