@@ -10,6 +10,9 @@ const postSurveys = require('./handlers/postSurveys');
 const getAdmins = require('./handlers/getAdmins');
 const postLogin = require('./handlers/postLogin');
 
+const uploadCSVHandler = require('./handlers/protected/uploadCSV');
+const downloadCSVHandler = require('./handlers/protected/downloadCSV');
+
 router.get('/test', (req, res) =>
   res.status(200).send('Successful connection to back end!'),
 );
@@ -21,5 +24,9 @@ router.post('/surveys', postSurveys);
 // router.post("/employees", postEmployees)
 router.get('/admins', getAdmins);
 router.post('/login', postLogin);
+
+// protected routes
+router.post('/upload', uploadCSVHandler);
+router.get('/download', downloadCSVHandler);
 
 module.exports = router;
