@@ -51,6 +51,7 @@ const MultichoiceQuestionOptions = () => {
             width: '40vw',
             color: buttonTextColor,
           }}
+          data-testid={option.text}
           value={option.text}
           key={option.text}
           onClick={handleButtonClick}
@@ -105,6 +106,7 @@ const TextQuestion = () => {
       <Typography variant='h5'>{activeQuestion.title}</Typography>
       <Box mt={2} key={activeStep}>
         <TextField
+          data-testid='text-question'
           autoFocus
           fullWidth
           required

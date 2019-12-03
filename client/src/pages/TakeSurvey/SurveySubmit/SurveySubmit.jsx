@@ -18,6 +18,7 @@ const SurveySubmit = () => {
       flexDirection='column'
       alignItems='center'
       justifyContent='space-between'
+      data-testid='survey-submit'
     >
       <Box mb={2}>
         <Typography variant='h4'>
