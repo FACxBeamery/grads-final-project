@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
@@ -41,10 +40,21 @@ const headCells = [
 
 function EnhancedTableHead() {
   const { recipients } = useSelector((state) => state.createSurveyReducer);
-  const { rowsPerPage } = useSelector((state) => state.employeeTableReducer);
+  const { rowsPerPage, employeeData } = useSelector(
+    (state) => state.employeeTableReducer,
+  );
   const numSelected = recipients.length;
+  const dispatch = useDispatch();
 
-  const handleSelectAllClick = () => {};
+  const handleSelectAllClick = (event) => {
+    console.log(event.target.checked, 'CHECKED');
+    console.log(event.target.indeterminate, 'INDETERMINATE');
+    const checkedAndNotIndeterminate =
+      event.target.checked && !event.target.indeterminate;
+    const payload = { employeeData, checked: checkedAndNotIndeterminate };
+
+    dispatch({ type: 'TOGGLE_ALL_RECIPIENTS', payload });
+  };
 
   return (
     <TableHead>
@@ -62,7 +72,7 @@ function EnhancedTableHead() {
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
-          ></TableCell>
+          />
         ))}
       </TableRow>
     </TableHead>
@@ -89,7 +99,7 @@ const EnhancedTableToolbar = () => {
 };
 
 export default function EnhancedTable() {
-  const { employeeData, page, rowsPerPage, selected } = useSelector(
+  const { employeeData, page, rowsPerPage, totalRows } = useSelector(
     (state) => state.employeeTableReducer,
   );
 
@@ -101,31 +111,20 @@ export default function EnhancedTable() {
     dispatch({ type: 'SET_EMPLOYEE_DATA', payload: dummy });
   }
 
-  const handleRowClick = (event, name) => {
-    // const selectedIndex = selected.indexOf(name);
-    // let newSelected = [];
-    // if (selectedIndex === -1) {
-    //   newSelected = newSelected.concat(selected, name);
-    // } else if (selectedIndex === 0) {
-    //   newSelected = newSelected.concat(selected.slice(1));
-    // } else if (selectedIndex === selected.length - 1) {
-    //   newSelected = newSelected.concat(selected.slice(0, -1));
-    // } else if (selectedIndex > 0) {
-    //   newSelected = newSelected.concat(
-    //     selected.slice(0, selectedIndex),
-    //     selected.slice(selectedIndex + 1),
-    //   );
-    // }
-    // setSelected(newSelected);
+  const handleRowClick = (event, id) => {
+    const payload = { id };
+    dispatch({ type: 'TOGGLE_RECIPIENTS', payload });
   };
 
   const handleChangePage = (event, newPage) => {
-    // setPage(newPage);
+    const payload = { page: newPage };
+    dispatch({ type: 'CHANGE_PAGE', payload });
+    // TODO set employeedata as new page data here
   };
 
   const handleChangeRowsPerPage = () => {};
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (id) => recipients.indexOf(id) !== -1;
 
   const emptyRows = employeeData
     ? rowsPerPage -
@@ -146,43 +145,41 @@ export default function EnhancedTable() {
               <EnhancedTableHead />
 
               <TableBody>
-                {employeeData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                {employeeData.map((row) => {
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = row.id;
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => handleRowClick(event, row.name)}
-                        role='checkbox'
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.name}
-                        selected={isItemSelected}
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleRowClick(event, row.id)}
+                      role='checkbox'
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.name}
+                      selected={isItemSelected}
+                    >
+                      <TableCell padding='checkbox'>
+                        <Checkbox
+                          checked={isItemSelected}
+                          inputProps={{ 'aria-labelledby': labelId }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        component='th'
+                        id={labelId}
+                        scope='row'
+                        padding='none'
                       >
-                        <TableCell padding='checkbox'>
-                          <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </TableCell>
-                        <TableCell
-                          component='th'
-                          id={labelId}
-                          scope='row'
-                          padding='none'
-                        >
-                          {row.firstName + ' ' + row.lastName}
-                        </TableCell>
-                        <TableCell align='right'>{row.jobTitle}</TableCell>
-                        <TableCell align='right'>{row.department}</TableCell>
-                        <TableCell align='right'>{row.office}</TableCell>
-                        <TableCell align='right'>{row.startDate}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                        {`${row.firstName} ${row.lastName}`}
+                      </TableCell>
+                      <TableCell align='right'>{row.jobTitle}</TableCell>
+                      <TableCell align='right'>{row.department}</TableCell>
+                      <TableCell align='right'>{row.office}</TableCell>
+                      <TableCell align='right'>{row.startDate}</TableCell>
+                    </TableRow>
+                  );
+                })}
                 {emptyRows > 0 && (
                   <TableRow style={{ height: 33 * emptyRows }}>
                     <TableCell colSpan={6} />
@@ -194,7 +191,7 @@ export default function EnhancedTable() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component='div'
-            count={employeeData.length}
+            count={totalRows}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}
