@@ -5,6 +5,7 @@ const initalState = {
   activeQuestion: 'start',
   answers: [],
   enableNext: true,
+  responseSubmission: false,
 };
 
 // [e5e5e5,e5e5e55, ]
@@ -53,7 +54,23 @@ const takeSurveyReducer = (state = initalState, action) => {
         ...state,
         answers: state.answers.map((response) =>
           response.questionId === action.payload.questionId
-            ? { ...response, answer: action.payload.answer }
+            ? {
+                ...response,
+                answer: action.payload.answer,
+              }
+            : response,
+        ),
+      };
+
+    case 'ADD_COMMENT':
+      return {
+        ...state,
+        answers: state.answers.map((response) =>
+          response.questionId === action.payload.questionId
+            ? {
+                ...response,
+                comment: action.payload.comment,
+              }
             : response,
         ),
       };
@@ -79,6 +96,13 @@ const takeSurveyReducer = (state = initalState, action) => {
         ...state,
 
         enableNext: false,
+      };
+
+    case 'RESPONSE_SUBMISSION':
+      return {
+        ...state,
+
+        responseSubmission: true,
       };
 
     default:
