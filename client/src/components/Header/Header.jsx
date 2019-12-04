@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <AppBar data-testid='app-bar' position='static'>
       <Box className={styles['header-title']}>
-        <h2 className={styles['header-title-vibe']}>Vibe@</h2>
+        <h2 className={styles['header-title-vibe']}>vibe@</h2>
         <h2 className={styles['header-title-beamery']}> Beamery</h2>
       </Box>
     </AppBar>
