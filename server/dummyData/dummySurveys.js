@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-const ObjectID = require('mongodb').ObjectID;
+const { ObjectID } = require('mongodb');
 
 module.exports = [
   {
-    _id: ObjectId('5de7c04765742700de25bb21'),
+    _id: ObjectID('5de7c04765742700de25bb21'),
     title: 'Graduates Onboarding',
     description:
       'A survey description that is about 1 sentence long yeah blah blah',

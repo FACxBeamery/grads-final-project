@@ -1,7 +1,7 @@
 const { getDb } = require('../databaseConnection');
 const { ObjectID } = require('mongodb');
 
-const updateSurveyStatus = async (_id, newSurveyChanges) => {
+const updateSurvey = async (_id, newSurveyChanges) => {
   try {
     const db = getDb();
     const surveys = db.collection('Surveys');
@@ -19,4 +19,4 @@ const updateSurveyStatus = async (_id, newSurveyChanges) => {
   }
 };
 
-module.exports = updateSurveyStatus;
+module.exports = updateSurvey;

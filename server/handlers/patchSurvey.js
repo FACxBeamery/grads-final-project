@@ -1,9 +1,9 @@
-const updateSurveyStatus = require('../queries/updateSurveyStatus');
+const updateSurvey = require('../queries/updateSurvey');
 
 const patchSurvey = async (req, res) => {
   try {
     console.log('req.body: ', req.body);
-    const result = await updateSurveyStatus(req.params.id, req.body);
+    const result = await updateSurvey(req.params.id, req.body);
     res.status(204).json(result);
   } catch (err) {
     res
