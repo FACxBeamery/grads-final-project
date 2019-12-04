@@ -4,7 +4,15 @@ import axios from 'axios';
 // import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Typography, Button, Grid, Box } from '@material-ui/core';
+import {
+  Typography,
+  Button,
+  Grid,
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+} from '@material-ui/core';
 
 const publishSurvey = async (_id) => {
   await axios.patch(`/surveys/${_id}`, {
@@ -52,6 +60,19 @@ const CloseSurveyButton = ({ match }) => {
   );
 };
 
+const StepperT = () => {
+  const steps = ['Created', 'Published', 'Closed'];
+  return (
+    <Stepper alternativeLabel activeStep={1}>
+      {steps.map((label) => (
+        <Step key={label}>
+          <StepLabel>{label}</StepLabel>
+        </Step>
+      ))}
+    </Stepper>
+  );
+};
+
 const SurveyDetail = ({ match }) => {
   const allState = useSelector((state) => state);
   console.log('STATE: ', allState);
@@ -64,8 +85,9 @@ const SurveyDetail = ({ match }) => {
 
   return (
     <Box display='flex' flexDirection='row' align-items='flex-start'>
-      <CloseSurveyButton match={match} />
+      <StepperT />
       <PublishSurveyButton match={match} />
+      <CloseSurveyButton match={match} />
     </Box>
   );
 };
