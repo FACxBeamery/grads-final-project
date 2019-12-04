@@ -17,7 +17,7 @@ const SurveyDescription = () => {
       <Typography data-testid='survey-description' variant='h5'>
         {survey.description}
       </Typography>
-      {/* <Typography data-testid="survey-disclaimer" variant='h5'>{survey.disclaimer}</Typography> */}
+      <Typography data-testid="survey-disclaimer" variant='h5'>{survey.disclaimer}</Typography>
     </Box>
   );
 };

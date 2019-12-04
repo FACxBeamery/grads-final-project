@@ -12,6 +12,7 @@ const dummySurvey = {
   description:
     'A survey description that is about 1 sentence long yeah blah blah',
   status: 'created',
+  disclaimer: "some disclaimer",
   dateCreated: 1573826615,
   dateToPublish: 1574345041,
   datePublished: '',
@@ -121,8 +122,9 @@ describe('test take survey components work together', () => {
     fireEvent.click(PreviousButton);
     const SurveyDescriptionText = getByTestId('survey-description');
     const SurveyTitleText = getByTestId('survey-title');
-    //  const SurveyDisclaimerText = getByTestId("survey-disclaimer)
+    const SurveyDisclaimerText = getByTestId("survey-disclaimer");
     expect(SurveyDescriptionText).toBeInTheDocument();
+    expect(SurveyDisclaimerText).toBeInTheDocument();
     expect(SurveyTitleText).toBeInTheDocument();
   });
 

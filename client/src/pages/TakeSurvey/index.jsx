@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const TakeSurvey = () => {
   const dispatch = useDispatch();
-  //const survey = useSelector((state) => state.takeSurveyReducer.survey);
+
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
