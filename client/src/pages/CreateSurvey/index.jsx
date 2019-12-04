@@ -19,19 +19,11 @@ const CreateSurvey = () => {
   const {
     title,
     description,
-    recipients,
     disclaimer,
     anonymous,
-    pageNumber,
     dateCreated,
   } = useSelector((state) => state.createSurveyReducer);
   const dispatch = useDispatch();
-
-  const getEmployees = async () => {
-    const pageSize = 5;
-    const { data } = await axios.get(`/employees/${pageSize}/${pageNumber}`);
-    dispatch({ type: 'SET_SURVEYS', payload: data });
-  };
 
   const setMetadata = (event, inputType) => {
     const payload = {};
@@ -40,14 +32,27 @@ const CreateSurvey = () => {
     dispatch({ type: 'SET_METADATA', payload });
   };
 
-  const surveyForSending = {
+  let surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
-  delete surveyForSending.employeeData;
-  delete surveyForSending.pageNumber;
 
+  // TODO route back to dashboard on click
   const handleSubmit = async () => {
     try {
+      delete surveyForSending.employeeData;
+      delete surveyForSending.openModal;
+
+      surveyForSending = {
+        ...surveyForSending,
+        status: 'draft',
+        responses: [],
+        dateToClose: null,
+        dateClosed: null,
+        dateEdited: Date.now(),
+        datePublished: null,
+        dateToPublish: null,
+      };
+
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
       throw new Error(e.message);
@@ -93,16 +98,7 @@ const CreateSurvey = () => {
           label='Enter a description'
           onChange={setMetadata}
         />
-        <Box display='flex' alignItems='baseline' my={8}>
-          <TextField
-            fullWidth
-            required
-            value={recipients && 'No recipients added yet'}
-            label='Recipients'
-            name='recipients'
-          />
-          <RecipientsList />
-        </Box>
+
         <TextField
           margin='normal'
           required
@@ -126,6 +122,7 @@ const CreateSurvey = () => {
           }
           label='Anonymous'
         />
+        <RecipientsList />
         <Divider variant='middle' />
         <QuestionsList />
         <Box alignSelf='center' mt={8}>
