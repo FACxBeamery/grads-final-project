@@ -3,6 +3,7 @@ const ObjectID = require('mongodb').ObjectID;
 
 module.exports = [
   {
+    _id: ObjectId('5de7c04765742700de25bb21'),
     title: 'Graduates Onboarding',
     description:
       'A survey description that is about 1 sentence long yeah blah blah',

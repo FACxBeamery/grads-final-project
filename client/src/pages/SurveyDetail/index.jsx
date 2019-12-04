@@ -5,11 +5,32 @@ import { Link } from 'react-router-dom';
 
 import { Typography, Button, Grid, Box } from '@material-ui/core';
 
+const publishSurvey = (_id) => {
+  axios.patch(`/surveys/${_id}`, {
+    status: 'publish',
+    datePublished: Date.now(),
+  });
+};
+
 const closeSurvey = (_id) => {
   axios.patch(`/surveys/${_id}`, {
     status: 'closed',
-    datePublished: Date.now(),
+    dateClosed: Date.now(),
   });
+};
+
+const PublishSurveyButton = () => {
+  return (
+    <Button
+      type='submit'
+      width='auto'
+      variant='contained'
+      color='secondary'
+      onClick={publishSurvey}
+    >
+      Publish Survey
+    </Button>
+  );
 };
 
 const CloseSurveyButton = () => {
@@ -32,13 +53,14 @@ const SurveyDetail = () => {
 
   const dispatch = useDispatch();
 
-  const { _id, status, datePublished } = useSelector(
+  const { _id, status, datePublished, dateClosed } = useSelector(
     (state) => state.createSurveyRecuder,
   );
 
   return (
     <Box display='flex' flexDirection='row' align-items='flex-start'>
       <CloseSurveyButton />
+      <PublishSurveyButton />
     </Box>
   );
 };
