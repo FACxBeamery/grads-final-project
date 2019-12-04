@@ -1,30 +1,42 @@
 const Joi = require('@hapi/joi');
 const addResponse = require('../queries/addResponse');
 const patchSurveys = async (req, res) => {
-  //TODO proper joi validation
-  console.log('Reached patchSurveys handler');
-  const responseObject = req.body;
-  console.log('Response object: ', responseObject);
+  const surveyResponse = req.body;
 
-  const responseObjectSchema = Joi.object();
-  const { error, value } = responseObjectSchema.validate(responseObject);
+  const surveyResponseSchema = Joi.object().keys({
+    employeeId: Joi.string(),
+    surveyId: Joi.string(),
+    anonymous: Joi.boolean(),
+    answers: Joi.array().items(
+      Joi.object().keys({
+        questionId: Joi.array().items(
+          Joi.object().keys({
+            questionId: Joi.string(),
+            response: Joi.string(),
+            comment: Joi.string(),
+          }),
+        ),
+      }),
+    ),
+  });
 
-  if (error) {
-    res.sendStatus(400);
-  } else {
-    try {
-      const { employeeId, surveyId, anonymous, answers } = responseObject;
-      console.log('employeeId: ', employeeId);
-      await addResponse(employeeId, surveyId, anonymous, answers);
-      res.sendStatus(200);
-    } catch (err) {
-      res
-        .status(500)
-        .send(
-          "Sorry, we're having a problem on our end. Please speak to the engineering team.",
-        );
+  Joi.validate(surveyResponse, surveyResponseSchema, async (err, result) => {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      try {
+        const { employeeId, surveyId, anonymous, answers } = responseObject;
+        await addResponse(employeeId, surveyId, anonymous, answers);
+        res.sendStatus(200);
+      } catch (err) {
+        res
+          .status(500)
+          .send(
+            "Sorry, we're having a problem on our end. Please speak to the engineering team.",
+          );
+      }
     }
-  }
+  });
 };
 
 module.exports = patchSurveys;
