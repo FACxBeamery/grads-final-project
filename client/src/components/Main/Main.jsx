@@ -1,13 +1,10 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
-// import { Switch, Route, Redirect } from 'react-router-dom';
-
 import { Switch, Route } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import AdminLogin from '../../pages/AdminLogin';
 import Dashboard from '../../pages/Dashboard';
 import CreateSurvey from '../../pages/CreateSurvey';
-import EditSurvey from '../../pages/EditSurvey';
+import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
