@@ -2,18 +2,34 @@ import React from 'react';
 
 import { Box, Typography, Button } from '@material-ui/core';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 
 const SurveySubmit = () => {
+  const dispatch = useDispatch();
   const answers = useSelector((state) => state.takeSurveyReducer.answers);
-  // REPLACE THE BELOW WITH STATE VARIABLES
+  const responseSubmission = useSelector((state) => state.takeSurveyReducer.responseSubmission);
+  // REPLACE THE BELOW WITH STATE VARIABLES WHEN LINK IS INDIVIDUAL
   const surveyId = '5de52524d55c7b00681530d8';
   const employeeId = '507f1f77bcf86cd799439073';
   const anonymous = true;
+
+
+
   const handleSurveySubmit = (event) => {
     event.preventDefault();
     axios.patch('/surveys', { employeeId, anonymous, surveyId, answers });
+    dispatch({
+      type: 'RESPONSE_SUBMISSION',
+    });
   };
+
+  const ConfirmationMessage = () => {
+    return (
+      <Box>
+        <Typography> Your responses have been submitted :) </Typography>
+      </Box>
+    )
+  }
   return (
 
     <Box
@@ -25,22 +41,26 @@ const SurveySubmit = () => {
       data-testid='survey-submit'
     >
       <Box mb={2}>
+        
         <Typography variant='h4'>
-          You've finished the survey 🎉 Thanks for your time.
+          You've finished the survey! Thanks for your time.
         </Typography>
+      
       </Box>
       <Box mb={2}>
         <Button
           variant='contained'
           color='secondary'
-          //onClick={handleSurveySubmit}
+          onClick={handleSurveySubmit}
         >
           Submit My Responses
         </Button>
+        {responseSubmission === true ? <ConfirmationMessage /> : null}
+
       </Box>
-     
-        <Typography>Made with ❤️ by Tom Galligan, Antonio Gargaro, Thomas Kostrzewski,
-        Martha Lambert, Lyndsey Scott, and João Viana</Typography>
+ 
+        <Typography>Made with ❤ by Tom Galligan, Antonio Gargaro, Thomas Kostrzewski,
+        Martha Lambert, Lyndsey Scott, and João Viana</Typography> 
       </Box>
 
   );
