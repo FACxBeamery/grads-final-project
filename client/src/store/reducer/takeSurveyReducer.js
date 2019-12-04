@@ -16,9 +16,8 @@ const setActiveQuestion = (step, questions) => {
   }
   if (submitSurveyPage) {
     return 'end';
-  } else {
-    return questions[step - 1];
   }
+  return questions[step - 1];
 };
 
 const takeSurveyReducer = (state = initalState, action) => {
