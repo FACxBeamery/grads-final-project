@@ -8,7 +8,19 @@ const initalState = {
   responseSubmission: false,
 };
 
-// [e5e5e5,e5e5e55, ]
+const setActiveQuestion = (step, questions) => {
+  const startSurveyPage = step === 0;
+  const submitSurveyPage = step === questions.length + 1;
+  if (startSurveyPage) {
+    return 'start';
+  }
+  if (submitSurveyPage) {
+    return 'end';
+  } else {
+    return questions[step - 1];
+  }
+};
+
 const takeSurveyReducer = (state = initalState, action) => {
   switch (action.type) {
     case 'NEXT_STEP':
@@ -30,12 +42,7 @@ const takeSurveyReducer = (state = initalState, action) => {
     case 'SET_ACTIVE_QUESTION':
       return {
         ...state,
-        activeQuestion:
-          state.activeStep === 0
-            ? 'start'
-            : state.activeStep === state.questions.length + 1
-            ? 'end'
-            : state.questions[state.activeStep - 1],
+        activeQuestion: setActiveQuestion(state.activeStep, state.questions),
       };
 
     case 'NEXT_QUESTION':
