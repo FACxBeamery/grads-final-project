@@ -1,6 +1,5 @@
 const { getDb } = require('../databaseConnection');
 const { ObjectID } = require('mongodb');
-
 const addResponse = async (employeeId, surveyId, anonymous, answers) => {
   console.log('Reached response query');
   const db = getDb();
@@ -13,14 +12,22 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
     const survey = await surveysCollection
       .findOne({ _id: new ObjectID(surveyId) })
       .toArray();
-    const queryReturn = await surveysCollection.updateOne(
+    const firstQueryReturn = await surveysCollection.updateOne(
       { _id: ObjectID(surveyId) },
       { $push: { responses: responseForDb } },
     );
-
+    const firstUpdateSuccessful = firstQueryReturn.result.ok === 1;
+    // set recipient completed status to true
+    await surveysCollection.updateOne(
+      {
+        _id: ObjectID(surveyId),
+        'recipients.employeeId': ObjectID(employeeId),
+      },
+      { $set: { 'recipients.$.completed': true } },
+    );
+    const secondUpdateSuccessful = secondQueryReturn.result.ok === 1;
     console.log('Response added to DB!');
-    const updateSuccessful = queryReturn.result.ok === 1;
-    if (!updateSuccessful) {
+    if (!firstUpdateSuccessful || !secondUpdateSuccessful) {
       console.log('Query unsuccessful!');
       return new Error('Query unsuccessful');
     }
@@ -29,5 +36,4 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
     return new Error(e.message);
   }
 };
-
 module.exports = addResponse;
