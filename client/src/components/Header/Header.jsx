@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -7,20 +8,21 @@ import styles from './Header.module.css';
 const Header = ({ history }) => {
   return (
     <AppBar data-testid='app-bar' position='relative'>
-      <h2 className={styles['header']}>
+      <h2 className={styles.header}>
         <span
+          className={styles.clickable}
           onClick={() => history.push(`/admin`)}
-          className={styles['clickable']}
+          role='button'
+          tabIndex='0'
         >
           <span className={styles['header-title-vibe']}>vibe@</span>
           <span className={styles['header-title-beamery']}>Beamery</span>
         </span>
       </h2>
-      <Box mr={2} className={styles['button']}>
+      <Box mr={2} className={styles.button}>
         <Button
           onClick={() => history.push(`/admin`)}
-          style={{ backgroundColor: '#FFFFFF' }}
-          variant='outlined'
+          style={{ color: '#FFFFFF' }}
         >
           {' '}
           My Dashboard
