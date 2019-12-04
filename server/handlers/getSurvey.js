@@ -2,10 +2,8 @@ const readSurvey = require('../queries/readSurvey');
 
 const getSurvey = async (req, res) => {
   try {
-    // console.log('req.params: ', req.params);
-    // const result = await readSurvey(id);
-    // res.status(200).json(result);
-    // res.status(200).json(req.params);
+    const result = await readSurvey(req.params.id);
+    res.status(200).json(result);
   } catch (err) {
     res
       .status(500)
