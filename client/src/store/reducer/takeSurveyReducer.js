@@ -86,7 +86,8 @@ const takeSurveyReducer = (state = initalState, action) => {
         answers: state.questions.map((question) => {
           return {
             questionId: question.id,
-            answer: null,
+            answer: '',
+            comment: '',
           };
         }),
       };

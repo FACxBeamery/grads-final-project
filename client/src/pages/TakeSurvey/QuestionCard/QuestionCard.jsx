@@ -88,7 +88,7 @@ const MultichoiceQuestionOptions = () => {
    
 
     return (
-      <Box mb={2}>
+      <Box mb={2}  key={option.text}>
         
         <Button
           size='large'
