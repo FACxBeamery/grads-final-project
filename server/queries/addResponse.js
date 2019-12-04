@@ -32,7 +32,7 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
       return new Error('Query unsuccessful');
     }
   } catch (e) {
-    console.log('Oh no! An error!');
+    console.log('Unable to add response to database.');
     return new Error(e.message);
   }
 };
