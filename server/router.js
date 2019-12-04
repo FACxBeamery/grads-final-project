@@ -3,6 +3,7 @@ const express = require('express');
 const router = express();
 
 const getSurveys = require('./handlers/getSurveys');
+const getSurvey = require('./handlers/getSurvey');
 const postSurveys = require('./handlers/postSurveys');
 // const patchSurveys = require('./handlers/patchSurveys');
 // const postEmployees = require('./handlers/postEmployees');
@@ -16,6 +17,7 @@ router.get('/test', (req, res) =>
 
 router.post('/login', postLogin);
 // router.get("/surveys", getSurveys)
+router.get('/surveys/:id', getSurvey);
 router.get('/surveys', getSurveys);
 router.post('/surveys', postSurveys);
 // router.patch("/surveys", patchSurveys)
