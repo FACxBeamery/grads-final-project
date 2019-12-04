@@ -17,7 +17,7 @@ const readSurveyById = async (surveyIdToFind) => {
       .find({ id: { $in: questionIdsArray } })
       .toArray();
     survey.questions = questions;
-
+    //TODO when this endpoint has been protected, only survey questions and survey id, description,title and disclaimer should be passed to the front end
     return survey;
   } catch (err) {
     return err;
