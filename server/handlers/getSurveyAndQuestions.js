@@ -3,7 +3,7 @@ const readSurveyAndQuestions = require('../queries/readSurveyAndQuestions');
 const getSurveyAndQuestions = async (req, res) => {
   const surveyId = req.params.id;
   try {
-    let survey = await readSurveyAndQuestions(surveyId);
+    const survey = await readSurveyAndQuestions(surveyId);
 
     res.status(200).json(survey);
   } catch (err) {
