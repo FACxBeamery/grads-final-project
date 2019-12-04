@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import SurveyDescription from './SurveyDescription';
 import store from '../../../store/index';
 
-describe('testing the survey description component', () => {
+
   it(' test the description,title and disclaimer are rendered', () => {
     const { getByTestId } = render(
       <Provider store={store}>
@@ -19,4 +19,4 @@ describe('testing the survey description component', () => {
     expect(SurveyTitleText).toBeInTheDocument();
     //expect(SurveyDisclaimerText).toBeInTheDocument();
   });
-});
+
