@@ -147,14 +147,15 @@ describe('test take survey components work together', () => {
     fireEvent.click(NextButton2);
 
     const multichoiceAnswer1 = getByText('meh', { exact: false });
-    const NextButton3 = getByTestId('next-button');
     fireEvent.click(multichoiceAnswer1);
-
+  
+    const NextButton3 = getByTestId('next-button');
     fireEvent.click(NextButton3);
 
     const multichoiceAnswer2 = getByText('neutral', { exact: false });
-    const NextButton4 = getByTestId('next-button');
+  
     fireEvent.click(multichoiceAnswer2);
+     const NextButton4 = getByTestId('next-button');
     fireEvent.click(NextButton4);
 
     const SurveySubmit = getByTestId('survey-submit');
