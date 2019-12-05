@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import {
   Typography,
   Button,
-  Grid,
   Box,
   Stepper,
   Step,
@@ -16,6 +15,7 @@ import Snackbar from '../../components/Snackbar';
 
 const getSurveyStatusForStepper = async (_id) => {
   const result = await axios.get(`/surveys/${_id}`);
+  console.log('result: ', result);
   const surveyStatusToIndex = { draft: 1, published: 2, closed: 3 };
   return surveyStatusToIndex[result.data.status];
 };
@@ -49,9 +49,6 @@ const SurveyDetail = ({ match }) => {
 
   const dispatch = useDispatch();
 
-  //   const { title, status, datePublished, dateClosed } = useSelector(
-  //     (state) => state.createSurveyReducer,
-  //   );
   const { surveyStatus } = useSelector((state) => state.surveyDetailReducer);
 
   const { id } = match.params;
