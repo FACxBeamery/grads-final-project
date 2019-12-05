@@ -36,8 +36,15 @@ const CreateSurvey = () => {
     ...useSelector((state) => state.createSurveyReducer),
   };
 
+  const createArrayOfObjectsFromArray = (array) => {
+    return array.map((item) => {
+      return { employeeId: item, completed: false };
+    });
+  };
+
   // TODO route back to dashboard on click
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       delete surveyForSending.employeeData;
       delete surveyForSending.openModal;
@@ -51,6 +58,7 @@ const CreateSurvey = () => {
         dateEdited: Date.now(),
         datePublished: null,
         dateToPublish: null,
+        recipients: createArrayOfObjectsFromArray(surveyForSending.recipients),
       };
 
       await axios.post('/surveys', surveyForSending);
