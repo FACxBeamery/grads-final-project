@@ -12,9 +12,17 @@ import {
   Divider,
 } from '@material-ui/core';
 import QuestionsList from './Questions/QuestionsList';
+import RecipientsList from './RecipientsList';
 import formatDate from '../../utils/formatDate';
 
 const CreateSurvey = () => {
+  const {
+    title,
+    description,
+    disclaimer,
+    anonymous,
+    dateCreated,
+  } = useSelector((state) => state.createSurveyReducer);
   const dispatch = useDispatch();
 
   const setMetadata = (event, inputType) => {
@@ -24,20 +32,35 @@ const CreateSurvey = () => {
     dispatch({ type: 'SET_METADATA', payload });
   };
 
-  const {
-    title,
-    description,
-    recipients,
-    disclaimer,
-    anonymous,
-    dateCreated,
-  } = useSelector((state) => state.createSurveyReducer);
-  const surveyForSending = {
+  let surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
 
-  const handleSubmit = async () => {
+  const createArrayOfObjectsFromArray = (array) => {
+    return array.map((item) => {
+      return { employeeId: item, completed: false };
+    });
+  };
+
+  // TODO route back to dashboard on click
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
+      delete surveyForSending.employeeData;
+      delete surveyForSending.openModal;
+
+      surveyForSending = {
+        ...surveyForSending,
+        status: 'draft',
+        responses: [],
+        dateToClose: null,
+        dateClosed: null,
+        dateEdited: Date.now(),
+        datePublished: null,
+        dateToPublish: null,
+        recipients: createArrayOfObjectsFromArray(surveyForSending.recipients),
+      };
+
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
       throw new Error(e.message);
@@ -83,13 +106,7 @@ const CreateSurvey = () => {
           label='Enter a description'
           onChange={setMetadata}
         />
-        <TextField
-          required
-          value={recipients[0]}
-          label='PLACEHOLDER FOR RECIPIENTS'
-          name='recipients'
-          onChange={setMetadata}
-        />
+
         <TextField
           margin='normal'
           required
@@ -113,6 +130,7 @@ const CreateSurvey = () => {
           }
           label='Anonymous'
         />
+        <RecipientsList />
         <Divider variant='middle' />
         <QuestionsList />
         <Box alignSelf='center' mt={8}>
