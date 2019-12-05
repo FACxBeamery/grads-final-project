@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { Box } from '@material-ui/core';
 import UserProgressStepper from './UserProgressStepper/UserProgressStepper';
 import QuestionCard from './QuestionCard/QuestionCard';
 import SurveyDescription from './SurveyDescription/SurveyDescription';
 import SurveySubmit from './SurveySubmit/SurveySubmit';
-import { useDispatch, useSelector } from 'react-redux';
-import { Box } from '@material-ui/core';
-import axios from 'axios';
 
 const TakeSurvey = () => {
   const dispatch = useDispatch();
@@ -25,17 +25,13 @@ const TakeSurvey = () => {
     getSurvey();
   }, [dispatch]);
 
-  const TakeSurvey = () => {
-    return (
-      <Box display='flex' flexDirection='column'>
-        <UserProgressStepper />
-        {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
-        {activeQuestion === 'end' ? <SurveySubmit /> : null}
-      </Box>
-    );
-  };
-
-  return <TakeSurvey />;
+  return (
+    <Box display='flex' flexDirection='column'>
+      <UserProgressStepper />
+      {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
+      {activeQuestion === 'end' ? <SurveySubmit /> : null}
+    </Box>
+  );
 };
 
 export default TakeSurvey;
