@@ -12,8 +12,7 @@ const initalState = {
 };
 
 const toggleSingleRecipient = (array, item) => {
-  const itemIndex = array.indexOf(item);
-  if (itemIndex === -1) {
+  if (!array.includes(item)) {
     return [...array, item];
   }
 
@@ -23,9 +22,8 @@ const toggleRecipients = (array, checked, recipientsList) => {
   let updatedArray = [...array];
   if (checked) {
     recipientsList.forEach((item) => {
-      const itemIndex = array.indexOf(item);
-      if (itemIndex === -1) {
-        updatedArray = [...updatedArray, item];
+      if (!array.includes(item)) {
+        updatedArray.push(item);
       }
     });
   } else {
@@ -37,13 +35,13 @@ const toggleRecipients = (array, checked, recipientsList) => {
 };
 
 const setInitialOptions = (employeeData, attribute) => {
-  const onlyUnique = (value, index, self) => {
-    return self.indexOf(value) === index;
-  };
-
+  // All attribute options is all the present values for e.g. department in the data
   const allAttributeOptions = employeeData.map((person) => person[attribute]);
 
-  const uniqueAttributeOptions = allAttributeOptions.filter(onlyUnique);
+  const uniqueAttributeOptions = [...new Set(allAttributeOptions)];
+
+  // Returns an object with each option for that attribute (e.g. "engineering", "people") for department
+  // Sets each value to false in this object as filtering has not occured yet
   const attributeCheckboxOptions = {};
   uniqueAttributeOptions.forEach((option) => {
     attributeCheckboxOptions[option] = false;
@@ -58,11 +56,11 @@ const setOption = (currentFilters, checked, option, attribute) => {
 };
 
 const setAllOptions = (attributeCheckboxOptions, checked) => {
-  const newOptionsArray = { ...attributeCheckboxOptions };
-  Object.keys(newOptionsArray).forEach((key) => {
-    newOptionsArray[key] = checked;
+  const newCheckboxOptions = { ...attributeCheckboxOptions };
+  Object.keys(newCheckboxOptions).forEach((key) => {
+    newCheckboxOptions[key] = checked;
   });
-  return newOptionsArray;
+  return newCheckboxOptions;
 };
 
 const setAllFilter = (currentFilters, checked, attribute) => {
@@ -78,6 +76,14 @@ const checkNameMatches = (person, searchString) => {
   ];
   return allNames.some((name) => name.startsWith(searchString));
 };
+
+const checkAllTrueOrAllFalse = (object) => {
+  const values = Object.values(object);
+  return (
+    values.every((item) => item === true) ||
+    values.every((item) => item === false)
+  );
+};
 const filterData = (filters, data, attribute) => {
   let filteredData;
   if (attribute === 'name') {
@@ -85,10 +91,21 @@ const filterData = (filters, data, attribute) => {
       checkNameMatches(element, filters.name.toLowerCase()),
     );
   } else {
-    filteredData = data.filter((element) => {
-      const elementOkay = filters[attribute][element[attribute]];
-      return elementOkay;
-    });
+    // filter by office
+    if (!checkAllTrueOrAllFalse(filters.department)) {
+      filteredData = data.filter((element) => {
+        const elementOkay = filters.department[element.department];
+        return elementOkay;
+      });
+    } else {
+      filteredData = data;
+    }
+    if (!checkAllTrueOrAllFalse(filters.office)) {
+      filteredData = filteredData.filter((element) => {
+        const elementOkay = filters.office[element.office];
+        return elementOkay;
+      });
+    }
   }
   return filteredData;
 };
