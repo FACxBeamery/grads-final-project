@@ -76,6 +76,8 @@ const SurveyCard = ({ survey }) => {
             >
               View
             </Link>
+          </Button>
+          <Button color='secondary' size='small'>
             {status === 'draft' && (
               <Link
                 className={styles.link}
