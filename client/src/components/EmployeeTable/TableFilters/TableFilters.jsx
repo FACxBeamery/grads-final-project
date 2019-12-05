@@ -10,6 +10,8 @@ import {
   FormControlLabel,
   FormLabel,
   FormGroup,
+  Typography,
+  Divider,
 } from '@material-ui/core';
 
 const OptionsCheckbox = ({ options, attribute }) => {
@@ -58,8 +60,10 @@ const OptionsCheckbox = ({ options, attribute }) => {
             />
             {options.map((option) => (
               <FormControlLabel
+                key={option}
                 control={
                   <Checkbox
+                    key={option}
                     checked={filters[attribute][option]}
                     onChange={
                       (event) => handleOptionChange(event, option, attribute)
@@ -88,9 +92,9 @@ const RecipientOptions = () => {
     let payload = { text: event.target.value };
     dispatch({ type: 'SET_SEARCHBAR_TEXT', payload });
     // Reset checkboxes when text is entered
-    payload = { checked: true, attribute: 'department' };
+    payload = { checked: false, attribute: 'department' };
     dispatch({ type: 'SET_ALL_FILTER', payload });
-    payload = { checked: true, attribute: 'office' };
+    payload = { checked: false, attribute: 'office' };
     dispatch({ type: 'SET_ALL_FILTER', payload });
     payload = { text: event.target.value, attribute: 'name' };
     dispatch({ type: 'FILTER_DATA', payload });
@@ -100,9 +104,36 @@ const RecipientOptions = () => {
   const officeOptions = Object.keys(office);
 
   return (
-    <Box display='flex'>
-      <OptionsCheckbox options={departmentOptions} attribute='department' />
-      <OptionsCheckbox options={officeOptions} attribute='office' />
+    <Box
+      display='flex'
+      justifyContent='space-between'
+      alignItems='flex-start'
+      pr={2}
+    >
+      <Box
+        display='flex'
+        flexDirection='column'
+        style={{ backgroundColor: '#fafafa' }}
+        p={1}
+        pl={2}
+      >
+        <Box py={1}>
+          <Typography variant='h5'>Filters</Typography>
+        </Box>
+        <Divider />
+        <Box display='flex' pt={2}>
+          <OptionsCheckbox
+            key='department'
+            options={departmentOptions}
+            attribute='department'
+          />
+          <OptionsCheckbox
+            key='office'
+            options={officeOptions}
+            attribute='office'
+          />
+        </Box>
+      </Box>
       <TextField
         id='name-search'
         label='Search for a person'
