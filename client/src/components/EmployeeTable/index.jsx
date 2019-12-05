@@ -20,21 +20,18 @@ import RecipientOptions from './TableFilters/TableFilters';
 const headCells = [
   {
     id: 'name',
-    numeric: false,
     disablePadding: true,
     label: 'Name',
   },
-  { id: 'job-title', numeric: true, disablePadding: false, label: 'Job Title' },
+  { id: 'job-title', disablePadding: false, label: 'Job Title' },
   {
     id: 'department',
-    numeric: true,
     disablePadding: false,
     label: 'Department',
   },
-  { id: 'office', numeric: true, disablePadding: false, label: 'Office' },
+  { id: 'office', disablePadding: false, label: 'Office' },
   {
     id: 'start-date',
-    numeric: true,
     disablePadding: false,
     label: 'Start Date',
   },
@@ -70,7 +67,7 @@ const EnhancedTableHead = () => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align='left'
             padding={headCell.disablePadding ? 'none' : 'default'}
           />
         ))}
@@ -85,7 +82,7 @@ const EnhancedTableToolbar = () => {
   const numSelected = recipients.length;
   return (
     <Toolbar>
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Box
           width={1}
           display='flex'
@@ -96,8 +93,6 @@ const EnhancedTableToolbar = () => {
             {`${numSelected} selected`}
           </Typography>
         </Box>
-      ) : (
-        <Typography variant='h5'>Employees</Typography>
       )}
     </Toolbar>
   );
@@ -139,10 +134,7 @@ const EmployeesTable = () => {
 
   const emptyRows = filteredEmployeeData
     ? rowsPerPage -
-      Math.min(
-        rowsPerPage,
-        filteredEmployeeData.length - (page - 1) * rowsPerPage,
-      )
+      Math.min(rowsPerPage, filteredEmployeeData.length - page * rowsPerPage)
     : 0;
 
   return (
@@ -206,7 +198,7 @@ const EmployeesTable = () => {
             </Table>
           </Box>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 15]}
+            rowsPerPageOptions={[5, 10]}
             component='div'
             count={filteredEmployeeData.length}
             rowsPerPage={rowsPerPage}
