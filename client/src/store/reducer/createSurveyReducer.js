@@ -52,6 +52,7 @@ const objectWithoutKey = (obj, key) => {
   delete newObj[key];
   return newObj;
 };
+
 const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 

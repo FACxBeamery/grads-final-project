@@ -28,10 +28,8 @@ router.get('/surveys/:id', getSurvey);
 router.get('/surveys', getSurveys);
 
 router.post('/surveys', postSurveys);
-
 // router.get('/employees/:pagesize/:pagenumber', getPaginatedEmployees);
 router.get('/employees', getEmployees);
-
 // router.post("/employees", postEmployees)
 router.get('/admins', getAdmins);
 
