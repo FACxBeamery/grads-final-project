@@ -25,8 +25,7 @@ const RecipientsList = () => {
       </Button>
 
       <Modal
-        aria-labelledby='simple-modal-title'
-        aria-describedby='simple-modal-description'
+        aria-labelledby='recipients-select-modal'
         open={openModal}
         onClose={() => dispatch({ type: 'TOGGLE_MODAL' })}
       >
