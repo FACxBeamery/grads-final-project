@@ -5,6 +5,7 @@ export default createMuiTheme({
     primary: {
       // light: '#FFFFFF',
       main: '#201E5A',
+      contrastText: '#fff',
       // dark: '#201E5A',
     },
     secondary: {
