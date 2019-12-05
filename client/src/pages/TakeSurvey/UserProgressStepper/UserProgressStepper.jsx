@@ -45,7 +45,7 @@ const UserProgressStepper = () => {
             data-testid='next-button'
             onClick={nextQuestion}
             disabled={
-              (activeQuestion.required === true && enableNext === false) ||
+              (activeQuestion.required  && !enableNext) ||
               activeStep === numberOfSteps - 1
             }
           >
