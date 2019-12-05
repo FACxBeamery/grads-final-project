@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Prompt } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
   Button,
@@ -13,11 +14,25 @@ import {
   FormControlLabel,
   Typography,
   Divider,
+  Modal,
 } from '@material-ui/core';
 import QuestionsList from '../CreateSurvey/Questions/QuestionsList';
 import formatDate from '../../utils/formatDate';
+import formatDateWithTime from '../../utils/formatDateWithTime';
 
-const EditSurvey = ({ match }) => {
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+const EditSurvey = ({ match, history }) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const setMetadata = (event, inputType) => {
     const payload = {};
@@ -33,14 +48,20 @@ const EditSurvey = ({ match }) => {
     disclaimer,
     anonymous,
     dateCreated,
+    dateEdited,
   } = useSelector((state) => state.createSurveyReducer);
+
+  const { openModal, modalStyle, isConfirming } = useSelector(
+    (state) => state.editSurveyReducer,
+  );
+
   const surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
 
   useEffect(() => {
     const { id } = match.params;
-    // match.params.id
+    dispatch({ type: 'RESET_STATE' });
     const setSurveyData = (data) => {
       const payload = data;
       dispatch({ type: 'SET_SURVEY_DATA', payload });
@@ -48,7 +69,6 @@ const EditSurvey = ({ match }) => {
     const getSurvey = async () => {
       try {
         const { data } = await axios.get(`/surveys/${id}`);
-        console.log(data);
         setSurveyData(data);
       } catch (error) {
         setSurveyData({});
@@ -57,24 +77,38 @@ const EditSurvey = ({ match }) => {
     getSurvey(id);
   }, [match.params, dispatch]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const toggleModal = () => {
+    dispatch({ type: 'TOGGLE_MODAL' });
+  };
+
+  const saveEditedSurvey = async () => {
     const { id } = match.params;
     try {
-      // console.log(surveyForSending);
       const editedSurvey = {
         ...surveyForSending,
         dateEdited: Date.now(),
       };
+      // remove _id key from data to edit on survey; This key is immutable.
       // eslint-disable-next-line dot-notation
       delete editedSurvey['_id'];
-      console.log(editedSurvey);
-
-      const result = await axios.patch(`/surveys/${id}`, editedSurvey);
-      console.log(result);
+      await axios.patch(`/surveys/${id}`, editedSurvey);
     } catch (err) {
       throw new Error(err.message);
     }
+  };
+
+  const confirmEditing = () => {
+    dispatch({ type: 'TOGGLE_CONFIRMATION_MODAL' });
+    saveEditedSurvey();
+  };
+
+  const redirectToDashboard = () => {
+    history.push('/admin');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    toggleModal();
   };
 
   const PromptMessage = () => {
@@ -90,16 +124,23 @@ const EditSurvey = ({ match }) => {
   };
 
   return (
-    <div>
-      <PromptMessage />
+    <Box>
+      {isConfirming && <PromptMessage />}
+
       <form onSubmit={handleSubmit}>
         <Box display='flex' flexDirection='column' my={8}>
           <Box mb={4}>
             <Typography variant='h2'>Editing Survey</Typography>
           </Box>
-          <Box display='flex' justifyContent='flex-end' my={2}>
+          <Box
+            display='flex'
+            flexDirection='column'
+            alignItems='flex-end'
+            my={2}
+          >
+            <Typography>{`Created on: ${formatDate(dateCreated)}`}</Typography>
             <Typography>
-              {`Date created: ${formatDate(dateCreated)}`}
+              {`Last edited on: ${formatDateWithTime(dateEdited)}`}
             </Typography>
           </Box>
 
@@ -182,12 +223,57 @@ const EditSurvey = ({ match }) => {
           </Box>
         </Box>
       </form>
-    </div>
+      <Modal
+        aria-labelledby='simple-modal-title'
+        aria-describedby='simple-modal-description'
+        open={openModal}
+        onClose={toggleModal}
+      >
+        <Box style={modalStyle} className={classes.paper}>
+          {isConfirming ? (
+            <>
+              <Typography variant='h5' id='simple-modal-title'>
+                Are you sure you want to save your changes?
+              </Typography>
+              <Box mt={6} display='flex' justifyContent='space-between'>
+                <Button onClick={redirectToDashboard} color='primary'>
+                  Go back to dashboard
+                </Button>
+                <Button onClick={toggleModal} color='primary'>
+                  Cancel
+                </Button>
+                <Button onClick={confirmEditing} color='secondary'>
+                  Yes
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Typography variant='h5' style={{ textAlign: 'center' }}>
+                Your changes were saved successfully!
+              </Typography>
+              <Box mt={6}>
+                <Button
+                  contained
+                  color='secondary'
+                  onClick={redirectToDashboard}
+                >
+                  Go Back to Dashboard
+                </Button>
+              </Box>
+            </>
+          )}
+        </Box>
+      </Modal>
+    </Box>
   );
 };
 
 EditSurvey.propTypes = {
-  match: PropTypes.shape({ params: PropTypes.shape({}) }).isRequired,
+  match: PropTypes.shape({ params: PropTypes.shape({ id: PropTypes.string }) })
+    .isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 export default EditSurvey;
