@@ -6,7 +6,7 @@ const defaultQuestion = {
   title: '',
   type: 'text',
   required: false,
-  commentsEnabled: false,
+  commentEnabled: false,
   options: [defaultOption],
 };
 
@@ -58,6 +58,26 @@ const createSurveyReducer = (state = initalState, action) => {
   switch (action.type) {
     case 'TOGGLE_MODAL':
       return { ...state, openModal: !state.openModal };
+    case 'SET_SURVEY_DATA':
+      return { ...state, ...payload };
+    case 'RESET_SURVEY_DATA':
+      return {
+        title: undefined,
+        description: undefined,
+        recipients: [],
+        disclaimer: 'This is the dummy disclaimer',
+        anonymous: false,
+        questions: [
+          {
+            title: '',
+            type: 'text',
+            required: false,
+            commentEnabled: false,
+            options: [{ text: '' }],
+          },
+        ],
+        dateCreated: Date.now(),
+      };
     case 'SET_METADATA':
       return { ...state, ...payload };
     case 'SET_EMPLOYEE_DATA':
@@ -123,13 +143,13 @@ const createSurveyReducer = (state = initalState, action) => {
         questions: state.questions.map((question, index) =>
           index === payload.questionIndex
             ? {
-                ...question,
-                options: switchArrayItems(
-                  question.options,
-                  payload.optionIndex,
-                  payload.optionIndex - 1,
-                ),
-              }
+              ...question,
+              options: switchArrayItems(
+                question.options,
+                payload.optionIndex,
+                payload.optionIndex - 1,
+              ),
+            }
             : question,
         ),
       };
@@ -139,13 +159,13 @@ const createSurveyReducer = (state = initalState, action) => {
         questions: state.questions.map((question, index) =>
           index === payload.questionIndex
             ? {
-                ...question,
-                options: switchArrayItems(
-                  question.options,
-                  payload.optionIndex,
-                  payload.optionIndex + 1,
-                ),
-              }
+              ...question,
+              options: switchArrayItems(
+                question.options,
+                payload.optionIndex,
+                payload.optionIndex + 1,
+              ),
+            }
             : question,
         ),
       };

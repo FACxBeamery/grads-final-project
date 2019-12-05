@@ -77,6 +77,18 @@ const SurveyCard = ({ survey }) => {
               View
             </Link>
           </Button>
+          <Button color='secondary' size='small'>
+            {status === 'draft' && (
+              <Link
+                className={styles.link}
+                to={{
+                  pathname: `admin/surveys/edit/${_id}`,
+                }}
+              >
+                Edit
+              </Link>
+            )}
+          </Button>
           <Chip
             label={status === 'published' ? 'Active' : 'Ready to publish'}
             className={styles.active}

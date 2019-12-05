@@ -3,9 +3,11 @@ const express = require('express');
 const router = express();
 
 const getSurveys = require('./handlers/getSurveys');
+const patchSurvey = require('./handlers/patchSurvey');
 const getSurveyAndQuestions = require('./handlers/getSurveyAndQuestions');
-const postSurveys = require('./handlers/postSurveys');
 const patchSurveys = require('./handlers/patchSurveys');
+const getSurvey = require('./handlers/getSurvey');
+const postSurveys = require('./handlers/postSurveys');
 // const postEmployees = require('./handlers/postEmployees');
 const { getEmployees } = require('./handlers/getEmployees');
 const getAdmins = require('./handlers/getAdmins');
@@ -21,11 +23,12 @@ router.get('/surveys:id', getSurveyAndQuestions);
 
 router.post('/login', postLogin);
 // router.get("/surveys", getSurveys)
-
+router.patch('/surveys/:id', patchSurvey);
+router.get('/surveys/:id', getSurvey);
 router.get('/surveys', getSurveys);
 
 router.post('/surveys', postSurveys);
-router.patch('/surveys', patchSurveys);
+
 // router.get('/employees/:pagesize/:pagenumber', getPaginatedEmployees);
 router.get('/employees', getEmployees);
 
