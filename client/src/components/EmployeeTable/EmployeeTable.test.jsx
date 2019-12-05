@@ -339,7 +339,7 @@ describe('Employee table works as expected', () => {
     expect(engineeringCheckbox.checked).toEqual(true);
     expect(selectAllCheckbox.checked).toEqual(true);
   });
-  it('Typing in the searchbar should reset checkboxes', async () => {
+  it('Typing in the searchbar should reset checkboxes to false', async () => {
     const mockAxiosGet = jest.spyOn(axios, 'get');
     mockAxiosGet.mockImplementation(() =>
       Promise.resolve({ data: dummyEmployees }),
@@ -367,7 +367,7 @@ describe('Employee table works as expected', () => {
     const searchbar = getByRole('searchbox');
     fireEvent.change(searchbar, { target: { value: 't' } });
 
-    expect(peopleCheckbox.checked).toEqual(true);
-    expect(selectAllCheckbox.checked).toEqual(true);
+    expect(peopleCheckbox.checked).toEqual(false);
+    expect(selectAllCheckbox.checked).toEqual(false);
   });
 });
