@@ -6,7 +6,7 @@ const defaultQuestion = {
   title: '',
   type: 'text',
   required: false,
-  commentsEnabled: false,
+  commentEnabled: false,
   options: [defaultOption],
 };
 
@@ -52,10 +52,32 @@ const objectWithoutKey = (obj, key) => {
   return newObj;
 };
 
+const resetState = () => initalState;
+
 const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
   switch (action.type) {
+    case 'SET_SURVEY_DATA':
+      return { ...state, ...payload };
+    case 'RESET_SURVEY_DATA':
+      return {
+        title: undefined,
+        description: undefined,
+        recipients: [],
+        disclaimer: 'This is the dummy disclaimer',
+        anonymous: false,
+        questions: [
+          {
+            title: '',
+            type: 'text',
+            required: false,
+            commentEnabled: false,
+            options: [{ text: '' }],
+          },
+        ],
+        dateCreated: Date.now(),
+      };
     case 'SET_METADATA':
       return { ...state, ...payload };
     case 'NEW_QUESTION':
