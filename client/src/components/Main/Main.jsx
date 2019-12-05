@@ -10,9 +10,6 @@ import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 const Main = () => {
-  // const { auth } = useSelector((state) => state.adminLoginReducer);
-  // const snackbar = useSelector((state) => state.snackbarReducer);
-
   return (
     <main>
       <Box>
