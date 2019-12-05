@@ -1,6 +1,8 @@
 import { createStore, combineReducers } from 'redux';
 
 import reducer from './reducer/reducer';
+
+import takeSurveyReducer from './reducer/takeSurveyReducer';
 import createSurveyReducer from './reducer/createSurveyReducer';
 import surveyDetailReducer from './reducer/surveyDetailReducer';
 import adminLoginReducer from './reducer/adminLoginReducer';
@@ -12,6 +14,7 @@ const store = createStore(
     reducer,
     createSurveyReducer,
     surveyDetailReducer,
+    takeSurveyReducer,
     adminLoginReducer,
     snackbarReducer,
     dashboardReducer,
