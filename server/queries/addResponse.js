@@ -31,9 +31,9 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
       console.log('Query unsuccessful!');
       return new Error('Query unsuccessful');
     }
-  } catch (e) {
-    console.log('Oh no! An error!');
-    return new Error(e.message);
+  } catch (err) {
+    console.log('Unable to add response to database.');
+    return new Error(err.message);
   }
 };
 module.exports = addResponse;
