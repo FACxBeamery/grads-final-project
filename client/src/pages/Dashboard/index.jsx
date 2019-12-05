@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Typography, Button, Grid, Box } from '@material-ui/core';
@@ -8,7 +9,7 @@ import { Typography, Button, Grid, Box } from '@material-ui/core';
 import SurveyCard from './components/SurveyCard';
 import AllSurveysTable from './components/AllSurveysTable';
 
-const Dashboard = () => {
+const Dashboard = ({ history }) => {
   const { surveys, showActiveSurveys } = useSelector((state) => ({
     surveys: state.dashboardReducer.surveys,
     showActiveSurveys: state.dashboardReducer.showActiveSurveys,
@@ -23,6 +24,11 @@ const Dashboard = () => {
     };
     getSurveys();
   }, [dispatch]);
+
+  const goToSurveyBuilder = () => {
+    history.push(`/admin/surveys/create`);
+    dispatch({ type: 'RESET_SURVEY_DATA' });
+  };
 
   const ActiveSurveyCards = () => {
     return (
@@ -54,11 +60,11 @@ const Dashboard = () => {
     return (
       <Box>
         <Box my={4}>
-          <Typography variant='h2'>Active Surveys</Typography>
+          <Typography variant='h4'>Active Surveys</Typography>
         </Box>
         <ActiveSurveyCards />
         <Box my={4}>
-          <Typography variant='h2'>Draft Surveys</Typography>
+          <Typography variant='h4'>Draft Surveys</Typography>
         </Box>
         <DraftSurveyCards />
       </Box>
@@ -69,7 +75,7 @@ const Dashboard = () => {
     return (
       <Box>
         <Box my={4}>
-          <Typography variant='h2'>All Surveys</Typography>
+          <Typography variant='h3'>All Surveys</Typography>
         </Box>
         <SurveyTable />
       </Box>
@@ -101,12 +107,9 @@ const Dashboard = () => {
   return (
     <Box>
       <Box display='flex' justifyContent='space-between' alignItems='center'>
-        <Typography variant='h1'>Dashboard</Typography>
+        <Typography variant='h2'>Dashboard</Typography>
         <Button
-          component={Link}
-          to={{
-            pathname: `/admin/surveys/create`,
-          }}
+          onClick={goToSurveyBuilder}
           variant='contained'
           color='secondary'
         >
@@ -121,4 +124,9 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+Dashboard.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+};
+
+export default withRouter(Dashboard);

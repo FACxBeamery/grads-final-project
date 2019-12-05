@@ -11,9 +11,6 @@ const App = () => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Box mb={5}>
-          <Header />
-        </Box>
         <Main />
       </ThemeProvider>
     </Provider>
