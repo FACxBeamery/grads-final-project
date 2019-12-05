@@ -52,7 +52,7 @@ const objectWithoutKey = (obj, key) => {
   delete newObj[key];
   return newObj;
 };
-const resetState = () => initalState;
+
 const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
