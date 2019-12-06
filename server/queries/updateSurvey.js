@@ -7,18 +7,12 @@ const updateSurvey = async (surveyId, changes) => {
     const questions = db.collection('Questions');
 
     // checking if survey is anon
-    let surveyToCheckIfAnon = await surveys
-      .findOne({
-        _id: ObjectID(surveyId),
-      })
-      .toArray();
-
-    const anonymous = surveyToCheckIfAnon.anonymous;
-    const employeeId = anonymous ? null : ObjectID(changes.employeeId),
-
-    const survey = await surveys.findOne({
+    const surveyBeforeChanges = await surveys.findOne({
       _id: ObjectID(surveyId),
     });
+
+    const anonymous = surveyBeforeChanges.anonymous;
+    const employeeId = anonymous ? null : ObjectID(changes.employeeId);
 
     const result = await surveys.updateOne(
       {
@@ -28,7 +22,12 @@ const updateSurvey = async (surveyId, changes) => {
         $set: changes,
       },
     );
-    if (!anonymous)
+    const survey = await surveys.findOne({
+      _id: ObjectID(surveyId),
+    });
+
+    // if recipient has answered, but the survey is anonymous
+    if (changes.answersFromEmployee === null && anonymous) {
       await surveys.updateOne(
         {
           _id: ObjectID(surveyId),
@@ -36,28 +35,37 @@ const updateSurvey = async (surveyId, changes) => {
         },
         { $set: { 'recipients.$.completed': true } },
       );
-    
-    if (changes.answersFromEmployee) {
+      // if recipient has answered, and the survey is anonymous
+    } else if (changes.answersFromEmployee === null && !anonymous) {
       await surveys.updateOne(
         { _id: ObjectID(surveyId) },
-        { $push: { responses: {
-          employeeId: anonymous ? null : ObjectID(employeeId),
-          answers: changes.answersFromEmployee,
-        }  } },
+        {
+          $push: {
+            responses: {
+              employeeId: anonymous ? null : ObjectID(employeeId),
+              answers: changes.answersFromEmployee,
+            },
+          },
+        },
       );
     }
 
     let surveyQuestions = survey.questions;
+
     surveyQuestions.map(async (question) => {
       let questionWithoutId = { ...question };
       delete questionWithoutId._id;
+
       try {
-        let result = await questions.updateOne(
-          { _id: ObjectID(question._id) },
+        await questions.updateOne(
+          { _id: ObjectID(questionWithoutId) },
           { $set: questionWithoutId },
         );
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     });
+
     return result;
   } catch (err) {
     return err;
