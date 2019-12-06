@@ -71,7 +71,7 @@ const SurveyCard = ({ survey }) => {
             <Link
               className={styles.link}
               to={{
-                pathname: `admin/surveys/${_id}`,
+                pathname: `/admin/surveys/${_id}`,
               }}
             >
               View
@@ -82,7 +82,7 @@ const SurveyCard = ({ survey }) => {
               <Link
                 className={styles.link}
                 to={{
-                  pathname: `admin/surveys/edit/${_id}`,
+                  pathname: `/admin/surveys/edit/${_id}`,
                 }}
               >
                 Edit

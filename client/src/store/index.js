@@ -4,6 +4,7 @@ import reducer from './reducer/reducer';
 
 import takeSurveyReducer from './reducer/takeSurveyReducer';
 import createSurveyReducer from './reducer/createSurveyReducer';
+import surveyDetailReducer from './reducer/surveyDetailReducer';
 import adminLoginReducer from './reducer/adminLoginReducer';
 import snackbarReducer from './reducer/snackbarReducer';
 import dashboardReducer from './reducer/dashboardReducer';
@@ -14,8 +15,8 @@ const store = createStore(
   combineReducers({
     reducer,
     createSurveyReducer,
+    surveyDetailReducer,
     takeSurveyReducer,
-
     adminLoginReducer,
     snackbarReducer,
     dashboardReducer,

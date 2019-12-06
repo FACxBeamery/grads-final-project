@@ -18,7 +18,6 @@ const updateSurvey = async (surveyId, changes) => {
     });
 
     let surveyQuestions = survey.questions;
-    // console.log(surveyQuestions);
 
     // let questionIds = surveyQuestions.map((question) => ObjectID(question._id));
     surveyQuestions.map(async (question) => {
@@ -29,10 +28,7 @@ const updateSurvey = async (surveyId, changes) => {
           { _id: ObjectID(question._id) },
           { $set: questionWithoutId },
         );
-        // console.log(result);
-      } catch (error) {
-        // console.log(error);
-      }
+      } catch (error) {}
     });
     // const result2 = await collections.updateMany(questionIds, {
     //   $set: changes,
