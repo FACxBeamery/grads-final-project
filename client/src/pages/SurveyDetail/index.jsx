@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 // import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -12,7 +13,7 @@ import {
   StepLabel,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
-import EmployeeTable from '../../components/EmployeeTable';
+import EmployeesTable from '../../components/EmployeeTable';
 
 let successfulPublish;
 let successfulClose;
@@ -36,20 +37,26 @@ const closeSurvey = async (_id) => {
 const SurveyDetail = ({ match }) => {
   const dispatch = useDispatch();
 
-  const { id, status, activeStep } = useSelector(
+  const { id, title, description, status, activeStep } = useSelector(
     (state) => state.surveyDetailReducer,
   );
 
+  const state = useSelector((state) => state.surveyDetailReducer);
+
+  console.log(state, 'STATE');
+
   useEffect(() => {
-    const { idFromUrl } = match.params;
+    const idFromUrl = match.params.id;
     dispatch({ type: 'RESET_STATE' });
     const setSurveyData = (data) => {
       const payload = data;
-      dispatch({ type: 'SET_SURVEY_DATA', payload });
+      dispatch({ type: 'SET_SURVEY_DATA_SURVEY_DETAIL', payload });
     };
     const getSurvey = async (idToSend) => {
       try {
+        console.log(idToSend, 'ID');
         const { data } = await axios.get(`/surveys/${idToSend}`);
+        console.log(data, 'DATA');
         setSurveyData(data);
       } catch (error) {
         setSurveyData({});
@@ -78,6 +85,7 @@ const SurveyDetail = ({ match }) => {
         width='auto'
         variant='contained'
         color='secondary'
+        size='large'
         onClick={async () => {
           await publishSurvey(id);
           // await getSurvey(id);
@@ -95,6 +103,7 @@ const SurveyDetail = ({ match }) => {
         width='auto'
         variant='contained'
         color='secondary'
+        size='large'
         onClick={async () => {
           await closeSurvey(id);
           // await getSurvey(id);
@@ -105,15 +114,46 @@ const SurveyDetail = ({ match }) => {
     );
   };
 
+  const EditSurveyButton = () => {
+    return (
+      <Button color='secondary' variant='outlined' size='large'>
+        <Link
+          style={{ color: '#f15852', textDecoration: 'none' }}
+          // className={styles.link}
+          to={{
+            pathname: `/admin/surveys/edit/${id}`,
+          }}
+        >
+          Edit survey
+        </Link>
+      </Button>
+    );
+  };
+
+  console.log(status, 'STATUS');
   return (
-    <Box display='flex' flexDirection='row' align-items='flex-start'>
-      <Typography color='primary' variant='h3'>
-        Survey title.
-      </Typography>
-      <SurveyDetailsStepper />
-      <EmployeeTable />
-      {activeStep === 1 && <PublishSurveyButton />}
-      {activeStep === 2 && <CloseSurveyButton />}
+    <Box display='flex' flexDirection='column' align-items='flex-start'>
+      <Box display='flex' justifyContent='space-between'>
+        <Box display='flex' flexDirection='column' alignItems='flex-start'>
+          <Typography color='primary' variant='h2'>
+            {title}
+          </Typography>
+          <SurveyDetailsStepper />
+          <Typography color='primary' variant='h5'>
+            {description}
+          </Typography>
+        </Box>
+        <Box alignSelf='flex-start'>
+          {status === 'draft' && (
+            <Box display='flex' flexDirection='column'>
+              <PublishSurveyButton />
+              <EditSurveyButton />
+            </Box>
+          )}
+          {status === 'published' && <CloseSurveyButton />}
+        </Box>
+      </Box>
+      {status === 'published' && <EmployeesTable />}
       {successfulPublish !== undefined && (
         <Snackbar
           message={
