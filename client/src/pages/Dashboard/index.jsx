@@ -31,27 +31,35 @@ const Dashboard = ({ history }) => {
   };
 
   const ActiveSurveyCards = () => {
+    const publishedSurveys = surveys.filter(
+      (survey) => survey.status === 'published',
+    );
+    const isPublishedSurveysEmpty = publishedSurveys.length === 0;
     return (
       <Grid container spacing={1}>
-        {surveys
-          .filter((survey) => survey.status === 'published')
-          .map((survey, idx) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <SurveyCard key={idx} survey={survey} />
-          ))}
+        {publishedSurveys.map((survey, idx) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <SurveyCard key={idx} survey={survey} />
+        ))}
+        {isPublishedSurveysEmpty && (
+          <Typography variant='h6'>No active surveys available. </Typography>
+        )}
       </Grid>
     );
   };
 
   const DraftSurveyCards = () => {
+    const draftSurveys = surveys.filter((survey) => survey.status === 'draft');
+    const isDraftSurveysEmpty = draftSurveys.length === 0;
     return (
       <Grid container spacing={1}>
-        {surveys
-          .filter((survey) => survey.status === 'draft')
-          .map((survey, idx) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <SurveyCard key={idx} survey={survey} />
-          ))}
+        {draftSurveys.map((survey, idx) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <SurveyCard key={idx} survey={survey} />
+        ))}
+        {isDraftSurveysEmpty && (
+          <Typography variant='h6'>No draft surveys available. </Typography>
+        )}
       </Grid>
     );
   };
