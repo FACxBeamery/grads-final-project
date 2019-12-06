@@ -17,6 +17,13 @@ const initalState = {
   questions: [defaultQuestion],
   openModal: false,
   dateCreated: Date.now(),
+  openCreateSurveyModal: false,
+  modalStyle: {
+    top: `50%`,
+    left: `50%`,
+    transform: `translate(-50%, -50%)`,
+  },
+  isConfirming: true,
 };
 
 const changeOptionText = (options, payload) => {
@@ -59,8 +66,19 @@ const createSurveyReducer = (state = initalState, action) => {
       return { ...state, openModal: !state.openModal };
     case 'SET_SURVEY_DATA':
       return { ...state, ...payload };
+    case 'TOGGLE_CS_MODAL':
+      return { ...state, openCreateSurveyModal: !state.openCreateSurveyModal };
+    case 'TOGGLE_CS_CONFIRMATION_MODAL':
+      return { ...state, isConfirming: !state.isConfirming };
+    case 'RESET_CS_MODAL_STATE':
+      return {
+        ...state,
+        openCreateSurveyModal: false,
+        isConfirming: true,
+      };
     case 'RESET_SURVEY_DATA':
       return {
+        ...state,
         title: undefined,
         description: undefined,
         recipients: [],
