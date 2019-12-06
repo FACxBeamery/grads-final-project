@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-wrap-multilines */
 import React, { useEffect } from 'react';
@@ -145,9 +146,9 @@ const EmployeesTable = () => {
           <EnhancedTableToolbar />
           <Box>
             <Table
-              aria-labelledby='tableTitle'
+              aria-labelledby='employee table'
               size='small'
-              aria-label='enhanced table'
+              aria-label='employee table'
             >
               <EnhancedTableHead />
 
@@ -212,4 +213,113 @@ const EmployeesTable = () => {
   );
 };
 
-export default EmployeesTable;
+const EmployeeCompletionTable = () => {
+  const dispatch = useDispatch();
+
+  const { filteredEmployeeData, recipients, page, rowsPerPage } = useSelector(
+    (state) => state.employeeTableReducer,
+  );
+
+  const recipientsFromRequest = useSelector(
+    (state) => state.surveyDetailReducer.recipients,
+  );
+
+  useEffect(() => {
+    const getEmployees = async () => {
+      const { data } = await axios.get(`/employees`);
+      const filteredData = data.filter((person) =>
+        recipients.map((obj) => obj.employeeId).includes(person._id),
+      );
+      dispatch({
+        type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
+        payload: recipientsFromRequest,
+      });
+      dispatch({ type: 'SET_EMPLOYEE_DATA', payload: filteredData });
+      dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
+      dispatch({ type: 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS' });
+    };
+    getEmployees();
+  }, [dispatch, recipients, recipientsFromRequest]);
+
+  const isCompleted = (id) => {
+    return recipients.find((obj) => obj.employeeId === id).completed;
+  };
+
+  const handleChangePage = (event, newPage) => {
+    const payload = { page: newPage };
+    dispatch({ type: 'CHANGE_PAGE', payload });
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    const payload = { rowsPerPage: event.target.value };
+    dispatch({ type: 'CHANGE_ROWS_PER_PAGE', payload });
+  };
+
+  const emptyRows = filteredEmployeeData
+    ? rowsPerPage -
+      Math.min(rowsPerPage, filteredEmployeeData.length - page * rowsPerPage)
+    : 0;
+
+  return (
+    <Box pt={2}>
+      {filteredEmployeeData && (
+        <>
+          <Box>
+            <Table
+              aria-labelledby='employee table'
+              size='small'
+              aria-label='employee table'
+            >
+              <TableBody>
+                {filteredEmployeeData
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    const completed = isCompleted(row._id);
+                    const labelId = row.id;
+
+                    return (
+                      <TableRow hover tabIndex={-1} key={row.name}>
+                        <TableCell
+                          component='th'
+                          id={labelId}
+                          scope='row'
+                          padding='none'
+                        >
+                          {`${row.firstName} ${row.lastName}`}
+                        </TableCell>
+                        <TableCell align='right'>{row.jobTitle}</TableCell>
+                        <TableCell align='right'>{row.department}</TableCell>
+                        <TableCell align='right'>{row.office}</TableCell>
+                        <TableCell align='right'>{row.startDate}</TableCell>
+                        <TableCell
+                          style={{ color: completed ? '#28d592' : '#d28e29' }}
+                        >
+                          {completed ? 'Completed' : 'Incomplete'}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 33 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Box>
+          <TablePagination
+            rowsPerPageOptions={[5, 10]}
+            component='div'
+            count={filteredEmployeeData.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </>
+      )}
+    </Box>
+  );
+};
+
+export { EmployeesTable, EmployeeCompletionTable };

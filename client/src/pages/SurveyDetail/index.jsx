@@ -12,7 +12,7 @@ import {
   StepLabel,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
-import EmployeesTable from '../../components/EmployeeTable';
+import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -39,6 +39,18 @@ const getSurvey = async (idToSend, dispatch) => {
   }
 };
 
+const setEmployeeData = (data, dispatch) => {
+  const payload = data;
+  dispatch({ type: 'SET_EMPLOYEE_DATA', payload });
+};
+const getEmployees = async (dispatch) => {
+  try {
+    const { data } = await axios.get(`/employees`);
+    setEmployeeData(data, dispatch);
+  } catch (error) {
+    setSurveyData({});
+  }
+};
 const closeSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
     status: 'closed',
@@ -161,12 +173,17 @@ const SurveyDetail = ({ match }) => {
     successfulClose,
   } = useSelector((state) => state.surveyDetailReducer);
 
+  // const { employeeData } = useSelector((state) => state.employeeTableReducer);
+
+  // if (!employeeData) {
+  //   getEmployees(dispatch);
+  // }
   useEffect(() => {
     const { id: idFromUrl } = match.params;
     getSurvey(idFromUrl, dispatch);
+    getEmployees(dispatch);
   }, [match.params, dispatch]);
 
-  console.log(status, 'STATUS');
   return (
     <Box display='flex' flexDirection='column' align-items='flex-start'>
       <Box display='flex' justifyContent='space-between'>
@@ -189,7 +206,16 @@ const SurveyDetail = ({ match }) => {
           {status === 'published' && <CloseSurveyButton />}
         </Box>
       </Box>
-      {status === 'published' && <EmployeesTable />}
+      {status === 'published' && (
+        <Box display='flex' flexDirection='column'>
+          <Box alignSelf='flex-start' py={2}>
+            <Button variant='outlined' color='secondary'>
+              Add recipients
+            </Button>
+          </Box>
+          <EmployeeCompletionTable />
+        </Box>
+      )}
       {successfulPublish !== undefined && <SnackbarPublish />}
       {successfulClose !== undefined && <SnackbarClose />}
     </Box>

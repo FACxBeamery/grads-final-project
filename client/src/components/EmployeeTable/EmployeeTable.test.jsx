@@ -5,7 +5,7 @@ import axios from 'axios';
 import '@testing-library/jest-dom/extend-expect';
 
 import store from '../../store';
-import EmployeeTable from '.';
+import { EmployeesTable } from '.';
 
 const dummyEmployees = [
   {
@@ -243,7 +243,7 @@ describe('Employee table works as expected', () => {
     );
     const { getAllByLabelText } = render(
       <Provider store={store}>
-        <EmployeeTable />
+        <EmployeesTable />
       </Provider>,
     );
     const engineeringCheckboxes = await waitForElement(() =>
@@ -261,7 +261,7 @@ describe('Employee table works as expected', () => {
     );
     const { getByText } = render(
       <Provider store={store}>
-        <EmployeeTable />
+        <EmployeesTable />
       </Provider>,
     );
 
@@ -274,7 +274,7 @@ describe('Employee table works as expected', () => {
     );
     const { getAllByText, getByLabelText } = render(
       <Provider store={store}>
-        <EmployeeTable />
+        <EmployeesTable />
       </Provider>,
     );
 
@@ -292,7 +292,7 @@ describe('Employee table works as expected', () => {
     );
     const { getByText, getByRole } = render(
       <Provider store={store}>
-        <EmployeeTable />
+        <EmployeesTable />
       </Provider>,
     );
 
@@ -312,7 +312,7 @@ describe('Employee table works as expected', () => {
     );
     const { getByLabelText, getAllByLabelText } = render(
       <Provider store={store}>
-        <EmployeeTable />
+        <EmployeesTable />
       </Provider>,
     );
 
@@ -346,7 +346,7 @@ describe('Employee table works as expected', () => {
     );
     const { getByLabelText, getByRole, getAllByLabelText } = render(
       <Provider store={store}>
-        <EmployeeTable />
+        <EmployeesTable />
       </Provider>,
     );
 
