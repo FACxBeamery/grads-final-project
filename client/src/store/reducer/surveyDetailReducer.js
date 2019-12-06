@@ -2,6 +2,8 @@
 
 const initalState = {
   activeStep: 1,
+  successfulPublish: undefined,
+  successfulClose: undefined,
 };
 
 const getStatusStep = (status) => {

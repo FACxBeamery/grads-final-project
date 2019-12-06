@@ -13,51 +13,50 @@ import {
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
 
-let successfulPublish;
-let successfulClose;
-
-const publishSurvey = async (_id) => {
-  const response = await axios.patch(`/surveys/${_id}`, {
-    status: 'published',
-    datePublished: Date.now(),
-  });
-  successfulPublish = response.status === 204;
-};
-
-const closeSurvey = async (_id) => {
-  const response = await axios.patch(`/surveys/${_id}`, {
-    status: 'closed',
-    dateClosed: Date.now(),
-  });
-  successfulClose = response.status === 204;
-};
-
 const SurveyDetail = ({ match }) => {
   const dispatch = useDispatch();
+  const {
+    id,
+    status,
+    activeStep,
+    successfulPublish,
+    successfulClose,
+  } = useSelector((state) => state.surveyDetailReducer);
 
-  const { id, status, activeStep } = useSelector(
-    (state) => state.surveyDetailReducer,
-  );
-
-  const setSurveyData = (data) => {
-    dispatch({ type: 'SET_SURVEY_DATA', payload: data });
-    dispatch({ type: 'SET_ACTIVE_STEP' });
-  };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getSurvey = async (idToFind) => {
-    try {
-      const { data } = await axios.get(`/surveys/${idToFind}`);
-      setSurveyData(data);
-    } catch (error) {
-      setSurveyData({});
-    }
+  const publishSurvey = async (_id) => {
+    const response = await axios.patch(`/surveys/${_id}`, {
+      status: 'published',
+      datePublished: Date.now(),
+    });
+    successfulPublish = response.status === 204;
   };
 
+  const closeSurvey = async (_id) => {
+    const response = await axios.patch(`/surveys/${_id}`, {
+      status: 'closed',
+      dateClosed: Date.now(),
+    });
+    successfulClose = response.status === 204;
+  };
   useEffect(() => {
-    const idFromEndpoint = match.params.id;
+    const setSurveyData = (data) => {
+      dispatch({ type: 'SET_SURVEY_DATA', payload: data });
+      dispatch({ type: 'SET_ACTIVE_STEP' });
+    };
 
+    const getSurvey = async (idToFind) => {
+      try {
+        const response = await axios.get(`/surveys/${idToFind}`);
+        console.log(response);
+        const data = response.data;
+        setSurveyData(data);
+      } catch (error) {
+        setSurveyData({});
+      }
+    };
+    const idFromEndpoint = match.params.id;
     getSurvey(idFromEndpoint);
-  }, [match.params.id, getSurvey]);
+  }, [match.params.id]);
 
   const SurveyDetailsStepper = () => {
     const steps = ['Draft', 'Publish', 'Close'];
@@ -80,8 +79,8 @@ const SurveyDetail = ({ match }) => {
         variant='contained'
         color='secondary'
         onClick={async () => {
-          await publishSurvey(id);
-          await getSurvey(id);
+          // await publishSurvey(id);
+          // await getSurvey(id);
         }}
       >
         Publish Survey
@@ -97,8 +96,8 @@ const SurveyDetail = ({ match }) => {
         variant='contained'
         color='secondary'
         onClick={async () => {
-          await closeSurvey(id);
-          await getSurvey(id);
+          // await closeSurvey(id);
+          // await getSurvey(id);
         }}
       >
         Close Survey
