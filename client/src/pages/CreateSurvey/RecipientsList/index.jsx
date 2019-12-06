@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button, Box, Typography, Paper } from '@material-ui/core';
 
-import EmployeeTable from '../../../components/EmployeeTable';
+import { EmployeesTable } from '../../../components/EmployeeTable';
 
 const RecipientsList = () => {
   const { openModal } = useSelector((state) => state.createSurveyReducer);
@@ -43,7 +43,7 @@ const RecipientsList = () => {
             <Typography variant='h4' id='simple-modal-title'>
               Recipients
             </Typography>
-            <EmployeeTable />
+            <EmployeesTable />
             <Button
               variant='contained'
               color='secondary'

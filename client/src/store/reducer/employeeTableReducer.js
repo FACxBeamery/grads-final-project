@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const initalState = {
   employeeData: undefined,
   filteredEmployeeData: undefined,
@@ -127,6 +128,8 @@ const employeeTableReducer = (state = initalState, action) => {
           payload.attribute,
         ),
       };
+    case 'SET_EMPLOYEE_TABLE_RECIPIENTS':
+      return { ...state, recipients: payload };
     case 'CHANGE_PAGE':
       return { ...state, page: payload.page };
 
