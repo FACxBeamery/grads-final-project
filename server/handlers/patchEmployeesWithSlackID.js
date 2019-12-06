@@ -1,10 +1,10 @@
 const updateEmployeesWithSlackID = require('../queries/updateEmployeesWithSlackID');
 
 const patchEmployeesWithSlackID = async (req, res) => {
-  // const employeeID = req.params.employeeID
-  // const slackID = req.params.slackID
+  const employeeID = req.params.email;
+  const slackID = req.params.slackID;
   try {
-    const result = await updateEmployeesWithSlackID();
+    const result = await updateEmployeesWithSlackID(email, slackID);
     res.status(200).json(result);
   } catch (err) {
     res
