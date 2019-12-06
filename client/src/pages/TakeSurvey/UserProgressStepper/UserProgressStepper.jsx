@@ -40,6 +40,7 @@ const UserProgressStepper = () => {
         activeStep={activeStep}
         steps={numberOfSteps}
         nextButton={
+          // eslint-disable-next-line react/jsx-wrap-multilines
           <Button
             size='small'
             data-testid='next-button'
@@ -53,6 +54,7 @@ const UserProgressStepper = () => {
           </Button>
         }
         backButton={
+          // eslint-disable-next-line react/jsx-wrap-multilines
           <Button
             size='small'
             data-testid='previous-button'
@@ -62,7 +64,7 @@ const UserProgressStepper = () => {
             <KeyboardArrowLeft />
           </Button>
         }
-      ></MobileStepper>
+      />
     </Box>
   );
 };

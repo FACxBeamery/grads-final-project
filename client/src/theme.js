@@ -21,7 +21,7 @@ export default createMuiTheme({
       fontFamily: 'Merriweather',
     },
     h2: {
-      fontFamily: 'Merriweather Sans',
+      fontFamily: 'Merriweather',
     },
     h3: {
       fontFamily: 'Merriweather Sans',

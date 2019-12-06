@@ -6,7 +6,7 @@ const defaultQuestion = {
   title: '',
   type: 'text',
   required: false,
-  commentsEnabled: false,
+  commentEnabled: false,
   options: [defaultOption],
 };
 
@@ -17,6 +17,7 @@ const initalState = {
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
   questions: [defaultQuestion],
+  openModal: false,
   dateCreated: Date.now(),
 };
 
@@ -56,8 +57,32 @@ const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
   switch (action.type) {
+    case 'TOGGLE_MODAL':
+      return { ...state, openModal: !state.openModal };
+    case 'SET_SURVEY_DATA':
+      return { ...state, ...payload };
+    case 'RESET_SURVEY_DATA':
+      return {
+        title: undefined,
+        description: undefined,
+        recipients: [],
+        disclaimer: 'This is the dummy disclaimer',
+        anonymous: false,
+        questions: [
+          {
+            title: '',
+            type: 'text',
+            required: false,
+            commentEnabled: false,
+            options: [{ text: '' }],
+          },
+        ],
+        dateCreated: Date.now(),
+      };
     case 'SET_METADATA':
       return { ...state, ...payload };
+    case 'SET_EMPLOYEE_DATA':
+      return { ...state, employeeData: payload };
     case 'NEW_QUESTION':
       return { ...state, questions: [...state.questions, defaultQuestion] };
     case 'SET_QUESTION_DATA':
@@ -119,13 +144,13 @@ const createSurveyReducer = (state = initalState, action) => {
         questions: state.questions.map((question, index) =>
           index === payload.questionIndex
             ? {
-                ...question,
-                options: switchArrayItems(
-                  question.options,
-                  payload.optionIndex,
-                  payload.optionIndex - 1,
-                ),
-              }
+              ...question,
+              options: switchArrayItems(
+                question.options,
+                payload.optionIndex,
+                payload.optionIndex - 1,
+              ),
+            }
             : question,
         ),
       };
@@ -135,16 +160,18 @@ const createSurveyReducer = (state = initalState, action) => {
         questions: state.questions.map((question, index) =>
           index === payload.questionIndex
             ? {
-                ...question,
-                options: switchArrayItems(
-                  question.options,
-                  payload.optionIndex,
-                  payload.optionIndex + 1,
-                ),
-              }
+              ...question,
+              options: switchArrayItems(
+                question.options,
+                payload.optionIndex,
+                payload.optionIndex + 1,
+              ),
+            }
             : question,
         ),
       };
+    case 'SAVE_RECIPIENTS':
+      return { ...state, recipients: payload.recipients };
     default:
       return state;
   }

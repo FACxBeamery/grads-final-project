@@ -8,8 +8,6 @@ import QuestionCard from './QuestionCard/QuestionCard';
 import SurveyDescription from './SurveyDescription/SurveyDescription';
 import SurveySubmit from './SurveySubmit/SurveySubmit';
 
-
-
 const TakeSurvey = () => {
   const dispatch = useDispatch();
 
@@ -28,6 +26,7 @@ const TakeSurvey = () => {
     getSurvey();
   }, [dispatch]);
 
+
   
     return (
       <Box display='flex' flexDirection='column'>
@@ -36,7 +35,7 @@ const TakeSurvey = () => {
         {activeQuestion === 'end' ? <SurveySubmit /> : null}
       </Box>
     );
-  
+
 
 };
 
