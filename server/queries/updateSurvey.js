@@ -5,6 +5,21 @@ const updateSurvey = async (surveyId, changes) => {
     const db = getDb();
     const surveys = db.collection('Surveys');
     const questions = db.collection('Questions');
+
+    // checking if survey is anon
+    let surveyToCheckIfAnon = await surveys
+      .findOne({
+        _id: ObjectID(surveyId),
+      })
+      .toArray();
+
+    const anonymous = surveyToCheckIfAnon.anonymous;
+    const employeeId = anonymous ? null : ObjectID(changes.employeeId),
+
+    const survey = await surveys.findOne({
+      _id: ObjectID(surveyId),
+    });
+
     const result = await surveys.updateOne(
       {
         _id: ObjectID(surveyId),
@@ -13,14 +28,26 @@ const updateSurvey = async (surveyId, changes) => {
         $set: changes,
       },
     );
-    const survey = await surveys.findOne({
-      _id: ObjectID(surveyId),
-    });
+    if (!anonymous)
+      await surveys.updateOne(
+        {
+          _id: ObjectID(surveyId),
+          'recipients.employeeId': ObjectID(employeeId),
+        },
+        { $set: { 'recipients.$.completed': true } },
+      );
+    
+    if (changes.answersFromEmployee) {
+      await surveys.updateOne(
+        { _id: ObjectID(surveyId) },
+        { $push: { responses: {
+          employeeId: anonymous ? null : ObjectID(employeeId),
+          answers: changes.answersFromEmployee,
+        }  } },
+      );
+    }
 
     let surveyQuestions = survey.questions;
-    // console.log(surveyQuestions);
-
-    // let questionIds = surveyQuestions.map((question) => ObjectID(question._id));
     surveyQuestions.map(async (question) => {
       let questionWithoutId = { ...question };
       delete questionWithoutId._id;
@@ -29,15 +56,8 @@ const updateSurvey = async (surveyId, changes) => {
           { _id: ObjectID(question._id) },
           { $set: questionWithoutId },
         );
-        // console.log(result);
-      } catch (error) {
-        // console.log(error);
-      }
+      } catch (error) {}
     });
-    // const result2 = await collections.updateMany(questionIds, {
-    //   $set: changes,
-    // });
-
     return result;
   } catch (err) {
     return err;
