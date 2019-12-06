@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import {
@@ -11,7 +12,7 @@ import {
   StepLabel,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
-import EmployeeTable from '../../components/EmployeeTable';
+import EmployeesTable from '../../components/EmployeeTable';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -135,26 +136,60 @@ const SnackbarClose = () => {
   );
 };
 
+const EditSurveyButton = () => {
+  const { _id } = useSelector((state) => state.surveyDetailReducer);
+  return (
+    <Button color='secondary' variant='outlined' size='large'>
+      <Link
+        style={{ color: '#f15852', textDecoration: 'none' }}
+        to={{
+          pathname: `/admin/surveys/edit/${_id}`,
+        }}
+      >
+        Edit survey
+      </Link>
+    </Button>
+  );
+};
 const SurveyDetail = ({ match }) => {
   const dispatch = useDispatch();
-  const { title, status, successfulPublish, successfulClose } = useSelector(
-    (state) => state.surveyDetailReducer,
-  );
+  const {
+    title,
+    description,
+    status,
+    successfulPublish,
+    successfulClose,
+  } = useSelector((state) => state.surveyDetailReducer);
 
   useEffect(() => {
     const { id: idFromUrl } = match.params;
     getSurvey(idFromUrl, dispatch);
   }, [match.params, dispatch]);
 
+  console.log(status, 'STATUS');
   return (
-    <Box display='flex' flexDirection='row' align-items='flex-start'>
-      <Typography color='primary' variant='h3'>
-        {title}
-      </Typography>
-      <SurveyDetailsStepper />
-      <EmployeeTable />
-      {status === 'draft' && <PublishSurveyButton />}
-      {status === 'published' && <CloseSurveyButton />}
+    <Box display='flex' flexDirection='column' align-items='flex-start'>
+      <Box display='flex' justifyContent='space-between'>
+        <Box display='flex' flexDirection='column' alignItems='flex-start'>
+          <Typography color='primary' variant='h2'>
+            {title}
+          </Typography>
+          <SurveyDetailsStepper />
+          <Typography color='primary' variant='h5'>
+            {description}
+          </Typography>
+        </Box>
+        <Box alignSelf='flex-start'>
+          {status === 'draft' && (
+            <Box display='flex' flexDirection='column'>
+              <PublishSurveyButton />
+              <EditSurveyButton />
+            </Box>
+          )}
+          {status === 'published' && <CloseSurveyButton />}
+        </Box>
+      </Box>
+      {status === 'published' && <EmployeesTable />}
       {successfulPublish !== undefined && <SnackbarPublish />}
       {successfulClose !== undefined && <SnackbarClose />}
     </Box>
