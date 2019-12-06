@@ -13,6 +13,7 @@ module.exports = [
     disclaimer: 'some disclaimer',
 
     dateCreated: 1573826615,
+    dateEdited: 1572617513,
     dateToPublish: 1574345041,
     datePublished: '',
     dateToClose: 1576937061,
@@ -45,9 +46,9 @@ module.exports = [
       },
     ],
     questions: [
-      { questionId: ObjectID('707f1f87bcf86dd799439011'), position: 1 },
-      { questionId: ObjectID('707f1f87bcf86dd799439021'), position: 2 },
-      { questionId: ObjectID('707f1f87bcf86dd799439121'), position: 3 },
+      { _id: ObjectID('707f1f87bcf86dd799439011'), position: 1 },
+      { _id: ObjectID('707f1f87bcf86dd799439021'), position: 2 },
+      { _id: ObjectID('707f1f87bcf86dd799439121'), position: 3 },
     ],
     responses: [],
   },
@@ -61,6 +62,7 @@ module.exports = [
 
     dateCreated: 1572617513,
     dateToPublish: 1574259113,
+    dateEdited: 1572617513,
     datePublished: 1574259113,
     dateToClose: 1576851113,
     dateClosed: '',
@@ -128,15 +130,15 @@ module.exports = [
       },
     ],
     questions: [
-      { questionId: ObjectID('707f1f87bcf86dd799439011'), position: 1 },
-      { questionId: ObjectID('707f1f87bcf86dd799439021'), position: 2 },
-      { questionId: ObjectID('707f1f87bcf86dd799439121'), position: 3 },
-      { questionId: ObjectID('707f1f87bcf76dd789439121'), position: 4 },
-      { questionId: ObjectID('707f1f87bcf76dd799439121'), position: 5 },
-      { questionId: ObjectID('707f1f87bdf76dd799439121'), position: 6 },
-      { questionId: ObjectID('707f1f87bdf76dd799539126'), position: 7 },
-      { questionId: ObjectID('707f1f87bdf76dd799439126'), position: 8 },
-      { questionId: ObjectID('707f1f87bdf76dd799439127'), position: 9 },
+      { id: ObjectID('707f1f87bcf86dd799439011'), position: 1 },
+      { id: ObjectID('707f1f87bcf86dd799439021'), position: 2 },
+      { id: ObjectID('707f1f87bcf86dd799439121'), position: 3 },
+      { id: ObjectID('707f1f87bcf76dd789439121'), position: 4 },
+      { id: ObjectID('707f1f87bcf76dd799439121'), position: 5 },
+      { id: ObjectID('707f1f87bdf76dd799439121'), position: 6 },
+      { id: ObjectID('707f1f87bdf76dd799539126'), position: 7 },
+      { id: ObjectID('707f1f87bdf76dd799439126'), position: 8 },
+      { id: ObjectID('707f1f87bdf76dd799439127'), position: 9 },
     ],
     responses: [
       {
@@ -240,6 +242,7 @@ module.exports = [
     disclaimer: 'some disclaimer',
 
     dateCreated: 1572617513,
+    dateEdited: 1572617513,
     dateToPublish: 1574259113,
     datePublished: 1574259113,
     dateToClose: 1576851113,
@@ -308,10 +311,10 @@ module.exports = [
       },
     ],
     questions: [
-      { questionId: ObjectID('707f1f87bdf76dd799439127'), position: 0 },
-      { questionId: ObjectID('707f1f87bdf76dd799439126'), position: 1 },
-      { questionId: ObjectID('707f1f87bcf76dd789439121'), position: 2 },
-      { questionId: ObjectID('707f1f87bcf86dd799439021'), position: 3 },
+      { id: ObjectID('707f1f87bdf76dd799439127'), position: 0 },
+      { id: ObjectID('707f1f87bdf76dd799439126'), position: 1 },
+      { id: ObjectID('707f1f87bcf76dd789439121'), position: 2 },
+      { id: ObjectID('707f1f87bcf86dd799439021'), position: 3 },
     ],
     responses: [
       {

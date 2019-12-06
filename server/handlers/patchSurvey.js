@@ -2,8 +2,9 @@ const updateSurvey = require('../queries/updateSurvey');
 
 const patchSurvey = async (req, res) => {
   try {
-    console.log('req.body: ', req.body);
-    const result = await updateSurvey(req.params.id, req.body);
+    const { body } = req;
+    const { id } = req.params;
+    const result = await updateSurvey(id, body);
     res.status(204).json(result);
   } catch (err) {
     res

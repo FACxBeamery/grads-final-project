@@ -67,21 +67,29 @@ const postSurveys = async (req, res) => {
   //   });
   const surveyObject = req.body;
   const questions = surveyObject.questions;
-  Joi.validate(surveyObj, surveyObjectSchema, async (err, result) => {
-    if (err) {
-      console.log('Joi validation failed');
-      res.send(err.message);
-    } else {
-      try {
-        const questionIdsObject = await addQuestions(questions);
-        const questionIds = Object.values(questionIdsObject);
-        await createSurvey(surveyObj, questionIds);
-        res.sendStatus(200);
-      } catch (e) {
-        res.status(500).send(e.message);
-      }
-    }
-  });
+  try {
+    const questionIdsObject = await addQuestions(questions);
+    const questionIds = Object.values(questionIdsObject);
+    await createSurvey(surveyObject, questionIds);
+    res.sendStatus(200);
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+  // Joi.validate(surveyObject, surveyObjectSchema, async (err, result) => {
+  //   if (err) {
+  //     console.log('Joi validation failed');
+  //     res.send(err.message);
+  //   } else {
+  //     try {
+  //       const questionIdsObject = await addQuestions(questions);
+  //       const questionIds = Object.values(questionIdsObject);
+  //       await createSurvey(surveyObject, questionIds);
+  //       res.sendStatus(200);
+  //     } catch (e) {
+  //       res.status(500).send(e.message);
+  //     }
+  //   }
+  // });
 };
 
 module.exports = postSurveys;
