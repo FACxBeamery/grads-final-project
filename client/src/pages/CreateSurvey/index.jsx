@@ -120,6 +120,42 @@ const CreateSurvey = ({ history }) => {
     );
   };
 
+  const ConfirmChanges = () => {
+    return (
+      <>
+        <Typography variant='h5' id='simple-modal-title'>
+          Are you sure you want to save your changes?
+        </Typography>
+        <Box mt={6} display='flex' justifyContent='space-between'>
+          <Button onClick={redirectToDashboard} color='primary'>
+            Go back to dashboard
+          </Button>
+          <Button onClick={toggleModal} color='primary'>
+            Cancel
+          </Button>
+          <Button onClick={confirmEditing} color='secondary'>
+            Yes
+          </Button>
+        </Box>
+      </>
+    );
+  };
+
+  const ChangesConfirmed = () => {
+    return (
+      <>
+        <Typography variant='h5' style={{ textAlign: 'center' }}>
+          Survey created successfully!
+        </Typography>
+        <Box mt={6}>
+          <Button contained color='secondary' onClick={redirectToDashboard}>
+            Go Back to Dashboard
+          </Button>
+        </Box>
+      </>
+    );
+  };
+
   return (
     <Box>
       {isConfirming && <PromptMessage />}
@@ -205,39 +241,7 @@ const CreateSurvey = ({ history }) => {
         onClose={toggleModal}
       >
         <Box style={modalStyle} className={classes.paper}>
-          {isConfirming ? (
-            <>
-              <Typography variant='h5' id='simple-modal-title'>
-                Are you sure you want to save your changes?
-              </Typography>
-              <Box mt={6} display='flex' justifyContent='space-between'>
-                <Button onClick={redirectToDashboard} color='primary'>
-                  Go back to dashboard
-                </Button>
-                <Button onClick={toggleModal} color='primary'>
-                  Cancel
-                </Button>
-                <Button onClick={confirmEditing} color='secondary'>
-                  Yes
-                </Button>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Typography variant='h5' style={{ textAlign: 'center' }}>
-                Survey created successfully!
-              </Typography>
-              <Box mt={6}>
-                <Button
-                  contained
-                  color='secondary'
-                  onClick={redirectToDashboard}
-                >
-                  Go Back to Dashboard
-                </Button>
-              </Box>
-            </>
-          )}
+          {isConfirming ? <ConfirmChanges /> : <ChangesConfirmed />}
         </Box>
       </Modal>
     </Box>
