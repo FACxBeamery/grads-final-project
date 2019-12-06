@@ -17,7 +17,7 @@ const TakeSurvey = () => {
 
   useEffect(() => {
     const getSurvey = async () => {
-      const response = await axios.get('/surveys/507f1f77bcf86cd799439001');
+      const response = await axios.get('/surveys/508f1f99bcf86cd799439014');
 
       dispatch({ type: 'SET_SURVEY', payload: response.data });
       dispatch({ type: 'SET_QUESTIONS', payload: response.data.questions });
@@ -26,17 +26,13 @@ const TakeSurvey = () => {
     getSurvey();
   }, [dispatch]);
 
-
-  
-    return (
-      <Box display='flex' flexDirection='column'>
-        <UserProgressStepper />
-        {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
-        {activeQuestion === 'end' ? <SurveySubmit /> : null}
-      </Box>
-    );
-
-
+  return (
+    <Box display='flex' flexDirection='column'>
+      <UserProgressStepper />
+      {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
+      {activeQuestion === 'end' ? <SurveySubmit /> : null}
+    </Box>
+  );
 };
 
 export default TakeSurvey;
