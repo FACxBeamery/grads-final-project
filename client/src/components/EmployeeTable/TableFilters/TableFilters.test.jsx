@@ -14,7 +14,7 @@ describe('Table Filters work as expected', () => {
       </Provider>,
     );
 
-    const selectAllCheckboxes = getAllByText('Show all', { exact: false });
+    const selectAllCheckboxes = getAllByText('Select all', { exact: false });
     expect(selectAllCheckboxes).toHaveLength(2);
   });
   it('should display a searchbar', () => {
