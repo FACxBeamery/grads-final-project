@@ -15,6 +15,7 @@ import Snackbar from '../../components/Snackbar';
 
 let successfulPublish;
 let successfulClose;
+
 const publishSurvey = async (_id) => {
   const response = await axios.patch(`/surveys/${_id}`, {
     status: 'published',
@@ -32,44 +33,36 @@ const closeSurvey = async (_id) => {
 };
 
 const SurveyDetail = ({ match }) => {
-  const allState = useSelector((state) => state);
-  console.log('STATE: ', allState);
-
   const dispatch = useDispatch();
 
-  const { status, activeStep } = useSelector(
+  const { id, status, activeStep } = useSelector(
     (state) => state.surveyDetailReducer,
   );
 
-  // const { id } = match.params;
-  useEffect(() => {
-    const { id } = match.params;
+  const setSurveyData = (data) => {
+    dispatch({ type: 'SET_SURVEY_DATA', payload: data });
+    dispatch({ type: 'SET_ACTIVE_STEP' });
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getSurvey = async (idToFind) => {
+    try {
+      const { data } = await axios.get(`/surveys/${idToFind}`);
+      setSurveyData(data);
+    } catch (error) {
+      setSurveyData({});
+    }
+  };
 
-    const setSurveyData = (data) => {
-      dispatch({ type: 'SET_SURVEY_DATA', payload: data });
-      dispatch({ type: 'SET_ACTIVE_STEP' });
-    };
-    const getSurvey = async () => {
-      try {
-        const { data } = await axios.get(`/surveys/${id}`);
-        setSurveyData(data);
-      } catch (error) {
-        setSurveyData({});
-      }
-    };
-    getSurvey(id);
-  }, [match.params, dispatch]);
-  // React.useEffect(() => {
-  //   getSurveyStatusForStepper(id).then((response) =>
-  //     dispatch({ type: 'SET_SURVEY_STATUS', payload: response }),
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [id]);
+  useEffect(() => {
+    const idFromEndpoint = match.params.id;
+
+    getSurvey(idFromEndpoint);
+  }, [match.params.id, getSurvey]);
 
   const SurveyDetailsStepper = () => {
     const steps = ['Draft', 'Publish', 'Close'];
     return (
-      <Stepper alternativeLabel activeStep={surveyStatus}>
+      <Stepper alternativeLabel activeStep={activeStep}>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -88,9 +81,7 @@ const SurveyDetail = ({ match }) => {
         color='secondary'
         onClick={async () => {
           await publishSurvey(id);
-          getSurveyStatusForStepper(id).then((response) =>
-            dispatch({ type: 'SET_SURVEY_STATUS', payload: response }),
-          );
+          await getSurvey(id);
         }}
       >
         Publish Survey
@@ -107,9 +98,7 @@ const SurveyDetail = ({ match }) => {
         color='secondary'
         onClick={async () => {
           await closeSurvey(id);
-          getSurveyStatusForStepper(id).then((response) =>
-            dispatch({ type: 'SET_SURVEY_STATUS', payload: response }),
-          );
+          await getSurvey(id);
         }}
       >
         Close Survey
