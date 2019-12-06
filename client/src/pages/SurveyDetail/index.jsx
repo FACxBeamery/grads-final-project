@@ -12,6 +12,7 @@ import {
   StepLabel,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
+import EmployeeTable from '../../components/EmployeeTable';
 
 let successfulPublish;
 let successfulClose;
@@ -39,25 +40,23 @@ const SurveyDetail = ({ match }) => {
     (state) => state.surveyDetailReducer,
   );
 
-  const setSurveyData = (data) => {
-    dispatch({ type: 'SET_SURVEY_DATA', payload: data });
-    dispatch({ type: 'SET_ACTIVE_STEP' });
-  };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getSurvey = async (idToFind) => {
-    try {
-      const { data } = await axios.get(`/surveys/${idToFind}`);
-      setSurveyData(data);
-    } catch (error) {
-      setSurveyData({});
-    }
-  };
-
   useEffect(() => {
-    const idFromEndpoint = match.params.id;
-
-    getSurvey(idFromEndpoint);
-  }, [match.params.id, getSurvey]);
+    const { idFromUrl } = match.params;
+    dispatch({ type: 'RESET_STATE' });
+    const setSurveyData = (data) => {
+      const payload = data;
+      dispatch({ type: 'SET_SURVEY_DATA', payload });
+    };
+    const getSurvey = async (idToSend) => {
+      try {
+        const { data } = await axios.get(`/surveys/${idToSend}`);
+        setSurveyData(data);
+      } catch (error) {
+        setSurveyData({});
+      }
+    };
+    getSurvey(idFromUrl);
+  }, [match.params, dispatch]);
 
   const SurveyDetailsStepper = () => {
     const steps = ['Draft', 'Publish', 'Close'];
@@ -81,7 +80,7 @@ const SurveyDetail = ({ match }) => {
         color='secondary'
         onClick={async () => {
           await publishSurvey(id);
-          await getSurvey(id);
+          // await getSurvey(id);
         }}
       >
         Publish Survey
@@ -98,7 +97,7 @@ const SurveyDetail = ({ match }) => {
         color='secondary'
         onClick={async () => {
           await closeSurvey(id);
-          await getSurvey(id);
+          // await getSurvey(id);
         }}
       >
         Close Survey
@@ -112,6 +111,7 @@ const SurveyDetail = ({ match }) => {
         Survey title.
       </Typography>
       <SurveyDetailsStepper />
+      <EmployeeTable />
       {activeStep === 1 && <PublishSurveyButton />}
       {activeStep === 2 && <CloseSurveyButton />}
       {successfulPublish !== undefined && (
