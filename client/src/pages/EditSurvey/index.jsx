@@ -17,6 +17,7 @@ import {
   Modal,
 } from '@material-ui/core';
 import QuestionsList from '../CreateSurvey/Questions/QuestionsList';
+import RecipientsList from '../CreateSurvey/RecipientsList';
 import formatDate from '../../utils/formatDate';
 import formatDateWithTime from '../../utils/formatDateWithTime';
 
@@ -44,7 +45,6 @@ const EditSurvey = ({ match, history }) => {
   const {
     title,
     description,
-    recipients,
     disclaimer,
     anonymous,
     dateCreated,
@@ -61,14 +61,22 @@ const EditSurvey = ({ match, history }) => {
 
   useEffect(() => {
     const { id } = match.params;
-    dispatch({ type: 'RESET_STATE' });
+    dispatch({ type: 'RESET_ES_STATE' });
     const setSurveyData = (data) => {
-      const payload = data;
+      let payload = data;
       dispatch({ type: 'SET_SURVEY_DATA', payload });
+
+      // const recipientIds = payload.recipients.map(
+      //   (recipient) => recipient.employeeId,
+      // );
+      // payload = { recipients: data.recipients, recipientIds };
+      // dispatch({ type: 'SET_EMPLOYEE_TABLE_RECIPIENTS', payload });
     };
     const getSurvey = async () => {
       try {
         const { data } = await axios.get(`/surveys/${id}`);
+        console.log(data);
+
         setSurveyData(data);
       } catch (error) {
         setSurveyData({});
@@ -78,7 +86,7 @@ const EditSurvey = ({ match, history }) => {
   }, [match.params, dispatch]);
 
   const toggleModal = () => {
-    dispatch({ type: 'TOGGLE_MODAL' });
+    dispatch({ type: 'TOGGLE_ES_MODAL' });
   };
 
   const saveEditedSurvey = async () => {
@@ -98,7 +106,7 @@ const EditSurvey = ({ match, history }) => {
   };
 
   const confirmEditing = () => {
-    dispatch({ type: 'TOGGLE_CONFIRMATION_MODAL' });
+    dispatch({ type: 'TOGGLE_ES_CONFIRMATION_MODAL' });
     saveEditedSurvey();
   };
 
@@ -178,16 +186,7 @@ const EditSurvey = ({ match, history }) => {
             label='Enter a description'
             onChange={setMetadata}
           />
-          <TextField
-            InputLabelProps={{
-              shrink: true,
-            }}
-            required
-            value={recipients[0]}
-            label='PLACEHOLDER FOR RECIPIENTS'
-            name='recipients'
-            onChange={setMetadata}
-          />
+
           <TextField
             InputLabelProps={{
               shrink: true,
@@ -214,6 +213,8 @@ const EditSurvey = ({ match, history }) => {
             }
             label='Anonymous'
           />
+          <Divider variant='middle' />
+          <RecipientsList />
           <Divider variant='middle' />
           <QuestionsList />
           <Box alignSelf='center' mt={8}>

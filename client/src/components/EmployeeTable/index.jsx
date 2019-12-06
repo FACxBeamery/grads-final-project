@@ -38,8 +38,11 @@ const headCells = [
 ];
 
 const EnhancedTableHead = () => {
-  const { recipients, filteredEmployeeData } = useSelector(
+  const { filteredEmployeeData } = useSelector(
     (state) => state.employeeTableReducer,
+  );
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
   );
   const numSelected = recipients.length;
   const dispatch = useDispatch();
@@ -77,7 +80,9 @@ const EnhancedTableHead = () => {
 };
 
 const EnhancedTableToolbar = () => {
-  const { recipients } = useSelector((state) => state.employeeTableReducer);
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
+  );
 
   const numSelected = recipients.length;
   return (
@@ -99,8 +104,11 @@ const EnhancedTableToolbar = () => {
 };
 
 const EmployeesTable = () => {
-  const { filteredEmployeeData, recipients, page, rowsPerPage } = useSelector(
+  const { filteredEmployeeData, page, rowsPerPage } = useSelector(
     (state) => state.employeeTableReducer,
+  );
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
   );
 
   const dispatch = useDispatch();
@@ -155,13 +163,16 @@ const EmployeesTable = () => {
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = row.id;
+                    // eslint-disable-next-line no-underscore-dangle
+                    const isItemSelected = isSelected(row._id);
+                    // eslint-disable-next-line no-underscore-dangle
+                    const labelId = row._id;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleRowClick(event, row.id)}
+                        // eslint-disable-next-line no-underscore-dangle
+                        onClick={(event) => handleRowClick(event, row._id)}
                         role='checkbox'
                         aria-checked={isItemSelected}
                         tabIndex={-1}

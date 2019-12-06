@@ -7,6 +7,7 @@ const initalState = {
     name: '',
   },
   recipients: [],
+  recipientIds: [],
   page: 0,
   rowsPerPage: 10,
 };
@@ -134,15 +135,22 @@ const employeeTableReducer = (state = initalState, action) => {
     case 'TOGGLE_RECIPIENT':
       return {
         ...state,
-        recipients: toggleSingleRecipient(state.recipients, payload.id),
+        recipientIds: toggleSingleRecipient(state.recipientIds, payload.id),
+      };
+    case 'SET_EMPLOYEE_TABLE_RECIPIENTS':
+      return {
+        ...state,
+        recipients: payload.recipients,
+        recipientIds: payload.recipientIds,
       };
     case 'TOGGLE_FILTERED_RECIPIENTS':
       return {
         ...state,
-        recipients: toggleRecipients(
-          state.recipients,
+        recipientIds: toggleRecipients(
+          state.recipientIds,
           payload.checked,
-          state.filteredEmployeeData.map((person) => person.id),
+          // eslint-disable-next-line no-underscore-dangle
+          state.filteredEmployeeData.map((person) => person._id),
         ),
       };
     case 'SET_INTITAL_FILTER_OPTIONS':

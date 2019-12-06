@@ -60,18 +60,15 @@ const CreateSurvey = ({ history }) => {
     ...useSelector((state) => state.createSurveyReducer),
   };
 
-  const createArrayOfObjectsFromArray = (array) => {
-    return array.map((item) => {
-      return { employeeId: item, completed: false };
-    });
-  };
+  // const createArrayOfObjectsFromArray = (array) => {
+  //   return array.map((item) => {
+  //     return { employeeId: item, completed: false };
+  //   });
+  // };
 
   // TODO route back to dashboard on click
   const saveSurvey = async () => {
     try {
-      delete surveyForSending.employeeData;
-      delete surveyForSending.openModal;
-
       surveyForSending = {
         ...surveyForSending,
         status: 'draft',
@@ -81,8 +78,14 @@ const CreateSurvey = ({ history }) => {
         dateEdited: Date.now(),
         datePublished: null,
         dateToPublish: null,
-        recipients: createArrayOfObjectsFromArray(surveyForSending.recipients),
       };
+      delete surveyForSending.employeeData;
+      delete surveyForSending.openCreateSurveyModal;
+      delete surveyForSending.isConfirming;
+      delete surveyForSending.openModal;
+      // delete surveyForSending.recipientIds;
+
+      console.log(surveyForSending);
 
       await axios.post('/surveys', surveyForSending);
     } catch (e) {

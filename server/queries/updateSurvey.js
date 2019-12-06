@@ -51,6 +51,7 @@ const updateSurvey = async (surveyId, changes) => {
     }
 
     let surveyQuestions = survey.questions;
+    console.log(surveyQuestions);
 
     surveyQuestions.map(async (question) => {
       let questionWithoutId = { ...question };
@@ -58,7 +59,7 @@ const updateSurvey = async (surveyId, changes) => {
 
       try {
         await questions.updateOne(
-          { _id: ObjectID(questionWithoutId) },
+          { _id: ObjectID(question._id) },
           { $set: questionWithoutId },
         );
       } catch (error) {

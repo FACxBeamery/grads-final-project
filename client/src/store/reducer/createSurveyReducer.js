@@ -187,7 +187,7 @@ const createSurveyReducer = (state = initalState, action) => {
         ),
       };
     case 'SAVE_RECIPIENTS':
-      return { ...state, recipients: payload.recipients };
+      return { ...state, recipientIds: payload.recipients };
     default:
       return state;
   }

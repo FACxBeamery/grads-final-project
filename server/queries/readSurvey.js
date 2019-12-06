@@ -9,6 +9,7 @@ const readSurvey = async (_id) => {
     const survey = await surveys.findOne({
       _id: ObjectID(_id),
     });
+    // console.log(survey);
 
     let surveyQuestions = survey.questions;
 
@@ -16,11 +17,15 @@ const readSurvey = async (_id) => {
       ObjectID(question.toString()),
     );
 
+    console.log(surveyQuestions);
+
     const questionsCollection = db.collection('Questions');
 
     const questions = await questionsCollection
       .find({ _id: { $in: questionIds } })
       .toArray();
+
+    console.log(survey.questions);
 
     // order questions in data returned by id
     survey.questions = questionIds.map((id) => {
@@ -28,6 +33,8 @@ const readSurvey = async (_id) => {
         return element._id.equals(id);
       });
     });
+    console.log('SURVEY TO SEND', survey);
+
     return survey;
   } catch (err) {
     return err;
