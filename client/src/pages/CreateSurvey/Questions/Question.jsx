@@ -19,7 +19,7 @@ import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import Options from '../Options/Options';
 
 const Question = ({ questionIndex }) => {
-  const { title, type, required, commentsEnabled } = useSelector(
+  const { title, type, required, commentEnabled } = useSelector(
     (state) => state.createSurveyReducer.questions[questionIndex],
   );
   const { questions } = useSelector((state) => state.createSurveyReducer);
@@ -166,10 +166,10 @@ const Question = ({ questionIndex }) => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={commentsEnabled}
+                  checked={commentEnabled}
                   onChange={(e) => setQuestionData(e, 'checkbox')}
-                  value='commentsEnabled'
-                  name='commentsEnabled'
+                  value='commentEnabled'
+                  name='commentEnabled'
                   labelid='comments-enabled-checkbox'
                   inputProps={{
                     'aria-label': 'Allow comments: ',

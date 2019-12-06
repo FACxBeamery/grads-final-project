@@ -1,15 +1,34 @@
+const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
-const readSurvey = async (id) => {
+const readSurvey = async (_id) => {
   try {
     const db = getDb();
     const surveys = db.collection('Surveys');
-    const result = await surveys
-      .findOne({
-        id: id,
-      })
+
+    const survey = await surveys.findOne({
+      _id: ObjectID(_id),
+    });
+
+    let surveyQuestions = survey.questions;
+
+    let questionIds = surveyQuestions.map((question) =>
+      ObjectID(question._id.toString()),
+    );
+
+    const questionsCollection = db.collection('Questions');
+
+    const questions = await questionsCollection
+      .find({ _id: { $in: questionIds } })
       .toArray();
-    return result;
+
+    // order questions in data returned by id
+    survey.questions = questionIds.map((id) => {
+      return questions.find((element) => {
+        return element._id.equals(id);
+      });
+    });
+    return survey;
   } catch (err) {
     return err;
   }

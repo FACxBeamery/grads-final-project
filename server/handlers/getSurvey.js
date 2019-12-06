@@ -2,10 +2,10 @@ const readSurvey = require('../queries/readSurvey');
 
 const getSurvey = async (req, res) => {
   try {
-    // console.log('req.params: ', req.params);
-    // const result = await readSurvey(id);
-    // res.status(200).json(result);
-    // res.status(200).json(req.params);
+    //checks if params contains key id or if params itself is just one string
+    let id = !req.params.id ? req.params : req.params.id;
+    const result = await readSurvey(id.toString());
+    res.status(200).json(result);
   } catch (err) {
     res
       .status(500)

@@ -1,7 +1,11 @@
-.header-title {
-  display: flex;
-  align-self: center;
+.header {
+  text-align: center;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
 .header-title-vibe {
   flex-direction: row;
   font-family: 'Merriweather';
@@ -10,4 +14,10 @@
   flex-direction: row;
   font-family: 'Merriweather';
   color: #f15852;
+}
+
+.button {
+  position: absolute;
+  right: 0rem;
+  top: 1rem;
 }
