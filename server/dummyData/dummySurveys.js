@@ -3,8 +3,7 @@ const ObjectID = require('mongodb').ObjectID;
 
 module.exports = [
   {
-    id: ObjectID('507f1f77bcf86cd799439001'),
-
+    _id: ObjectID('508f1f99bcf86cd799439014'),
     title: 'Graduates Onboarding',
     description:
       'A survey description that is about 1 sentence long yeah blah blah',
@@ -46,13 +45,14 @@ module.exports = [
       },
     ],
     questions: [
-      { _id: ObjectID('707f1f87bcf86dd799439011'), position: 1 },
-      { _id: ObjectID('707f1f87bcf86dd799439021'), position: 2 },
-      { _id: ObjectID('707f1f87bcf86dd799439121'), position: 3 },
+      ObjectID('707f1f87bcf86dd799439011'),
+      ObjectID('707f1f87bcf86dd799439021'),
+      ObjectID('707f1f87bcf86dd799439121'),
     ],
     responses: [],
   },
   {
+    _id: ObjectID('508f1f99bcf86cd799439214'),
     title: 'All employees survey',
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
@@ -130,15 +130,15 @@ module.exports = [
       },
     ],
     questions: [
-      { id: ObjectID('707f1f87bcf86dd799439011'), position: 1 },
-      { id: ObjectID('707f1f87bcf86dd799439021'), position: 2 },
-      { id: ObjectID('707f1f87bcf86dd799439121'), position: 3 },
-      { id: ObjectID('707f1f87bcf76dd789439121'), position: 4 },
-      { id: ObjectID('707f1f87bcf76dd799439121'), position: 5 },
-      { id: ObjectID('707f1f87bdf76dd799439121'), position: 6 },
-      { id: ObjectID('707f1f87bdf76dd799539126'), position: 7 },
-      { id: ObjectID('707f1f87bdf76dd799439126'), position: 8 },
-      { id: ObjectID('707f1f87bdf76dd799439127'), position: 9 },
+      ObjectID('707f1f87bcf86dd799439011'),
+      ObjectID('707f1f87bcf86dd799439021'),
+      ObjectID('707f1f87bcf86dd799439121'),
+      ObjectID('707f1f87bcf76dd789439121'),
+      ObjectID('707f1f87bcf76dd799439121'),
+      ObjectID('707f1f87bdf76dd799439121'),
+      ObjectID('707f1f87bdf76dd799539126'),
+      ObjectID('707f1f87bdf76dd799439126'),
+      ObjectID('707f1f87bdf76dd799439127'),
     ],
     responses: [
       {
@@ -234,13 +234,13 @@ module.exports = [
     ],
   },
   {
+    _id: ObjectID('509f1f99bcf86cd799439215'),
     title: 'People Team - engagement survey',
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
     status: 'closed',
 
     disclaimer: 'some disclaimer',
-
     dateCreated: 1572617513,
     dateEdited: 1572617513,
     dateToPublish: 1574259113,
@@ -311,10 +311,10 @@ module.exports = [
       },
     ],
     questions: [
-      { id: ObjectID('707f1f87bdf76dd799439127'), position: 0 },
-      { id: ObjectID('707f1f87bdf76dd799439126'), position: 1 },
-      { id: ObjectID('707f1f87bcf76dd789439121'), position: 2 },
-      { id: ObjectID('707f1f87bcf86dd799439021'), position: 3 },
+      ObjectID('707f1f87bdf76dd799439127'),
+      ObjectID('707f1f87bdf76dd799439126'),
+      ObjectID('707f1f87bcf76dd789439121'),
+      ObjectID('707f1f87bcf86dd799439021'),
     ],
     responses: [
       {

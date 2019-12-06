@@ -14,13 +14,7 @@ module.exports = [
     type: 'multichoice',
     required: true,
     commentEnabled: true,
-    options: [
-      { text: 'really bad', position: 0 },
-      { text: 'bad', position: 1 },
-      { text: 'meh', position: 2 },
-      { text: 'good', position: 3 },
-      { text: 'great', position: 4 },
-    ],
+    options: ['really bad', 'bad', 'meh', 'good', 'great'],
   },
   {
     _id: ObjectID('707f1f87bcf86dd799439121'),
@@ -29,11 +23,11 @@ module.exports = [
     required: true,
     commentEnabled: true,
     options: [
-      { text: 'strongly disagree', position: 0 },
-      { text: 'disagree', position: 1 },
-      { text: 'neutral', position: 2 },
-      { text: 'agree', position: 3 },
-      { text: 'strongly agree', position: 4 },
+      'strongly disagree',
+      'disagree',
+      'neutral',
+      'agree',
+      'strongly agree',
     ],
   },
   {
@@ -43,11 +37,11 @@ module.exports = [
     required: true,
     commentEnabled: false,
     options: [
-      { text: 'strongly disagree', position: 0 },
-      { text: 'disagree', position: 1 },
-      { text: 'neutral', position: 2 },
-      { text: 'agree', position: 3 },
-      { text: 'strongly agree', position: 4 },
+      'strongly disagree',
+      'disagree',
+      'neutral',
+      'agree',
+      'strongly agree',
     ],
   },
   {
@@ -86,9 +80,6 @@ module.exports = [
     type: 'multichoice',
     required: false,
     commentEnabled: false,
-    options: [
-      { text: 'yes', position: 0 },
-      { text: 'no', position: 1 },
-    ],
+    options: ['yes', 'no'],
   },
 ];
