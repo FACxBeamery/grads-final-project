@@ -8,7 +8,8 @@ const getSurveyAndQuestions = require('./handlers/getSurveyAndQuestions');
 // const patchSurveys = require('./handlers/patchSurveys');
 const getSurvey = require('./handlers/getSurvey');
 const postSurveys = require('./handlers/postSurveys');
-const patchSurveys = require('./handlers/patchSurveys');
+const { getEmployees } = require('./handlers/getEmployees');
+//const patchSurveys = require('./handlers/patchSurveys');
 const patchEmployeesWithSlackID = require('./handlers/patchEmployeesWithSlackID');
 // const postEmployees = require('./handlers/postEmployees');
 
@@ -31,7 +32,7 @@ router.get('/surveys', getSurveys);
 
 router.post('/surveys', postSurveys);
 
-router.patch('/surveys', patchSurveys);
+//router.patch('/surveys', patchSurveys);
 
 // router.get('/employees/:pagesize/:pagenumber', getPaginatedEmployees);
 
