@@ -1,4 +1,3 @@
-const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 const { ObjectID } = require('mongodb');
 

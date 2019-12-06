@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 // import { Link } from 'react-router-dom';
@@ -12,18 +12,6 @@ import {
   StepLabel,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
-
-const getSurveyStatusForStepper = async (_id) => {
-  const result = await axios.get(`/surveys/${_id}`);
-  console.log('result: ', result);
-  const surveyStatusToIndex = { draft: 1, published: 2, closed: 3 };
-  return surveyStatusToIndex[result.data.status];
-};
-
-const getSurveyTitle = async (_id) => {
-  const result = await axios.get(`/surveys/${_id}`);
-  return result.data.title;
-};
 
 let successfulPublish;
 let successfulClose;
@@ -49,17 +37,36 @@ const SurveyDetail = ({ match }) => {
 
   const dispatch = useDispatch();
 
-  const { surveyStatus } = useSelector((state) => state.surveyDetailReducer);
+  const { status, activeStep } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
 
-  const { id } = match.params;
-  React.useEffect(() => {
-    getSurveyStatusForStepper(id).then((response) =>
-      dispatch({ type: 'SET_SURVEY_STATUS', payload: response }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  // const { id } = match.params;
+  useEffect(() => {
+    const { id } = match.params;
 
-  const StepperT = () => {
+    const setSurveyData = (data) => {
+      dispatch({ type: 'SET_SURVEY_DATA', payload: data });
+      dispatch({ type: 'SET_ACTIVE_STEP' });
+    };
+    const getSurvey = async () => {
+      try {
+        const { data } = await axios.get(`/surveys/${id}`);
+        setSurveyData(data);
+      } catch (error) {
+        setSurveyData({});
+      }
+    };
+    getSurvey(id);
+  }, [match.params, dispatch]);
+  // React.useEffect(() => {
+  //   getSurveyStatusForStepper(id).then((response) =>
+  //     dispatch({ type: 'SET_SURVEY_STATUS', payload: response }),
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [id]);
+
+  const SurveyDetailsStepper = () => {
     const steps = ['Draft', 'Publish', 'Close'];
     return (
       <Stepper alternativeLabel activeStep={surveyStatus}>
@@ -115,9 +122,9 @@ const SurveyDetail = ({ match }) => {
       <Typography color='primary' variant='h3'>
         Survey title.
       </Typography>
-      <StepperT />
-      {surveyStatus === 1 && <PublishSurveyButton />}
-      {surveyStatus === 2 && <CloseSurveyButton />}
+      <SurveyDetailsStepper />
+      {activeStep === 1 && <PublishSurveyButton />}
+      {activeStep === 2 && <CloseSurveyButton />}
       {successfulPublish !== undefined && (
         <Snackbar
           message={
