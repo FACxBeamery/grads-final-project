@@ -305,7 +305,7 @@ describe('Employee table works as expected', () => {
     expect(marthaLambert).not.toBeInTheDocument();
     expect(thomasKostrzewski).toBeInTheDocument();
   });
-  it('Checking both attributes should check the "Select all', async () => {
+  it('Checking both attributes should check the "Show all', async () => {
     const mockAxiosGet = jest.spyOn(axios, 'get');
     mockAxiosGet.mockImplementation(() =>
       Promise.resolve({ data: dummyEmployees }),
@@ -321,7 +321,7 @@ describe('Employee table works as expected', () => {
     );
     const engineeringCheckbox = getByLabelText('Engineering', { exact: false });
 
-    const selectAllCheckbox = getAllByLabelText('Select all', {
+    const selectAllCheckbox = getAllByLabelText('Show all', {
       exact: false,
     })[0];
 
@@ -354,7 +354,7 @@ describe('Employee table works as expected', () => {
       getByLabelText('People', { exact: false }),
     );
 
-    const selectAllCheckbox = getAllByLabelText('Select all', {
+    const selectAllCheckbox = getAllByLabelText('Show all', {
       exact: false,
     })[0];
 
