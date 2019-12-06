@@ -99,6 +99,11 @@ const EditSurvey = ({ match, history }) => {
       // remove _id key from data to edit on survey; This key is immutable.
       // eslint-disable-next-line dot-notation
       delete editedSurvey['_id'];
+      delete editedSurvey.modalStyle;
+      delete editedSurvey.openModal;
+      delete editedSurvey.isConfirming;
+      console.log(editedSurvey);
+
       await axios.patch(`/surveys/${id}`, editedSurvey);
     } catch (err) {
       throw new Error(err.message);

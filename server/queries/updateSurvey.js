@@ -14,12 +14,18 @@ const updateSurvey = async (surveyId, changes) => {
     const anonymous = surveyBeforeChanges.anonymous;
     const employeeId = anonymous ? null : ObjectID(changes.employeeId);
 
+    const questionsIds = changes.questions.map((question) => question._id);
+
+    const questionsFromSurvey = changes.questions;
+
+    let changesToBeMade = { ...changes, questions: questionsIds };
+
     const result = await surveys.updateOne(
       {
         _id: ObjectID(surveyId),
       },
       {
-        $set: changes,
+        $set: changesToBeMade,
       },
     );
     const survey = await surveys.findOne({
@@ -50,11 +56,11 @@ const updateSurvey = async (surveyId, changes) => {
       );
     }
 
-    let surveyQuestions = survey.questions;
-    console.log(surveyQuestions);
+    // let surveyQuestions = survey.questions;
 
-    surveyQuestions.map(async (question) => {
+    questionsFromSurvey.map(async (question) => {
       let questionWithoutId = { ...question };
+
       delete questionWithoutId._id;
 
       try {

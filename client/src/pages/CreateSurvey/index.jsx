@@ -66,7 +66,6 @@ const CreateSurvey = ({ history }) => {
   //   });
   // };
 
-  // TODO route back to dashboard on click
   const saveSurvey = async () => {
     try {
       surveyForSending = {

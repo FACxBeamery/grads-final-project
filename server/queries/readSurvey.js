@@ -9,7 +9,7 @@ const readSurvey = async (_id) => {
     const survey = await surveys.findOne({
       _id: ObjectID(_id),
     });
-    // console.log(survey);
+    console.log('SURVEY', survey);
 
     let surveyQuestions = survey.questions;
 
