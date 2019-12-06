@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { AppBar, Button, Box } from '@material-ui/core';
 import styles from './Header.module.css';
 
-const Header = ({ history }) => {
+const Header = ({ history, match }) => {
   return (
     <AppBar data-testid='app-bar' position='relative'>
       <h2 className={styles.header}>
@@ -19,15 +19,17 @@ const Header = ({ history }) => {
           <span className={styles['header-title-beamery']}>Beamery</span>
         </span>
       </h2>
-      <Box mr={2} className={styles.button}>
-        <Button
-          onClick={() => history.push(`/admin`)}
-          style={{ color: '#FFFFFF' }}
-        >
-          {' '}
-          My Dashboard
-        </Button>
-      </Box>
+      {match.path.startsWith('/admin') && (
+        <Box mr={2} className={styles.button}>
+          <Button
+            onClick={() => history.push(`/admin`)}
+            style={{ color: '#FFFFFF' }}
+          >
+            {' '}
+            My Dashboard
+          </Button>
+        </Box>
+      )}
     </AppBar>
   );
 };
@@ -35,6 +37,7 @@ const Header = ({ history }) => {
 Header.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  match: PropTypes.shape({ path: PropTypes.string }).isRequired,
 };
 
 export default withRouter(Header);
