@@ -31,7 +31,7 @@ const Main = () => {
               component={EditSurvey}
             />
             <Route path='/admin/surveys/:id' component={SurveyDetail} />
-            <Route path='/:id' component={TakeSurvey} />
+            <Route path='/takesurvey' component={TakeSurvey} />
           </Switch>
         </Box>
       </Box>
