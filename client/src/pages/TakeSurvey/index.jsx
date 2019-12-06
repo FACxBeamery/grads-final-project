@@ -28,7 +28,7 @@ const TakeSurvey = () => {
     getSurvey();
   }, [dispatch]);
 
-  const TakeSurvey = () => {
+  
     return (
       <Box display='flex' flexDirection='column'>
         <UserProgressStepper />
@@ -36,9 +36,8 @@ const TakeSurvey = () => {
         {activeQuestion === 'end' ? <SurveySubmit /> : null}
       </Box>
     );
-  };
+  
 
-  return <TakeSurvey />;
 };
 
 export default TakeSurvey;
