@@ -15,7 +15,7 @@ const Option = ({ optionIndex, questionIndex }) => {
   const { questions } = useSelector((state) => state.createSurveyReducer);
 
   const { options } = questions[questionIndex];
-  const { text } = options[optionIndex];
+  const text = options[optionIndex];
 
   const setOptionText = (event) => {
     const payload = { questionIndex, optionIndex, text: event.target.value };

@@ -1,6 +1,4 @@
-const defaultOption = {
-  text: '',
-};
+const defaultOption = '';
 
 const defaultQuestion = {
   title: '',
@@ -23,7 +21,7 @@ const initalState = {
 
 const changeOptionText = (options, payload) => {
   return options.map((option, index) =>
-    index === payload.optionIndex ? { ...option, text: payload.text } : option,
+    index === payload.optionIndex ? payload.text : option,
   );
 };
 
@@ -144,13 +142,13 @@ const createSurveyReducer = (state = initalState, action) => {
         questions: state.questions.map((question, index) =>
           index === payload.questionIndex
             ? {
-              ...question,
-              options: switchArrayItems(
-                question.options,
-                payload.optionIndex,
-                payload.optionIndex - 1,
-              ),
-            }
+                ...question,
+                options: switchArrayItems(
+                  question.options,
+                  payload.optionIndex,
+                  payload.optionIndex - 1,
+                ),
+              }
             : question,
         ),
       };
@@ -160,13 +158,13 @@ const createSurveyReducer = (state = initalState, action) => {
         questions: state.questions.map((question, index) =>
           index === payload.questionIndex
             ? {
-              ...question,
-              options: switchArrayItems(
-                question.options,
-                payload.optionIndex,
-                payload.optionIndex + 1,
-              ),
-            }
+                ...question,
+                options: switchArrayItems(
+                  question.options,
+                  payload.optionIndex,
+                  payload.optionIndex + 1,
+                ),
+              }
             : question,
         ),
       };
