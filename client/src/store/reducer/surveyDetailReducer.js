@@ -15,10 +15,14 @@ const surveyDetailReducer = (state = initalState, action) => {
   const { payload } = action;
 
   switch (action.type) {
-    case 'SET_SURVEY_DATA':
+    case 'SET_SURVEY_DATA_SURVEY_DETAIL':
       return { ...state, ...payload };
     case 'SET_ACTIVE_STEP':
       return { ...state, activeStep: getStatusStep(state.status) };
+    case 'SET_SUCCESSFUL_PUBLISH':
+      return { ...state, successfulPublish: payload };
+    case 'SET_SUCCESSFUL_CLOSE':
+      return { ...state, successfulClose: payload };
     default:
       return state;
   }

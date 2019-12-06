@@ -12,11 +12,12 @@ import {
   StepLabel,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
+import EmployeeTable from '../../components/EmployeeTable';
 
-const SurveyDetail = ({ match }) => {
+const PublishSurveyButton = () => {
   const dispatch = useDispatch();
   const {
-    id,
+    _id,
     status,
     activeStep,
     successfulPublish,
@@ -28,89 +29,147 @@ const SurveyDetail = ({ match }) => {
       status: 'published',
       datePublished: Date.now(),
     });
-    successfulPublish = response.status === 204;
+    const payload = response.status === 204;
+    dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
   };
+
+  const setSurveyData = (data) => {
+    const payload = data;
+    dispatch({ type: 'SET_SURVEY_DATA_SURVEY_DETAIL', payload });
+    dispatch({ type: 'SET_ACTIVE_STEP' });
+  };
+
+  const getSurvey = async (idToSend) => {
+    try {
+      const { data } = await axios.get(`/surveys/${idToSend}`);
+      setSurveyData(data);
+    } catch (error) {
+      setSurveyData({});
+    }
+  };
+  return (
+    <Button
+      type='submit'
+      width='auto'
+      variant='contained'
+      color='secondary'
+      onClick={async () => {
+        await publishSurvey(_id);
+        await getSurvey(_id);
+      }}
+    >
+      Publish Survey
+    </Button>
+  );
+};
+
+const CloseSurveyButton = () => {
+  const dispatch = useDispatch();
+
+  const {
+    _id,
+    status,
+    activeStep,
+    successfulPublish,
+    successfulClose,
+  } = useSelector((state) => state.surveyDetailReducer);
 
   const closeSurvey = async (_id) => {
     const response = await axios.patch(`/surveys/${_id}`, {
       status: 'closed',
       dateClosed: Date.now(),
     });
-    successfulClose = response.status === 204;
+    const payload = response.status === 204;
+    dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
   };
+
+  const setSurveyData = (data) => {
+    const payload = data;
+    dispatch({ type: 'SET_SURVEY_DATA_SURVEY_DETAIL', payload });
+    dispatch({ type: 'SET_ACTIVE_STEP' });
+  };
+
+  const getSurvey = async (idToSend) => {
+    try {
+      const { data } = await axios.get(`/surveys/${idToSend}`);
+      setSurveyData(data);
+    } catch (error) {
+      setSurveyData({});
+    }
+  };
+
+  return (
+    <Button
+      type='submit'
+      width='auto'
+      variant='contained'
+      color='secondary'
+      onClick={async () => {
+        await closeSurvey(_id);
+        await getSurvey(_id);
+      }}
+    >
+      Close Survey
+    </Button>
+  );
+};
+
+const SurveyDetailsStepper = () => {
+  const dispatch = useDispatch();
+  const { activeStep } = useSelector((state) => state.surveyDetailReducer);
+  const steps = ['Draft', 'Publish', 'Close'];
+
+  return (
+    <Stepper alternativeLabel activeStep={activeStep}>
+      {steps.map((label) => (
+        <Step key={label}>
+          <StepLabel>{label}</StepLabel>
+        </Step>
+      ))}
+    </Stepper>
+  );
+};
+
+const SurveyDetail = ({ match }) => {
+  const dispatch = useDispatch();
+  const {
+    id,
+    title,
+    status,
+    activeStep,
+    successfulPublish,
+    successfulClose,
+  } = useSelector((state) => state.surveyDetailReducer);
+
   useEffect(() => {
+    dispatch({ type: 'RESET_STATE' });
+
     const setSurveyData = (data) => {
-      dispatch({ type: 'SET_SURVEY_DATA', payload: data });
+      const payload = data;
+      dispatch({ type: 'SET_SURVEY_DATA_SURVEY_DETAIL', payload });
       dispatch({ type: 'SET_ACTIVE_STEP' });
     };
 
-    const getSurvey = async (idToFind) => {
+    const getSurvey = async (idToSend) => {
       try {
-        const response = await axios.get(`/surveys/${idToFind}`);
-        console.log(response);
-        const data = response.data;
+        const { data } = await axios.get(`/surveys/${idToSend}`);
         setSurveyData(data);
       } catch (error) {
         setSurveyData({});
       }
     };
-    const idFromEndpoint = match.params.id;
-    getSurvey(idFromEndpoint);
-  }, [match.params.id]);
 
-  const SurveyDetailsStepper = () => {
-    const steps = ['Draft', 'Publish', 'Close'];
-    return (
-      <Stepper alternativeLabel activeStep={activeStep}>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    );
-  };
-
-  const PublishSurveyButton = () => {
-    return (
-      <Button
-        type='submit'
-        width='auto'
-        variant='contained'
-        color='secondary'
-        onClick={async () => {
-          // await publishSurvey(id);
-          // await getSurvey(id);
-        }}
-      >
-        Publish Survey
-      </Button>
-    );
-  };
-
-  const CloseSurveyButton = () => {
-    return (
-      <Button
-        type='submit'
-        width='auto'
-        variant='contained'
-        color='secondary'
-        onClick={async () => {
-          // await closeSurvey(id);
-          // await getSurvey(id);
-        }}
-      >
-        Close Survey
-      </Button>
-    );
-  };
+    const { id: idFromUrl } = match.params;
+    getSurvey(idFromUrl);
+  }, [match.params, dispatch]);
 
   return (
     <Box display='flex' flexDirection='row' align-items='flex-start'>
       <Typography color='primary' variant='h3'>
-        Survey title.
+        {title}
       </Typography>
       <SurveyDetailsStepper />
+      <EmployeeTable />
       {activeStep === 1 && <PublishSurveyButton />}
       {activeStep === 2 && <CloseSurveyButton />}
       {successfulPublish !== undefined && (
