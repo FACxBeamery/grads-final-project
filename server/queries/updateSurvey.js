@@ -14,11 +14,32 @@ const updateSurvey = async (surveyId, changes) => {
     const anonymous = surveyBeforeChanges.anonymous;
     const employeeId = anonymous ? null : ObjectID(changes.employeeId);
 
-    const questionsIds = changes.questions.map((question) => question._id);
+    // initialised an array with existing ids, and having null as a placeholder for the new ones in order to keep the ordering
+    let orderedQuestionIds = changes.questions.map((question) =>
+      question._id ? question._id : null,
+    );
+    // if no _id, question is new. add to collection, get back id, add to orderedQuestionIds
+    const questionsToAdd = changes.questions.filter(
+      (questionToAdd) => !questionToAdd._id,
+    );
+    if (questionsToAdd.length > 0) {
+      const newQuestions = await questions.insertMany(questionsToAdd);
+      let counter = 0;
+      // loop through the array and replace all the nulls with the questions that were just added to the collection
+      orderedQuestionIds = orderedQuestionIds.map((questionId) => {
+        if (questionId === null) {
+          let newQuestion = newQuestions.insertedIds[`${counter}`].toString();
+          counter++;
+          return newQuestion;
+        } else {
+          return questionId;
+        }
+      });
+    }
 
     const questionsFromSurvey = changes.questions;
 
-    let changesToBeMade = { ...changes, questions: questionsIds };
+    let changesToBeMade = { ...changes, questions: orderedQuestionIds };
 
     const result = await surveys.updateOne(
       {
@@ -56,20 +77,22 @@ const updateSurvey = async (surveyId, changes) => {
       );
     }
 
-    // let surveyQuestions = survey.questions;
-
+    // change the pre-existing questions in the collection
     questionsFromSurvey.map(async (question) => {
-      let questionWithoutId = { ...question };
+      // if they have a _id prop, they exist already in the collection
+      if (question._id) {
+        let questionWithoutId = { ...question };
 
-      delete questionWithoutId._id;
+        delete questionWithoutId._id;
 
-      try {
-        await questions.updateOne(
-          { _id: ObjectID(question._id) },
-          { $set: questionWithoutId },
-        );
-      } catch (error) {
-        console.log(error);
+        try {
+          await questions.updateOne(
+            { _id: ObjectID(question._id) },
+            { $set: questionWithoutId },
+          );
+        } catch (error) {
+          console.log(error);
+        }
       }
     });
 
