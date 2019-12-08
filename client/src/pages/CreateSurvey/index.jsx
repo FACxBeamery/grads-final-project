@@ -43,10 +43,13 @@ const CreateSurvey = ({ history }) => {
     modalStyle,
     isConfirming,
   } = useSelector((state) => state.createSurveyReducer);
+
+  const { recipientIds } = useSelector((state) => state.employeeTableReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({ type: 'RESET_CS_MODAL_STATE' });
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
   }, [dispatch]);
 
   const setMetadata = (event, inputType) => {
@@ -60,13 +63,14 @@ const CreateSurvey = ({ history }) => {
     ...useSelector((state) => state.createSurveyReducer),
   };
 
-  // const createArrayOfObjectsFromArray = (array) => {
-  //   return array.map((item) => {
-  //     return { employeeId: item, completed: false };
-  //   });
-  // };
-
   const saveSurvey = async () => {
+    const recipientsToSend = recipientIds.map((id) => {
+      let obj = {};
+      obj.employeeId = id;
+      obj.completed = false;
+      return obj;
+    });
+
     try {
       surveyForSending = {
         ...surveyForSending,
@@ -77,14 +81,13 @@ const CreateSurvey = ({ history }) => {
         dateEdited: Date.now(),
         datePublished: null,
         dateToPublish: null,
+        recipients: recipientsToSend,
+        recipientIds: recipientsToSend,
       };
       delete surveyForSending.employeeData;
       delete surveyForSending.openCreateSurveyModal;
       delete surveyForSending.isConfirming;
       delete surveyForSending.openModal;
-      // delete surveyForSending.recipientIds;
-
-      console.log(surveyForSending);
 
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
