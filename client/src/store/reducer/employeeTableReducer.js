@@ -115,6 +115,20 @@ const filterData = (filters, data, attribute) => {
 const employeeTableReducer = (state = initalState, action) => {
   const { payload } = action;
   switch (action.type) {
+    case 'RESET_EMPLOYEE_DATA':
+      return {
+        employeeData: undefined,
+        filteredEmployeeData: undefined,
+        filters: {
+          department: {},
+          office: {},
+          name: '',
+        },
+        recipients: [],
+        recipientIds: [],
+        page: 0,
+        rowsPerPage: 10,
+      };
     case 'SET_EMPLOYEE_DATA':
       return { ...state, employeeData: payload };
     case 'SET_FILTERED_EMPLOYEE_DATA':
