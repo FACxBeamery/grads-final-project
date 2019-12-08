@@ -62,15 +62,16 @@ const EditSurvey = ({ match, history }) => {
   useEffect(() => {
     const { id } = match.params;
     dispatch({ type: 'RESET_ES_STATE' });
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     const setSurveyData = (data) => {
       let payload = data;
       dispatch({ type: 'SET_SURVEY_DATA', payload });
 
-      // const recipientIds = payload.recipients.map(
-      //   (recipient) => recipient.employeeId,
-      // );
-      // payload = { recipients: data.recipients, recipientIds };
-      // dispatch({ type: 'SET_EMPLOYEE_TABLE_RECIPIENTS', payload });
+      const recipientIds = payload.recipients.map(
+        (recipient) => recipient.employeeId,
+      );
+      payload = { recipients: data.recipients, recipientIds };
+      dispatch({ type: 'SET_EMPLOYEE_TABLE_RECIPIENTS', payload });
     };
     const getSurvey = async () => {
       try {
