@@ -90,7 +90,7 @@ const createSurveyReducer = (state = initalState, action) => {
             type: 'text',
             required: false,
             commentEnabled: false,
-            options: [{ text: '' }],
+            options: [''],
           },
         ],
         dateCreated: Date.now(),
