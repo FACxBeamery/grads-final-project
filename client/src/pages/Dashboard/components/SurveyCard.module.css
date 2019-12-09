@@ -18,3 +18,7 @@
 .italic {
   font-style: italic;
 }
+
+.ml {
+  margin-left: 1rem;
+}
