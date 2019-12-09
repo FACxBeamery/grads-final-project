@@ -6,7 +6,7 @@ const sendSlackMessage = (slackID, customMessage) => {
   const slackPostMessageURL = `https://slack.com/api/chat.postMessage?token=${slackOAuthToken}&channel=${slackID}&text=${customMessage}`;
   //TODO need to check if we need to change the custom message into the right format to be sent as a param?
 
-  https: axios.post(slackPostMessageURL);
+  axios.post(slackPostMessageURL);
 };
 
 export default sendSlackMessage;
