@@ -142,8 +142,12 @@ const employeeTableReducer = (state = initalState, action) => {
           payload.attribute,
         ),
       };
-    // case 'SET_EMPLOYEE_TABLE_RECIPIENTS':
-    //   return { ...state, recipients: payload };
+    case 'SET_EMPLOYEE_TABLE_RECIPIENTS':
+      return {
+        ...state,
+        recipients: payload,
+        recipientIds: payload.map((obj) => obj.employeeId),
+      };
     case 'CHANGE_PAGE':
       return { ...state, page: payload.page };
 
@@ -153,12 +157,6 @@ const employeeTableReducer = (state = initalState, action) => {
       return {
         ...state,
         recipientIds: toggleSingleRecipient(state.recipientIds, payload.id),
-      };
-    case 'SET_EMPLOYEE_TABLE_RECIPIENTS':
-      return {
-        ...state,
-        recipients: payload.recipients,
-        recipientIds: payload.recipientIds,
       };
     case 'TOGGLE_FILTERED_RECIPIENTS':
       return {
@@ -202,6 +200,13 @@ const employeeTableReducer = (state = initalState, action) => {
       return {
         ...state,
         filters: { ...state.filters, name: payload.text },
+      };
+    case 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS':
+      return {
+        ...state,
+        filteredEmployeeData: state.employeeData.filter((person) =>
+          state.recipientIds.find(person._id),
+        ),
       };
     default:
       return state;
