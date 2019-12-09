@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
+import formatDate from '../../utils/formatDate';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -101,12 +102,21 @@ const CloseSurveyButton = () => {
 };
 
 const SurveyDetailsStepper = () => {
-  const { activeStep } = useSelector((state) => state.surveyDetailReducer);
-  const steps = ['Draft', 'Publish', 'Close'];
+  const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
+  // const steps = ['Draft', 'Publish', 'Close'];
+  const stepperLabels = [
+    `Drafted ${formatDate(dateCreated)}`,
+    datePublished
+      ? `Published ${formatDate(datePublished)}`
+      : 'Publish pending',
+    dateClosed ? `Closed ${formatDate(dateClosed)}` : 'Closed pending',
+  ];
 
   return (
     <Stepper alternativeLabel activeStep={activeStep}>
-      {steps.map((label) => (
+      {stepperLabels.map((label) => (
         <Step key={label}>
           <StepLabel>{label}</StepLabel>
         </Step>
