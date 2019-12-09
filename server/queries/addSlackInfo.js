@@ -10,7 +10,7 @@ const addSlackInfo = async (employeeEmail, slackIDToAdd) => {
       { email: employeeEmail },
       { $push: { slackID: slackIDToAdd } },
     );
-    console.log(EmployeesCollection);
+
     return updateEmployee;
   } catch (err) {
     return err;
