@@ -14,15 +14,6 @@ import {
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 
-const publishSurvey = async (_id, dispatch) => {
-  const response = await axios.patch(`/surveys/${_id}`, {
-    status: 'published',
-    datePublished: Date.now(),
-  });
-
-  const payload = response.status === 204;
-  dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
-};
 
 const setSurveyData = (data, dispatch) => {
   const payload = data;
@@ -51,8 +42,19 @@ const getEmployees = async (dispatch) => {
     setSurveyData({});
   }
 };
+const publishSurvey = async (_id, dispatch) => {
+  // const response = await axios.patch(`/surveys/${_id}`, {
+  const response = await axios.patch(`/surveys/1234543454fdfgf`, {
+    status: 'published',
+    datePublished: Date.now(),
+  });
+
+  const payload = response.status === 204;
+  dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
+};
 const closeSurvey = async (_id, dispatch) => {
-  const response = await axios.patch(`/surveys/${_id}`, {
+  // const response = await axios.patch(`/surveys/${_id}`, {
+  const response = await axios.patch(`/surveys/gasdfshjkhlukftyd`, {
     status: 'closed',
     dateClosed: Date.now(),
   });
@@ -173,11 +175,6 @@ const SurveyDetail = ({ match }) => {
     successfulClose,
   } = useSelector((state) => state.surveyDetailReducer);
 
-  // const { employeeData } = useSelector((state) => state.employeeTableReducer);
-
-  // if (!employeeData) {
-  //   getEmployees(dispatch);
-  // }
   useEffect(() => {
     const { id: idFromUrl } = match.params;
     getSurvey(idFromUrl, dispatch);

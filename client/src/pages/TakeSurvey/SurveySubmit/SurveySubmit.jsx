@@ -11,8 +11,10 @@ const SurveySubmit = () => {
     (state) => state.takeSurveyReducer.responseSubmission,
   );
   // REPLACE THE BELOW WITH STATE VARIABLES WHEN LINK IS INDIVIDUAL
-  const surveyId = '5de52524d55c7b00681530d8';
-  const employeeId = '507f1f77bcf86cd799439073';
+
+  const employeeId = "507f1f77bcf86cd799439012"
+  const surveyId = "508f1f99bcf86cd799439214"
+
   const anonymous = true;
 
   const handleSurveySubmit = (event) => {
