@@ -61,7 +61,7 @@ const EditSurvey = ({ match, history }) => {
 
   useEffect(() => {
     const { id } = match.params;
-    dispatch({ type: 'RESET_ES_STATE' });
+    dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     const setSurveyData = (data) => {
       const payload = data;
@@ -84,7 +84,7 @@ const EditSurvey = ({ match, history }) => {
   }, [match.params, dispatch]);
 
   const toggleModal = () => {
-    dispatch({ type: 'TOGGLE_ES_MODAL' });
+    dispatch({ type: 'TOGGLE_EDIT_SURVEY_MODAL' });
   };
 
   const saveEditedSurvey = async () => {
@@ -108,7 +108,7 @@ const EditSurvey = ({ match, history }) => {
   };
 
   const confirmEditing = () => {
-    dispatch({ type: 'TOGGLE_ES_CONFIRMATION_MODAL' });
+    dispatch({ type: 'TOGGLE_EDIT_SURVEY_CONFIRMATION_MODAL' });
     saveEditedSurvey();
   };
 

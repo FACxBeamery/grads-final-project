@@ -10,11 +10,11 @@ const initalState = {
 
 const editSurveyReducer = (state = initalState, action) => {
   switch (action.type) {
-    case 'TOGGLE_ES_MODAL':
+    case 'TOGGLE_EDIT_SURVEY_MODAL':
       return { ...state, openModal: !state.openModal };
-    case 'TOGGLE_ES_CONFIRMATION_MODAL':
+    case 'TOGGLE_EDIT_SURVEY_CONFIRMATION_MODAL':
       return { ...state, isConfirming: !state.isConfirming };
-    case 'RESET_ES_STATE':
+    case 'RESET_EDIT_SURVEY_STATE':
       return {
         ...state,
         openModal: false,
