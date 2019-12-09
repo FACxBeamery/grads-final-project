@@ -1,5 +1,5 @@
-const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
+const { ObjectID } = require('mongodb');
 
 const readSurvey = async (_id) => {
   try {
@@ -13,7 +13,7 @@ const readSurvey = async (_id) => {
     let surveyQuestions = survey.questions;
 
     let questionIds = surveyQuestions.map((question) =>
-      ObjectID(question._id.toString()),
+      ObjectID(question.toString()),
     );
 
     const questionsCollection = db.collection('Questions');

@@ -30,6 +30,7 @@ const Main = () => {
               path='/admin/surveys/edit/:id'
               component={EditSurvey}
             />
+
             <Route path='/admin/surveys/:id' component={SurveyDetail} />
             <Route path='/takesurvey' component={TakeSurvey} />
           </Switch>

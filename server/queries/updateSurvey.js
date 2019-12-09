@@ -5,6 +5,15 @@ const updateSurvey = async (surveyId, changes) => {
     const db = getDb();
     const surveys = db.collection('Surveys');
     const questions = db.collection('Questions');
+
+    // checking if survey is anon
+    const surveyBeforeChanges = await surveys.findOne({
+      _id: ObjectID(surveyId),
+    });
+
+    const anonymous = surveyBeforeChanges.anonymous;
+    const employeeId = anonymous ? null : ObjectID(changes.employeeId);
+
     const result = await surveys.updateOne(
       {
         _id: ObjectID(surveyId),
@@ -17,26 +26,45 @@ const updateSurvey = async (surveyId, changes) => {
       _id: ObjectID(surveyId),
     });
 
-    let surveyQuestions = survey.questions;
-    // console.log(surveyQuestions);
+    // if recipient has answered, but the survey is anonymous
+    if (changes.answersFromEmployee === null && anonymous) {
+      await surveys.updateOne(
+        {
+          _id: ObjectID(surveyId),
+          'recipients.employeeId': ObjectID(employeeId),
+        },
+        { $set: { 'recipients.$.completed': true } },
+      );
+      // if recipient has answered, and the survey is anonymous
+    } else if (changes.answersFromEmployee === null && !anonymous) {
+      await surveys.updateOne(
+        { _id: ObjectID(surveyId) },
+        {
+          $push: {
+            responses: {
+              employeeId: anonymous ? null : ObjectID(employeeId),
+              answers: changes.answersFromEmployee,
+            },
+          },
+        },
+      );
+    }
 
-    // let questionIds = surveyQuestions.map((question) => ObjectID(question._id));
+    let surveyQuestions = survey.questions;
+
     surveyQuestions.map(async (question) => {
       let questionWithoutId = { ...question };
       delete questionWithoutId._id;
+
       try {
-        let result = await questions.updateOne(
-          { _id: ObjectID(question._id) },
+        await questions.updateOne(
+          { _id: ObjectID(questionWithoutId) },
           { $set: questionWithoutId },
         );
-        // console.log(result);
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
     });
-    // const result2 = await collections.updateMany(questionIds, {
-    //   $set: changes,
-    // });
 
     return result;
   } catch (err) {
