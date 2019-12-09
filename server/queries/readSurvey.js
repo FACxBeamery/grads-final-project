@@ -28,7 +28,6 @@ const readSurvey = async (_id) => {
         return element._id.equals(id);
       });
     });
-
     return survey;
   } catch (err) {
     return err;
