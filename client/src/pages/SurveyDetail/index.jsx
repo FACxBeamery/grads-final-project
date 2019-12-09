@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -10,6 +11,7 @@ import {
   Stepper,
   Step,
   StepLabel,
+  StepConnector,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
@@ -101,6 +103,29 @@ const CloseSurveyButton = () => {
   );
 };
 
+const QontoConnector = withStyles({
+  alternativeLabel: {
+    top: 10,
+    left: 'calc(-50% + 16px)',
+    right: 'calc(50% + 16px)',
+  },
+  active: {
+    '& $line': {
+      borderColor: '#784af4',
+    },
+  },
+  completed: {
+    '& $line': {
+      borderColor: '#784af4',
+    },
+  },
+  line: {
+    borderColor: '#eaeaf0',
+    borderTopWidth: 3,
+    borderRadius: 1,
+  },
+})(StepConnector);
+
 const SurveyDetailsStepper = () => {
   const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
     (state) => state.surveyDetailReducer,
@@ -115,7 +140,11 @@ const SurveyDetailsStepper = () => {
   ];
 
   return (
-    <Stepper alternativeLabel activeStep={activeStep}>
+    <Stepper
+      alternativeLabel
+      activeStep={activeStep}
+      connector={<ColorlibConnector />}
+    >
       {stepperLabels.map((label) => (
         <Step key={label}>
           <StepLabel>{label}</StepLabel>
