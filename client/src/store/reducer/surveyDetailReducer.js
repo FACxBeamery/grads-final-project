@@ -1,5 +1,3 @@
-// import { SET_ACTIVE_STEP } from '../actions/surveyDetailActions';
-
 const initalState = {
   activeStep: 1,
   successfulPublish: undefined,
@@ -15,6 +13,12 @@ const surveyDetailReducer = (state = initalState, action) => {
   const { payload } = action;
 
   switch (action.type) {
+    case 'RESET_SURVEY_DETAIL_STATE':
+      return {
+        activeStep: 1,
+        successfulPublish: undefined,
+        successfulClose: undefined,
+      };
     case 'SET_SURVEY_DATA_SURVEY_DETAIL':
       return { ...state, ...payload };
     case 'SET_ACTIVE_STEP':
