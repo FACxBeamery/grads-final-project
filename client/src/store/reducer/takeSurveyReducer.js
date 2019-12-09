@@ -56,6 +56,7 @@ const takeSurveyReducer = (state = initalState, action) => {
       };
 
     case 'ADD_RESPONSE':
+      console.log(state.answers);
       return {
         ...state,
         answers: state.answers.map((response) =>
@@ -64,7 +65,9 @@ const takeSurveyReducer = (state = initalState, action) => {
                 ...response,
                 answer: action.payload.answer,
               }
-            : response,
+            : {
+                ...response,
+              },
         ),
       };
 
@@ -85,7 +88,7 @@ const takeSurveyReducer = (state = initalState, action) => {
         ...state,
         answers: state.questions.map((question) => {
           return {
-            questionId: question.id,
+            questionId: question._id,
             answer: '',
             comment: '',
           };

@@ -16,7 +16,7 @@ const CommentBox = () => {
     dispatch({
       type: 'ADD_COMMENT',
       payload: {
-        questionId: activeQuestion.id,
+        questionId: activeQuestion._id,
         comment: event.target.value,
       },
     });
@@ -62,7 +62,7 @@ const MultichoiceQuestionOptions = () => {
     dispatch({
       type: 'ADD_RESPONSE',
       payload: {
-        questionId: activeQuestion.id,
+        questionId: activeQuestion._id,
         answer: event.target.innerText,
       },
     });
@@ -70,13 +70,13 @@ const MultichoiceQuestionOptions = () => {
 
   return activeQuestion.options.map((option) => {
     const isAnswerSelected =
-      currentAnswer && currentAnswer.toLowerCase() === option.text;
-    const buttonColor = isAnswerSelected && '#201E5A';
+      currentAnswer && currentAnswer.toLowerCase() === option;
+    const buttonColor = isAnswerSelected ? '#201E5A' : '#e6e6e6';
 
     const buttonTextColor = isAnswerSelected && '#fff';
 
     return (
-      <Box mb={2} key={option.text}>
+      <Box mb={2} key={option}>
         <Button
           size='large'
           style={{
@@ -84,13 +84,13 @@ const MultichoiceQuestionOptions = () => {
             width: '40vw',
             color: buttonTextColor,
           }}
-          data-testid={option.text}
-          value={option.text}
-          key={option.text}
+          data-testid={option}
+          value={option}
+          key={option}
           onClick={handleButtonClick}
           margin='normal'
         >
-          {option.text}
+          {option}
         </Button>
       </Box>
     );
@@ -136,7 +136,7 @@ const TextQuestion = () => {
     dispatch({
       type: 'ADD_RESPONSE',
       payload: {
-        questionId: activeQuestion.id,
+        questionId: activeQuestion._id,
         answer: event.target.value,
         comment: null,
       },
@@ -153,6 +153,10 @@ const TextQuestion = () => {
           required
           autoComplete='off'
           value={currentAnswerText}
+          error={currentAnswerText.length < 5}
+          helperText={
+            currentAnswerText < 5 ? 'You must provide a answer here' : ''
+          }
           margin='normal'
           key={activeStep}
           name='text-input-question'
