@@ -65,7 +65,7 @@ const CreateSurvey = ({ history }) => {
 
   const saveSurvey = async () => {
     const recipientsToSend = recipientIds.map((id) => {
-      let obj = {};
+      const obj = {};
       obj.employeeId = id;
       obj.completed = false;
       return obj;
@@ -96,11 +96,11 @@ const CreateSurvey = ({ history }) => {
   };
 
   const toggleModal = () => {
-    dispatch({ type: 'TOGGLE_CS_MODAL' });
+    dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
   };
 
   const confirmEditing = () => {
-    dispatch({ type: 'TOGGLE_CS_CONFIRMATION_MODAL' });
+    dispatch({ type: 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL' });
     saveSurvey();
   };
 
