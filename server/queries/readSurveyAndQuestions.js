@@ -6,7 +6,7 @@ const readSurveyById = async (surveyIdToFind) => {
     const db = getDb();
     const surveys = db.collection('Surveys');
     let survey = await surveys.findOne({ _id: ObjectID(surveyIdToFind) });
-    console.log(survey);
+
     let surveyQuestionsArray = survey.questions;
 
     const questionsDB = db.collection('Questions');
