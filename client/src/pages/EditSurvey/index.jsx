@@ -64,19 +64,21 @@ const EditSurvey = ({ match, history }) => {
     dispatch({ type: 'RESET_ES_STATE' });
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     const setSurveyData = (data) => {
-      let payload = data;
+      const payload = data;
       dispatch({ type: 'SET_SURVEY_DATA', payload });
 
-      const recipientIds = payload.recipients.map(
-        (recipient) => recipient.employeeId,
-      );
-      payload = { recipients: data.recipients, recipientIds };
-      dispatch({ type: 'SET_EMPLOYEE_TABLE_RECIPIENTS', payload });
+      // const recipientIds = payload.recipients.map(
+      //   (recipient) => recipient.employeeId,
+      // );
+      // payload = { recipients: data.recipients, recipientIds };
+      dispatch({
+        type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
+        payload: data.recipients,
+      });
     };
     const getSurvey = async () => {
       try {
         const { data } = await axios.get(`/surveys/${id}`);
-        console.log(data);
 
         setSurveyData(data);
       } catch (error) {
@@ -103,7 +105,6 @@ const EditSurvey = ({ match, history }) => {
       delete editedSurvey.modalStyle;
       delete editedSurvey.openModal;
       delete editedSurvey.isConfirming;
-      console.log(editedSurvey);
 
       await axios.patch(`/surveys/${id}`, editedSurvey);
     } catch (err) {
