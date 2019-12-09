@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
 import EmployeesTable from '../../components/EmployeeTable';
+import SlackModal from '../../components/SlackModal/SlackModal';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -167,6 +168,7 @@ const SurveyDetail = ({ match }) => {
   }, [match.params, dispatch]);
 
   console.log(status, 'STATUS');
+
   return (
     <Box display='flex' flexDirection='column' align-items='flex-start'>
       <Box display='flex' justifyContent='space-between'>
@@ -184,6 +186,7 @@ const SurveyDetail = ({ match }) => {
             <Box display='flex' flexDirection='column'>
               <PublishSurveyButton />
               <EditSurveyButton />
+              <SlackModal />
             </Box>
           )}
           {status === 'published' && <CloseSurveyButton />}
