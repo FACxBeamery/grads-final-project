@@ -70,7 +70,7 @@ const createSurveyReducer = (state = initalState, action) => {
       return { ...state, openCreateSurveyModal: !state.openCreateSurveyModal };
     case 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL':
       return { ...state, isConfirming: !state.isConfirming };
-    case 'RESET_CS_MODAL_STATE':
+    case 'RESET_CREATE_SURVEY_MODAL_STATE':
       return {
         ...state,
         openCreateSurveyModal: false,

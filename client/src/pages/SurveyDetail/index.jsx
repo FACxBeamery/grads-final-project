@@ -72,6 +72,7 @@ const PublishSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
         await publishSurvey(surveyId, dispatch);
         await getSurvey(surveyId, dispatch);
       }}
@@ -91,6 +92,7 @@ const CloseSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
         await closeSurvey(surveyId, dispatch);
         await getSurvey(surveyId, dispatch);
       }}
@@ -175,10 +177,9 @@ const SurveyDetail = ({ match }) => {
 
   useEffect(() => {
     const { id } = match.params;
-    dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+    dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
     getSurvey(id, dispatch);
-    getEmployees(dispatch);
   }, [match.params, dispatch]);
 
   return (

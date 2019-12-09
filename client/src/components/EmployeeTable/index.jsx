@@ -240,8 +240,8 @@ const EmployeeCompletionTable = () => {
 
   useEffect(() => {
     const getEmployees = async () => {
+      dispatch({ type: 'RESET_EMPLOYEE_DATA' });
       const { data } = await axios.get(`/employees`);
-
       const filteredData = data.filter((person) =>
         recipientsFromRequest.map((obj) => obj.employeeId).includes(person._id),
       );
@@ -253,9 +253,10 @@ const EmployeeCompletionTable = () => {
       });
       dispatch({ type: 'SET_EMPLOYEE_DATA', payload: filteredData });
     };
+
     getEmployees();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [status, recipientsFromRequest]);
 
   const isCompleted = (id) => {
     return recipientsFromRequest.find((obj) => {
