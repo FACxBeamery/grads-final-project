@@ -32,10 +32,12 @@ const setSurveyData = (data, dispatch) => {
 
 const getSurvey = async (idToSend, dispatch) => {
   try {
+    console.log('ID TO SEND', idToSend);
+
     const { data } = await axios.get(`/surveys/${idToSend}`);
     setSurveyData(data, dispatch);
   } catch (error) {
-    setSurveyData({});
+    setSurveyData({}, dispatch);
   }
 };
 
@@ -48,9 +50,10 @@ const getEmployees = async (dispatch) => {
     const { data } = await axios.get(`/employees`);
     setEmployeeData(data, dispatch);
   } catch (error) {
-    setSurveyData({});
+    setEmployeeData([], dispatch);
   }
 };
+
 const closeSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
     status: 'closed',
@@ -60,9 +63,9 @@ const closeSurvey = async (_id, dispatch) => {
   dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
 };
 
-const PublishSurveyButton = () => {
+const PublishSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
+  // const { _id } = useSelector((state) => state.surveyDetailReducer);
 
   return (
     <Button
@@ -71,8 +74,8 @@ const PublishSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await publishSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        await publishSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Publish Survey
@@ -80,9 +83,8 @@ const PublishSurveyButton = () => {
   );
 };
 
-const CloseSurveyButton = () => {
+const CloseSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
 
   return (
     <Button
@@ -91,8 +93,8 @@ const CloseSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await closeSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        await closeSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Close Survey
@@ -179,8 +181,9 @@ const SurveyDetail = ({ match }) => {
   //   getEmployees(dispatch);
   // }
   useEffect(() => {
-    const { id: idFromUrl } = match.params;
-    getSurvey(idFromUrl, dispatch);
+    const { id } = match.params;
+
+    getSurvey(id, dispatch);
     getEmployees(dispatch);
   }, [match.params, dispatch]);
 
@@ -199,11 +202,13 @@ const SurveyDetail = ({ match }) => {
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
             <Box display='flex' flexDirection='column'>
-              <PublishSurveyButton />
+              <PublishSurveyButton surveyId={match.params.id} />
               <EditSurveyButton />
             </Box>
           )}
-          {status === 'published' && <CloseSurveyButton />}
+          {status === 'published' && (
+            <CloseSurveyButton surveyId={match.params.id} />
+          )}
         </Box>
       </Box>
       {status === 'published' && (
@@ -225,6 +230,8 @@ const SurveyDetail = ({ match }) => {
 SurveyDetail.propTypes = {
   match: PropTypes.shape({ params: PropTypes.shape({ id: PropTypes.string }) })
     .isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  surveyId: PropTypes.string.isRequired,
 };
 
 export default SurveyDetail;
