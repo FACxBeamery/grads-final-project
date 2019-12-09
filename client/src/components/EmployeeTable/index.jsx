@@ -166,6 +166,7 @@ const EmployeesTable = () => {
                   .map((row) => {
                     // eslint-disable-next-line no-underscore-dangle
                     const isItemSelected = isSelected(row._id);
+
                     // eslint-disable-next-line no-underscore-dangle
                     const labelId = row._id;
 
@@ -238,22 +239,37 @@ const EmployeeCompletionTable = () => {
   useEffect(() => {
     const getEmployees = async () => {
       const { data } = await axios.get(`/employees`);
+
       const filteredData = data.filter((person) =>
-        recipients.map((obj) => obj.employeeId).includes(person._id),
+        recipientsFromRequest.map((obj) => obj.employeeId).includes(person._id),
       );
+
       dispatch({
         type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
-        payload: recipientsFromRequest,
+        payload: filteredData,
       });
       dispatch({ type: 'SET_EMPLOYEE_DATA', payload: filteredData });
       dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
-      dispatch({ type: 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS' });
+      // dispatch({ type: 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS', payload: filteredData });
     };
     getEmployees();
-  }, [dispatch, recipients, recipientsFromRequest]);
+  }, [dispatch, recipientsFromRequest]);
 
   const isCompleted = (id) => {
-    return recipients.find((obj) => obj.employeeId === id).completed;
+    console.log('IN IS COMPLETED');
+    console.log('IDDDD', id);
+
+    console.log('RECIPS FROM REQ', recipientsFromRequest);
+
+    console.log(
+      'RETURN VALUE',
+      recipientsFromRequest.find((obj) => {
+        return obj.employeeId === id;
+      }),
+    );
+    return recipientsFromRequest.find((obj) => {
+      return obj.employeeId === id;
+    }).completed;
   };
 
   const handleChangePage = (event, newPage) => {
@@ -273,7 +289,7 @@ const EmployeeCompletionTable = () => {
 
   return (
     <Box pt={2}>
-      {filteredEmployeeData && (
+      {filteredEmployeeData && recipientsFromRequest && recipients.length && (
         <>
           <Box>
             <Table
@@ -285,8 +301,13 @@ const EmployeeCompletionTable = () => {
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const completed = isCompleted(row._id);
-                    const labelId = row.id;
+                    console.log(row);
+
+                    const completed = recipientsFromRequest
+                      ? isCompleted(row._id)
+                      : false;
+
+                    const labelId = row._id;
 
                     return (
                       <TableRow hover tabIndex={-1} key={row.name}>
