@@ -4,6 +4,9 @@ const initalState = {
   activeStep: 1,
   successfulPublish: undefined,
   successfulClose: undefined,
+  openSlackModal: false,
+  slackMessageText: '',
+  employees: undefined,
 };
 
 const getStatusStep = (status) => {
@@ -23,6 +26,12 @@ const surveyDetailReducer = (state = initalState, action) => {
       return { ...state, successfulPublish: payload };
     case 'SET_SUCCESSFUL_CLOSE':
       return { ...state, successfulClose: payload };
+    case 'TOGGLE_OPEN_SLACK_MODAL':
+      return { ...state, openSlackModal: true };
+    case 'ADD_SLACK_MESSAGE':
+      return { ...state, slackMessageText: action.payload };
+    case 'SET_EMPLOYEES':
+      return { ...state, employees: payload };
     default:
       return state;
   }
