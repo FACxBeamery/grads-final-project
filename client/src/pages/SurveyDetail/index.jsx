@@ -32,8 +32,6 @@ const setSurveyData = (data, dispatch) => {
 
 const getSurvey = async (idToSend, dispatch) => {
   try {
-    console.log('ID TO SEND', idToSend);
-
     const { data } = await axios.get(`/surveys/${idToSend}`);
     setSurveyData(data, dispatch);
   } catch (error) {
@@ -65,7 +63,6 @@ const closeSurvey = async (_id, dispatch) => {
 
 const PublishSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  // const { _id } = useSelector((state) => state.surveyDetailReducer);
 
   return (
     <Button
@@ -175,14 +172,10 @@ const SurveyDetail = ({ match }) => {
     successfulClose,
   } = useSelector((state) => state.surveyDetailReducer);
 
-  // const { employeeData } = useSelector((state) => state.employeeTableReducer);
-
-  // if (!employeeData) {
-  //   getEmployees(dispatch);
-  // }
   useEffect(() => {
     const { id } = match.params;
-
+    dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     getSurvey(id, dispatch);
     getEmployees(dispatch);
   }, [match.params, dispatch]);
