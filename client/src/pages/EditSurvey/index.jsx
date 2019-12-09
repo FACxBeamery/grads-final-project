@@ -66,11 +66,6 @@ const EditSurvey = ({ match, history }) => {
     const setSurveyData = (data) => {
       const payload = data;
       dispatch({ type: 'SET_SURVEY_DATA', payload });
-
-      // const recipientIds = payload.recipients.map(
-      //   (recipient) => recipient.employeeId,
-      // );
-      // payload = { recipients: data.recipients, recipientIds };
       dispatch({
         type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
         payload: data.recipients,
