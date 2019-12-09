@@ -6,7 +6,6 @@ import { EmployeesTable } from '../../../components/EmployeeTable';
 
 const RecipientsList = () => {
   const { openModal } = useSelector((state) => state.createSurveyReducer);
-  // const { recipients } = useSelector((state) => state.employeeTableReducer);
   const recipients = useSelector(
     (state) => state.employeeTableReducer.recipientIds,
   );
