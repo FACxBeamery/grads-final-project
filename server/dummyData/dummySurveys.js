@@ -3,7 +3,7 @@ const { ObjectID } = require('mongodb');
 
 module.exports = [
   {
-    _id: ObjectID('508f1f99bcf86cd799439014'),
+    id: ObjectID('508f1f99bcf86cd799439014'),
     title: 'Graduates Onboarding',
     description:
       'A survey description that is about 1 sentence long yeah blah blah',
@@ -46,7 +46,7 @@ module.exports = [
     responses: [],
   },
   {
-    _id: ObjectID('508f1f99bcf86cd799439214'),
+    id: ObjectID('508f1f99bcf86cd799439214'),
     title: 'All employees survey',
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
@@ -195,7 +195,7 @@ module.exports = [
     ],
   },
   {
-    _id: ObjectID('509f1f99bcf86cd799439215'),
+    id: ObjectID('509f1f99bcf86cd799439215'),
     title: 'People Team - engagement survey',
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
