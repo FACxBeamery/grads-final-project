@@ -236,6 +236,8 @@ const EmployeeCompletionTable = () => {
     (state) => state.surveyDetailReducer.recipients,
   );
 
+  const { status } = useSelector((state) => state.surveyDetailReducer.status);
+
   useEffect(() => {
     const getEmployees = async () => {
       const { data } = await axios.get(`/employees`);
@@ -244,29 +246,18 @@ const EmployeeCompletionTable = () => {
         recipientsFromRequest.map((obj) => obj.employeeId).includes(person._id),
       );
 
+      dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
       dispatch({
         type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
-        payload: filteredData,
+        payload: recipientsFromRequest,
       });
       dispatch({ type: 'SET_EMPLOYEE_DATA', payload: filteredData });
-      dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
-      // dispatch({ type: 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS', payload: filteredData });
     };
     getEmployees();
-  }, [dispatch, recipientsFromRequest]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   const isCompleted = (id) => {
-    console.log('IN IS COMPLETED');
-    console.log('IDDDD', id);
-
-    console.log('RECIPS FROM REQ', recipientsFromRequest);
-
-    console.log(
-      'RETURN VALUE',
-      recipientsFromRequest.find((obj) => {
-        return obj.employeeId === id;
-      }),
-    );
     return recipientsFromRequest.find((obj) => {
       return obj.employeeId === id;
     }).completed;
@@ -301,8 +292,6 @@ const EmployeeCompletionTable = () => {
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    console.log(row);
-
                     const completed = recipientsFromRequest
                       ? isCompleted(row._id)
                       : false;
