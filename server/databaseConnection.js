@@ -26,10 +26,10 @@ const refreshDb = (db) => {
 };
 const populateDb = (db) => {
   return Promise.all([
-    db.collection('Surveys').insertMany(dummySurveys),
-    db.collection('Questions').insertMany(dummyQuestions),
-    db.collection('Employees').insertMany(dummyEmployees),
-    db.collection('Admins').insertMany(dummyAdmins),
+    db.collection('Surveys').insertMany(dummySurveys, { ordered: false }),
+    db.collection('Questions').insertMany(dummyQuestions, { ordered: false }),
+    db.collection('Employees').insertMany(dummyEmployees, { ordered: false }),
+    db.collection('Admins').insertMany(dummyAdmins, { ordered: false }),
   ]);
 };
 
@@ -46,7 +46,6 @@ const initDb = () => {
           await refreshDb(_db);
           await populateDb(_db);
         }
-
         resolve(_db);
       }
     };

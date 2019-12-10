@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const getJWTSecret = () => {
   try {
-    if (process.env.JWT_SECRET === undefined)
+    if (!process.env.JWT_SECRET)
       throw new Error('JWT_SECRET environment variable not configured.');
 
     return process.env.JWT_SECRET;

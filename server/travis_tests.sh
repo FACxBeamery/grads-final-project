@@ -1,5 +1,8 @@
 set -e
 export CI=TRUE
+export NODE_ENV="test"
+export JWT_SECRET="TEST_SECRET" 
+export MONGO_URI="mongodb://db:27017/testdb" 
 echo
 echo ---------------------
 echo LINT SERVER

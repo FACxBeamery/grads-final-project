@@ -5,18 +5,17 @@ const getAdmins = (req, res, next) => {
     if (err) {
       throw new Error(err);
     }
-    if (info !== undefined) {
-      res.status(401).send(info.message);
-    } else if (user.username === req.query.username) {
-      if (user) {
-        // success case. Can load up protected route.
-        res.status(200).send('Protected route accessed!');
-      } else {
-        res.status(401).send('No authorised user exists with that username.');
-      }
-    } else {
-      res.status(403).send("The JWT token isn't valid.");
+
+    if (info) {
+      return res.status(401).json({ message: info.message });
     }
+
+    if (user) {
+      // success case. Can load up protected route.
+      return res.status(200).json({ message: 'Protected route accessed!' });
+    }
+
+    return res.status(403).json({ message: 'No auth token' });
   })(req, res, next);
 };
 

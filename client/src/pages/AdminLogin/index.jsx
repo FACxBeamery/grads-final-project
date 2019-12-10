@@ -1,33 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import {
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Paper,
+} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 
-import ADMIN_ACTIONS from '../../store/actions/adminLoginActions';
-import SNACKBAR_ACTIONS from '../../store/actions/snackbarActions';
+import { SET_LOGIN, SET_HELPER_TEXT } from '../../store/actions/adminLoginActions';
+import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
 import useStyles from './styles';
 import Copyright from '../../components/Copyright';
 import loginAdmin from './apiCalls';
 
 const AdminLogin = () => {
-  const [helperText, setHelperText] = useState('');
-
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { SET_LOGIN } = ADMIN_ACTIONS;
-  const { OPEN_SNACKBAR } = SNACKBAR_ACTIONS;
+  const { helperText, data } = useSelector((state) => state.adminLoginReducer);
+  const { username, password } = data;
 
   const setLoginOnChange = (event) => {
-    setHelperText('');
-    const payload = {
+    const payload1 = { helperText: '' };
+    dispatch({ type: SET_HELPER_TEXT, payload: payload1 });
+
+    const payload2 = {
       [event.target.name]: event.target.value,
     };
-    dispatch({ type: SET_LOGIN, payload });
+    dispatch({ type: SET_LOGIN, payload: payload2 });
   };
 
   const setLoginOnPost = (auth) => {
@@ -37,35 +40,45 @@ const AdminLogin = () => {
     dispatch({ type: SET_LOGIN, payload });
   };
 
-  const { username, password } = useSelector(
-    (state) => state.adminLoginReducer,
-  );
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // TODO unstub api call response
-    const response = await loginAdmin(username, password);
-    const { auth, token, message } = response;
-
-    if (auth && token) {
-      window.localStorage.setItem('jwt_token', token);
+    try {
+      e.preventDefault();
+  
+      const response = await loginAdmin(username, password);
+      const { auth, token, message } = response.data;
+  
+      if (auth && token) {
+        window.localStorage.setItem('jwt_token', token);
+        const payload1 = {
+          message,
+          variant: 'success',
+        };
+        dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
+  
+        const payload2 = { helperText: '' };
+        dispatch({ type: SET_HELPER_TEXT, payload: payload2 });
+      } else {
+        const payload1 = {
+          message,
+          variant: 'error',
+        };
+        dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
+  
+        const payload2 = { helperText: message };
+        dispatch({ type: SET_HELPER_TEXT, payload: payload2 });
+      }
+      setLoginOnPost(auth);
+    } catch (err) {
       const payload = {
-        message,
-        variant: 'success',
-      };
-      dispatch({ type: OPEN_SNACKBAR, payload });
-      setHelperText('');
-    } else {
-      const payload = {
-        message,
+        message: 'An unexpected error occured. Try again later.',
         variant: 'error',
       };
-      dispatch({ type: OPEN_SNACKBAR, payload });
-      setHelperText(message);
+      dispatch({ type: UPDATE_SNACKBAR, payload });
     }
-    setLoginOnPost(auth);
   };
+ 
+  // conditionals
+  const isHelperTextEmptyString = helperText !== '';
 
   // Elements
   const usernameInputField = (
@@ -81,10 +94,9 @@ const AdminLogin = () => {
       value={username}
       onChange={setLoginOnChange}
       color='secondary'
-      error={helperText !== ''}
+      error={isHelperTextEmptyString}
     />
   );
-
   const passwordInputField = (
     <TextField
       variant='outlined'
@@ -99,11 +111,10 @@ const AdminLogin = () => {
       onChange={setLoginOnChange}
       autoComplete='current-password'
       color='secondary'
-      error={helperText !== ''}
+      error={isHelperTextEmptyString}
       helperText={helperText}
     />
   );
-
   const submitLoginButton = (
     <Button
       type='submit'
@@ -118,7 +129,7 @@ const AdminLogin = () => {
 
   return (
     <Container component='main' maxWidth='xs'>
-      <div className={classes.paper}>
+      <Paper className={classes.paper}>
         <Typography color='primary' variant='h1'>
           Welcome.
         </Typography>
@@ -127,7 +138,7 @@ const AdminLogin = () => {
           {passwordInputField}
           {submitLoginButton}
         </form>
-      </div>
+      </Paper>
       <Box mt={8}>
         <Copyright />
       </Box>
