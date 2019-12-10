@@ -14,8 +14,8 @@ afterEach(() => {
 
 it('Testing findAdminById returns one admin document when the correct id is provided.', async () => {
   expect.assertions(6);
-  const { id } = await findAdminByCredentials('admin', 'admin');
-  const adminDocument = await findAdminById(id);
+  const { _id } = await findAdminByCredentials('admin', 'admin');
+  const adminDocument = await findAdminById(_id);
 
   expect(adminDocument.username).toStrictEqual('admin');
   expect(adminDocument.password).toStrictEqual('admin');
@@ -24,7 +24,6 @@ it('Testing findAdminById returns one admin document when the correct id is prov
   expect(typeof adminDocument).toBe('object');
   expect(Object.keys(adminDocument)).toEqual([
     '_id',
-    'id',
     'username',
     'password',
     'type',

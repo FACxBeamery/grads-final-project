@@ -3,12 +3,6 @@ const request = require('supertest');
 const { initDb, closeDb } = require('../databaseConnection');
 const app = require('../app');
 
-// describe('Test to populate file', () => {
-//   it('Test to pass', (done) => {
-//     done();
-//   });
-// });
-
 beforeEach(() => {
   return initDb();
 });

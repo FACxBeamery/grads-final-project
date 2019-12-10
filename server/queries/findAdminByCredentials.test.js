@@ -21,7 +21,6 @@ it('Testing findAdminByCredentials returns one admin document when the correct c
   expect(typeof adminDocument).toBe('object');
   expect(Object.keys(adminDocument)).toEqual([
     '_id',
-    'id',
     'username',
     'password',
     'type',

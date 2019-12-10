@@ -3,76 +3,61 @@ const request = require('supertest');
 const { initDb, closeDb } = require('../databaseConnection');
 const app = require('../app');
 
-let jwtToken;
+describe('Test authentication using JWT tokens', () => {
+  it('sends an error status if no auth token sent', async () => {
+    await initDb();
 
-beforeEach(async (done) => {
-  await initDb();
+    const res = await request(app).get('/admins');
+    expect(res.status).toEqual(401);
 
-  request(app)
-    .post('/login')
-    .send({
-      username: 'admin',
-      password: 'admin',
-    })
-    .set('Accept', 'application/json')
-    .expect(200)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) {
-        return done(err);
-      }
-      expect(res.body.auth).toEqual(true);
-      expect(res.body.token).toMatch(
-        /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
-      ); // Regex to match JWT.
-      expect(res.body.message).toStrictEqual(
-        'Credentials verified and user logged in.',
-      );
-
-      jwtToken = res.body.token;
-      return done();
-    });
-});
-
-afterEach(() => {
-  return closeDb();
-});
-
-describe('Testing GET /admins', () => {
-  it('Responds with text and status 200 when the user is allowed (expected JWT) to use the protected route.', async (done) => {
-    request(app)
-      .get('/admins')
-      .query({
-        username: 'admin',
-      })
-      .set('Authorization', `JWT ${jwtToken}`)
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.message).toStrictEqual('Protected route accessed!');
-        return done();
-      });
+    return closeDb();
   });
 
-  it('Responds with text and status 403 when the user does not have admin priviledges.', async (done) => {
-    request(app)
-      .get('/admins')
-      .query({
-        username: 'incorrect',
-      })
-      .set('Accept', 'application/json')
-      .set('Authorization', `JWT ${jwtToken}`)
-      .expect(403)
-      .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) {
-          return done.fail(err);
-        }
-        expect(res.body.message).toStrictEqual("The JWT token isn't valid.");
-        return done();
+  it('sends response data if auth token sent', async () => {
+    await initDb();
+
+    const loginResponse = await request(app)
+      .post('/login')
+      .send({
+        username: 'admin',
+        password: 'admin',
       });
+
+    expect(loginResponse.status).toEqual(200);
+    expect(loginResponse.body.auth).toEqual(true);
+    expect(loginResponse.body.token).toBeDefined();
+
+    const {
+      body: { token },
+    } = loginResponse;
+
+    const res = await request(app)
+      .get('/admins')
+      .set('Authorization', `JWT ${token}`);
+
+    expect(res.status).toEqual(200);
+    expect(JSON.parse(res.text)).toStrictEqual({
+      message: 'Protected route accessed!',
+    });
+
+    return closeDb();
+  });
+
+  it('Responds with message and status 401 when no JWT provided.', async () => {
+    const res = await request(app)
+      .get('/admins')
+      .set('Accept', 'application/json');
+
+    expect(res.status).toEqual(401);
+    expect(JSON.parse(res.text)).toStrictEqual({ message: 'No auth token' });
+  });
+
+  it('Empty JWT token', async () => {
+    const res = await request(app)
+      .get('/admins')
+      .set('Authorization', `JWT `);
+
+    expect(res.status).toEqual(401);
+    expect(JSON.parse(res.text)).toStrictEqual({ message: 'No auth token' });
   });
 });

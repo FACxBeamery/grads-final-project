@@ -6,7 +6,7 @@ const findAdminById = async (id) => {
   const adminsCollection = await db.collection('Admins');
   try {
     return await adminsCollection.findOne({
-      id: ObjectID(id),
+      _id: ObjectID(id),
       type: 'admin',
     });
   } catch (err) {
