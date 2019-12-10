@@ -40,19 +40,6 @@ const getSurvey = async (idToSend, dispatch) => {
   }
 };
 
-const setEmployeeData = (data, dispatch) => {
-  const payload = data;
-  dispatch({ type: 'SET_EMPLOYEE_DATA', payload });
-};
-const getEmployees = async (dispatch) => {
-  try {
-    const { data } = await axios.get(`/employees`);
-    setEmployeeData(data, dispatch);
-  } catch (error) {
-    setEmployeeData([], dispatch);
-  }
-};
-
 const closeSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
     status: 'closed',
