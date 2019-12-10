@@ -56,7 +56,7 @@ module.exports = [
     title: 'All employees survey',
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
-    status: 'published',
+    status: 'active',
 
     disclaimer: 'some disclaimer',
 
