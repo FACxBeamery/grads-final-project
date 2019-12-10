@@ -66,11 +66,12 @@ const createSurveyReducer = (state = initalState, action) => {
       return { ...state, openModal: !state.openModal };
     case 'SET_SURVEY_DATA':
       return { ...state, ...payload };
-    case 'TOGGLE_CS_MODAL':
+
+    case 'TOGGLE_CREATE_SURVEY_MODAL':
       return { ...state, openCreateSurveyModal: !state.openCreateSurveyModal };
-    case 'TOGGLE_CS_CONFIRMATION_MODAL':
+    case 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL':
       return { ...state, isConfirming: !state.isConfirming };
-    case 'RESET_CS_MODAL_STATE':
+    case 'RESET_CREATE_SURVEY_MODAL_STATE':
       return {
         ...state,
         openCreateSurveyModal: false,
@@ -90,7 +91,7 @@ const createSurveyReducer = (state = initalState, action) => {
             type: 'text',
             required: false,
             commentEnabled: false,
-            options: [{ text: '' }],
+            options: [''],
           },
         ],
         dateCreated: Date.now(),
@@ -187,7 +188,7 @@ const createSurveyReducer = (state = initalState, action) => {
         ),
       };
     case 'SAVE_RECIPIENTS':
-      return { ...state, recipients: payload.recipients };
+      return { ...state, recipientIds: payload.recipients };
     default:
       return state;
   }

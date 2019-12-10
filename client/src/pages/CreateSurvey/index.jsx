@@ -43,10 +43,17 @@ const CreateSurvey = ({ history }) => {
     modalStyle,
     isConfirming,
   } = useSelector((state) => state.createSurveyReducer);
+
+  const { recipientIds } = useSelector((state) => state.employeeTableReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: 'RESET_CS_MODAL_STATE' });
+
+    dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
+    dispatch({ type: 'RESET_SURVEY_DATA' });
+    dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+
   }, [dispatch]);
 
   const setMetadata = (event, inputType) => {
@@ -60,18 +67,18 @@ const CreateSurvey = ({ history }) => {
     ...useSelector((state) => state.createSurveyReducer),
   };
 
-  const createArrayOfObjectsFromArray = (array) => {
-    return array.map((item) => {
-      return { employeeId: item, completed: false };
+  const saveSurvey = async () => {
+    const recipientsToSend = recipientIds.map((id) => {
+      const obj = {};
+      obj.employeeId = id;
+      obj.completed = false;
+      return obj;
     });
-  };
 
   // TODO route back to dashboard on click
   const saveSurvey = async () => {
-    try {
-      delete surveyForSending.employeeData;
-      delete surveyForSending.openModal;
 
+    try {
       surveyForSending = {
         ...surveyForSending,
         status: 'draft',
@@ -81,8 +88,13 @@ const CreateSurvey = ({ history }) => {
         dateEdited: Date.now(),
         datePublished: null,
         dateToPublish: null,
-        recipients: createArrayOfObjectsFromArray(surveyForSending.recipients),
+        recipients: recipientsToSend,
+        recipientIds: recipientsToSend,
       };
+      delete surveyForSending.employeeData;
+      delete surveyForSending.openCreateSurveyModal;
+      delete surveyForSending.isConfirming;
+      delete surveyForSending.openModal;
 
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
@@ -91,11 +103,12 @@ const CreateSurvey = ({ history }) => {
   };
 
   const toggleModal = () => {
-    dispatch({ type: 'TOGGLE_CS_MODAL' });
+    dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
   };
 
   const confirmEditing = () => {
-    dispatch({ type: 'TOGGLE_CS_CONFIRMATION_MODAL' });
+    dispatch({ type: 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL' });
+
     saveSurvey();
   };
 

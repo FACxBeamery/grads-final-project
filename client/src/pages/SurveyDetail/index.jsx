@@ -12,8 +12,11 @@ import {
   StepLabel,
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
+
 import EmployeesTable from '../../components/EmployeeTable';
 import SlackModal from '../../components/SlackModal/SlackModal';
+
+import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -36,7 +39,7 @@ const getSurvey = async (idToSend, dispatch) => {
     const { data } = await axios.get(`/surveys/${idToSend}`);
     setSurveyData(data, dispatch);
   } catch (error) {
-    setSurveyData({});
+    setSurveyData({}, dispatch);
   }
 };
 
@@ -49,9 +52,8 @@ const closeSurvey = async (_id, dispatch) => {
   dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
 };
 
-const PublishSurveyButton = () => {
+const PublishSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
 
   return (
     <Button
@@ -60,8 +62,9 @@ const PublishSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await publishSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+        await publishSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Publish Survey
@@ -69,9 +72,8 @@ const PublishSurveyButton = () => {
   );
 };
 
-const CloseSurveyButton = () => {
+const CloseSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
 
   return (
     <Button
@@ -80,8 +82,9 @@ const CloseSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await closeSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+        await closeSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Close Survey
@@ -163,11 +166,11 @@ const SurveyDetail = ({ match }) => {
   } = useSelector((state) => state.surveyDetailReducer);
 
   useEffect(() => {
-    const { id: idFromUrl } = match.params;
-    getSurvey(idFromUrl, dispatch);
+    const { id } = match.params;
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+    dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
+    getSurvey(id, dispatch);
   }, [match.params, dispatch]);
-
-  console.log(status, 'STATUS');
 
   return (
     <Box display='flex' flexDirection='column' align-items='flex-start'>
@@ -184,15 +187,27 @@ const SurveyDetail = ({ match }) => {
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
             <Box display='flex' flexDirection='column'>
-              <PublishSurveyButton />
+              <PublishSurveyButton surveyId={match.params.id} />
               <EditSurveyButton />
-              <SlackModal />
             </Box>
           )}
-          {status === 'published' && <CloseSurveyButton />}
+          {status === 'published' && (
+            <CloseSurveyButton surveyId={match.params.id} />
+          )}
         </Box>
       </Box>
-      {status === 'published' && <EmployeesTable />}
+      {status === 'published' && (
+        <Box display='flex' flexDirection='column'>
+          <Box alignSelf='flex-start' py={2}>
+            <Button variant='outlined' color='secondary'>
+              Add recipients
+            </Button>
+          </Box>
+          <EmployeeCompletionTable />
+          <SlackModal />
+        </Box>
+      )}
+
       {successfulPublish !== undefined && <SnackbarPublish />}
       {successfulClose !== undefined && <SnackbarClose />}
     </Box>
@@ -202,6 +217,9 @@ const SurveyDetail = ({ match }) => {
 SurveyDetail.propTypes = {
   match: PropTypes.shape({ params: PropTypes.shape({ id: PropTypes.string }) })
     .isRequired,
+
+  // eslint-disable-next-line react/no-unused-prop-types
+  surveyId: PropTypes.string.isRequired,
 };
 
 export default SurveyDetail;

@@ -10,11 +10,9 @@ import SurveySubmit from './SurveySubmit/SurveySubmit';
 
 const TakeSurvey = () => {
   const dispatch = useDispatch();
-
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
-
   useEffect(() => {
     const getSurvey = async () => {
       const response = await axios.get('/surveys/508f1f99bcf86cd799439014');
@@ -25,7 +23,6 @@ const TakeSurvey = () => {
     };
     getSurvey();
   }, [dispatch]);
-
   return (
     <Box display='flex' flexDirection='column'>
       <UserProgressStepper />
@@ -34,5 +31,4 @@ const TakeSurvey = () => {
     </Box>
   );
 };
-
 export default TakeSurvey;

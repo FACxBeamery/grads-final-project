@@ -1,6 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { Box, Button, TextField, Typography } from '@material-ui/core';
-
 import { useSelector, useDispatch } from 'react-redux';
 
 const CommentBox = () => {
@@ -41,19 +41,15 @@ const CommentBox = () => {
     </Box>
   );
 };
-
 const MultichoiceQuestionOptions = () => {
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
   const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
-
   const currentAnswer = useSelector(
     (state) => state.takeSurveyReducer.answers[activeStep - 1].answer,
   );
-
   const dispatch = useDispatch();
-
   const handleButtonClick = (event) => {
     event.preventDefault();
     dispatch({
@@ -67,14 +63,13 @@ const MultichoiceQuestionOptions = () => {
       },
     });
   };
-
   return activeQuestion.options.map((option) => {
     const isAnswerSelected =
       currentAnswer && currentAnswer.toLowerCase() === option;
-    const buttonColor = isAnswerSelected ? '#201E5A' : '#e6e6e6';
+
+    const buttonColor = isAnswerSelected ? '#201E5A' : '#E6E6E6';
 
     const buttonTextColor = isAnswerSelected && '#fff';
-
     return (
       <Box mb={2} key={option}>
         <Button
@@ -96,36 +91,30 @@ const MultichoiceQuestionOptions = () => {
     );
   });
 };
-
 const MultichoiceQuestion = () => {
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
   const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
-
   const currentAnswer = useSelector(
     (state) => state.takeSurveyReducer.answers[activeStep - 1].answer,
   );
-
   return (
     <Box mt={4} display='flex' flexDirection='column' alignSelf='flex-start'>
       <Typography variant='h5'>{activeQuestion.title}</Typography>
       <Box mt={2} display='flex' flexDirection='column' alignItems='center'>
         <MultichoiceQuestionOptions />
       </Box>
-
       {currentAnswer && <CommentBox />}
     </Box>
   );
 };
-
 const TextQuestion = () => {
   const dispatch = useDispatch();
   const activeStep = useSelector((state) => state.takeSurveyReducer.activeStep);
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
-
   const currentAnswerText = useSelector(
     (state) => state.takeSurveyReducer.answers[activeStep - 1].answer,
   );
@@ -166,16 +155,13 @@ const TextQuestion = () => {
     </Box>
   );
 };
-
 const QuestionCard = () => {
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
-
   return (
     <Box alignSelf='center' data-testid='question-card' justifyContent='center'>
       {activeQuestion.type === 'multichoice' ? <MultichoiceQuestion /> : null}
-
       {activeQuestion.type === 'text' ? <TextQuestion /> : null}
     </Box>
   );

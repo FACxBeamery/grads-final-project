@@ -2,14 +2,22 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button, Box, Typography, Paper } from '@material-ui/core';
 
-import EmployeeTable from '../../../components/EmployeeTable';
+import { EmployeesTable } from '../../../components/EmployeeTable';
 
 const RecipientsList = () => {
   const { openModal } = useSelector((state) => state.createSurveyReducer);
-  const { recipients } = useSelector((state) => state.employeeTableReducer);
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
+  );
+  const createArrayOfObjectsFromArray = (array) => {
+    return array.map((item) => {
+      return { employeeId: item, completed: false };
+    });
+  };
+
   const dispatch = useDispatch();
   const handleSaveRecipientsClick = () => {
-    const payload = { recipients };
+    const payload = { recipients: createArrayOfObjectsFromArray(recipients) };
     dispatch({ type: 'SAVE_RECIPIENTS', payload });
     dispatch({ type: 'TOGGLE_MODAL' });
   };
@@ -34,7 +42,7 @@ const RecipientsList = () => {
             <Typography variant='h4' id='simple-modal-title'>
               Recipients
             </Typography>
-            <EmployeeTable />
+            <EmployeesTable />
             <Button
               variant='contained'
               color='secondary'
