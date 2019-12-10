@@ -5,6 +5,7 @@ export default createMuiTheme({
     primary: {
       // light: '#FFFFFF',
       main: '#201E5A',
+      contrastText: '#fff',
       // dark: '#201E5A',
     },
     secondary: {
@@ -20,7 +21,7 @@ export default createMuiTheme({
       fontFamily: 'Merriweather',
     },
     h2: {
-      fontFamily: 'Merriweather Sans',
+      fontFamily: 'Merriweather',
     },
     h3: {
       fontFamily: 'Merriweather Sans',

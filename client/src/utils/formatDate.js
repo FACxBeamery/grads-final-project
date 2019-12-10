@@ -1,3 +1,5 @@
+import addLeadingZero from './addLeadingZero';
+
 const formatDate = (unixTime) => {
   if (unixTime) {
     let time = unixTime;
@@ -6,8 +8,8 @@ const formatDate = (unixTime) => {
     }
     const date = new Date(time);
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const month = addLeadingZero(date.getMonth() + 1, 2);
+    const day = addLeadingZero(date.getDate(), 2);
     const ddmmyyyyDate = `${day}/${month}/${year}`;
     return ddmmyyyyDate;
   }

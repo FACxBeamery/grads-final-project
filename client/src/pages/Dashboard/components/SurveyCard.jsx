@@ -48,7 +48,7 @@ const SurveyCard = ({ survey }) => {
               </Typography>
             )}
           </Box>
-          <Box display='flex' mb={1}>
+          <Box display='flex' justifyContent='space-between' mb={1}>
             <Box display='flex' flexDirection='column'>
               <Typography variant='h6'>{title}</Typography>
               <Typography color='textSecondary' variant='body2'>
@@ -71,11 +71,23 @@ const SurveyCard = ({ survey }) => {
             <Link
               className={styles.link}
               to={{
-                pathname: `admin/surveys/${_id}`,
+                pathname: `/admin/surveys/${_id}`,
               }}
             >
               View
             </Link>
+          </Button>
+          <Button color='secondary' size='small'>
+            {status === 'draft' && (
+              <Link
+                className={styles.link}
+                to={{
+                  pathname: `/admin/surveys/edit/${_id}`,
+                }}
+              >
+                Edit
+              </Link>
+            )}
           </Button>
           <Chip
             label={status === 'published' ? 'Active' : 'Ready to publish'}

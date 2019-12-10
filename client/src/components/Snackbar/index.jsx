@@ -17,9 +17,8 @@ import {
 } from '@material-ui/icons';
 import { amber, green } from '@material-ui/core/colors';
 
-import SNACKBAR_ACTIONS from '../../store/actions/snackbarActions';
+import { SET_SNACKBAR_OPEN }  from '../../store/actions/snackbarActions';
 
-const { SET_SNACKBAR_OPEN } = SNACKBAR_ACTIONS;
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -99,7 +98,6 @@ MySnackbarContentWrapper.propTypes = {
 };
 
 const CustomizedSnackbars = ({ message, variant, timeopened }) => {
-  // const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
 
   const { open } = useSelector((state) => state.snackbarReducer);

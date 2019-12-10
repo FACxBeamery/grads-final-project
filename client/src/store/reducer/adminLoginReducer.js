@@ -1,6 +1,4 @@
-import ADMIN_ACTIONS from '../actions/adminLoginActions';
-
-const { SET_LOGIN, SET_HELPER_TEXT } = ADMIN_ACTIONS;
+import { SET_LOGIN, SET_HELPER_TEXT } from '../actions/adminLoginActions';
 
 const initalState = {
   data: {

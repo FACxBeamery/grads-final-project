@@ -52,6 +52,9 @@ module.exports = (passport) => {
     'jwt',
     new JWTStrategy(opts, async (jwtPayload, done) => {
       try {
+        if (!jwtPayload) {
+          done(null, null, { message: 'Invalid JWT provided.' });
+        }
         const user = await findAdminById(jwtPayload.id); // result is the entire admin document (id, username, password, type, employeeId).
         if (user) {
           done(null, user);

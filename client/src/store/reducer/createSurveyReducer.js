@@ -1,12 +1,10 @@
-const defaultOption = {
-  text: '',
-};
+const defaultOption = '';
 
 const defaultQuestion = {
   title: '',
   type: 'text',
   required: false,
-  commentsEnabled: false,
+  commentEnabled: false,
   options: [defaultOption],
 };
 
@@ -17,12 +15,20 @@ const initalState = {
   disclaimer: 'This is the dummy disclaimer',
   anonymous: false,
   questions: [defaultQuestion],
+  openModal: false,
   dateCreated: Date.now(),
+  openCreateSurveyModal: false,
+  modalStyle: {
+    top: `50%`,
+    left: `50%`,
+    transform: `translate(-50%, -50%)`,
+  },
+  isConfirming: true,
 };
 
 const changeOptionText = (options, payload) => {
   return options.map((option, index) =>
-    index === payload.optionIndex ? { ...option, text: payload.text } : option,
+    index === payload.optionIndex ? payload.text : option,
   );
 };
 
@@ -56,8 +62,43 @@ const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
   switch (action.type) {
+    case 'TOGGLE_MODAL':
+      return { ...state, openModal: !state.openModal };
+    case 'SET_SURVEY_DATA':
+      return { ...state, ...payload };
+    case 'TOGGLE_CREATE_SURVEY_MODAL':
+      return { ...state, openCreateSurveyModal: !state.openCreateSurveyModal };
+    case 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL':
+      return { ...state, isConfirming: !state.isConfirming };
+    case 'RESET_CREATE_SURVEY_MODAL_STATE':
+      return {
+        ...state,
+        openCreateSurveyModal: false,
+        isConfirming: true,
+      };
+    case 'RESET_SURVEY_DATA':
+      return {
+        ...state,
+        title: undefined,
+        description: undefined,
+        recipients: [],
+        disclaimer: 'This is the dummy disclaimer',
+        anonymous: false,
+        questions: [
+          {
+            title: '',
+            type: 'text',
+            required: false,
+            commentEnabled: false,
+            options: [''],
+          },
+        ],
+        dateCreated: Date.now(),
+      };
     case 'SET_METADATA':
       return { ...state, ...payload };
+    case 'SET_EMPLOYEE_DATA':
+      return { ...state, employeeData: payload };
     case 'NEW_QUESTION':
       return { ...state, questions: [...state.questions, defaultQuestion] };
     case 'SET_QUESTION_DATA':
@@ -145,6 +186,8 @@ const createSurveyReducer = (state = initalState, action) => {
             : question,
         ),
       };
+    case 'SAVE_RECIPIENTS':
+      return { ...state, recipientIds: payload.recipients };
     default:
       return state;
   }
