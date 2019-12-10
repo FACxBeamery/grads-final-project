@@ -91,7 +91,7 @@ module.exports = [
     office: 'London',
   },
   {
-    id: ObjectID('507f1f77bcf86cd799439017'),
+    _id: ObjectID('507f1f77bcf86cd799439017'),
     firstName: 'Martha',
     lastName: 'Lambert',
     jobTitle: 'Graduate Software Engineer',
@@ -106,7 +106,7 @@ module.exports = [
     office: 'London',
   },
   {
-    id: ObjectID('507f1f77bcf86cd799439018'),
+    _id: ObjectID('507f1f77bcf86cd799439018'),
     firstName: 'Harshada',
     lastName: 'Shimpi',
     jobTitle: 'QA Engineer',

@@ -39,8 +39,11 @@ const headCells = [
 ];
 
 const EnhancedTableHead = () => {
-  const { recipients, filteredEmployeeData } = useSelector(
+  const { filteredEmployeeData } = useSelector(
     (state) => state.employeeTableReducer,
+  );
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
   );
   const numSelected = recipients.length;
   const dispatch = useDispatch();
@@ -78,7 +81,9 @@ const EnhancedTableHead = () => {
 };
 
 const EnhancedTableToolbar = () => {
-  const { recipients } = useSelector((state) => state.employeeTableReducer);
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
+  );
 
   const numSelected = recipients.length;
   return (
@@ -100,8 +105,11 @@ const EnhancedTableToolbar = () => {
 };
 
 const EmployeesTable = () => {
-  const { filteredEmployeeData, recipients, page, rowsPerPage } = useSelector(
+  const { filteredEmployeeData, page, rowsPerPage } = useSelector(
     (state) => state.employeeTableReducer,
+  );
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
   );
 
   const dispatch = useDispatch();
@@ -156,13 +164,17 @@ const EmployeesTable = () => {
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = row.id;
+                    // eslint-disable-next-line no-underscore-dangle
+                    const isItemSelected = isSelected(row._id);
+
+                    // eslint-disable-next-line no-underscore-dangle
+                    const labelId = row._id;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleRowClick(event, row.id)}
+                        // eslint-disable-next-line no-underscore-dangle
+                        onClick={(event) => handleRowClick(event, row._id)}
                         role='checkbox'
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -224,25 +236,32 @@ const EmployeeCompletionTable = () => {
     (state) => state.surveyDetailReducer.recipients,
   );
 
+  const { status } = useSelector((state) => state.surveyDetailReducer.status);
+
   useEffect(() => {
     const getEmployees = async () => {
+      dispatch({ type: 'RESET_EMPLOYEE_DATA' });
       const { data } = await axios.get(`/employees`);
       const filteredData = data.filter((person) =>
-        recipients.map((obj) => obj.employeeId).includes(person._id),
+        recipientsFromRequest.map((obj) => obj.employeeId).includes(person._id),
       );
+
+      dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
       dispatch({
         type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
         payload: recipientsFromRequest,
       });
       dispatch({ type: 'SET_EMPLOYEE_DATA', payload: filteredData });
-      dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
-      dispatch({ type: 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS' });
     };
+
     getEmployees();
-  }, [dispatch, recipients, recipientsFromRequest]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, recipientsFromRequest]);
 
   const isCompleted = (id) => {
-    return recipients.find((obj) => obj.employeeId === id).completed;
+    return recipientsFromRequest.find((obj) => {
+      return obj.employeeId === id;
+    }).completed;
   };
 
   const handleChangePage = (event, newPage) => {
@@ -262,7 +281,7 @@ const EmployeeCompletionTable = () => {
 
   return (
     <Box pt={2}>
-      {filteredEmployeeData && (
+      {filteredEmployeeData && recipientsFromRequest && recipients.length && (
         <>
           <Box>
             <Table
@@ -274,8 +293,11 @@ const EmployeeCompletionTable = () => {
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const completed = isCompleted(row._id);
-                    const labelId = row.id;
+                    const completed = recipientsFromRequest
+                      ? isCompleted(row._id)
+                      : false;
+
+                    const labelId = row._id;
 
                     return (
                       <TableRow hover tabIndex={-1} key={row.name}>

@@ -52,11 +52,11 @@ const OptionsCheckbox = ({ options, attribute }) => {
                   value={allChecked}
                   name='select-all'
                   inputProps={{
-                    'aria-label': 'Select all: ',
+                    'aria-label': 'Show all: ',
                   }}
                 />
               }
-              label='Select all'
+              label='Show all'
             />
             {options.map((option) => (
               <FormControlLabel

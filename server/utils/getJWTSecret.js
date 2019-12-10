@@ -8,6 +8,7 @@ const getJWTSecret = () => {
   } catch (err) {
     console.error(err);
     console.error('Exiting system with error code 1.');
+
     return process.exit(1);
   }
 };
