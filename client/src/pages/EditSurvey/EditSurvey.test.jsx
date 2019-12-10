@@ -1,12 +1,11 @@
 import React from 'react';
+import axios from 'axios';
 import { Provider } from 'react-redux';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import EditSurveyForm from '.';
 import store from '../../store';
-import axios from 'axios';
-import formatDate from '../../utils/formatDate';
 
 const dummyResponse = {
   title: 'Graduates Onboarding',
