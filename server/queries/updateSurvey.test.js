@@ -67,7 +67,7 @@ it('Testing updateSurvey updates a document successfully.', async (done) => {
   //   dateClosed: 2,
   // });
   // console.log('updated doc: ', updatedDocument);
-  // expect(updatedDocument.status).toStrictEqual('published') &&
+  // expect(updatedDocument.status).toStrictEqual('active') &&
   //   expect(originalDocument.status).toStrictEqual('draft');
   // expect(updatedDocument.datePublished).toEqual(1) &&
   //   expect(originalDocument.datePublished).toStrictEqual('');
