@@ -30,8 +30,6 @@ const surveyDetailReducer = (state = initalState, action) => {
       return { ...state, openSlackModal: true };
     case 'ADD_SLACK_MESSAGE':
       return { ...state, slackMessageText: action.payload };
-    case 'SET_EMPLOYEES':
-      return { ...state, employees: payload };
     default:
       return state;
   }
