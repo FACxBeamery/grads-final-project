@@ -3,7 +3,19 @@
 }
 
 .active {
-  background: rgb(169, 235, 169) !important;
+  background: #2c70f0 !important;
+  color: white !important;
+  font-style: italic !important;
+  font-size: 0.6rem !important;
+  opacity: 0.7 !important;
+}
+
+.draft {
+  background: #646464 !important;
+  color: white !important;
+  font-style: italic !important;
+  font-size: 0.6rem !important;
+  opacity: 0.7 !important;
 }
 
 .card {

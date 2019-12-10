@@ -90,8 +90,8 @@ const SurveyCard = ({ survey }) => {
             )}
           </Button>
           <Chip
-            label={status === 'published' ? 'Active' : 'Ready to publish'}
-            className={styles.active}
+            label={status === 'active' ? 'Active' : 'Ready to publish'}
+            className={`${status === 'active' ? styles.active : styles.draft}`}
           />
         </CardActions>
       </Box>
