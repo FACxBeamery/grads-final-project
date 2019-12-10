@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -13,6 +13,8 @@ import {
   StepLabel,
   StepConnector,
 } from '@material-ui/core';
+import clsx from 'clsx';
+
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 import formatDate from '../../utils/formatDate';
@@ -103,34 +105,73 @@ const CloseSurveyButton = () => {
   );
 };
 
-const QontoConnector = withStyles({
+const ColorlibConnector = withStyles({
   alternativeLabel: {
-    top: 10,
-    left: 'calc(-50% + 16px)',
-    right: 'calc(50% + 16px)',
+    top: 22,
   },
   active: {
     '& $line': {
-      borderColor: '#784af4',
+      backgroundImage:
+        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
     },
   },
   completed: {
     '& $line': {
-      borderColor: '#784af4',
+      backgroundImage:
+        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
     },
   },
   line: {
-    borderColor: '#eaeaf0',
-    borderTopWidth: 3,
+    height: 3,
+    border: 0,
+    backgroundColor: '#eaeaf0',
     borderRadius: 1,
   },
 })(StepConnector);
+
+const useColorlibStepIconStyles = makeStyles({
+  root: {
+    backgroundColor: '#ccc',
+    zIndex: 1,
+    color: '#fff',
+    width: 50,
+    height: 50,
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  active: {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+  },
+  completed: {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+  },
+});
+
+function ColorlibStepIcon(props) {
+  const classes = useColorlibStepIconStyles();
+  const { active, completed } = props;
+
+  return (
+    <div
+      className={clsx(classes.root, {
+        [classes.active]: active,
+        [classes.completed]: completed,
+      })}
+    >
+      {/* {"g"} */}
+    </div>
+  );
+}
 
 const SurveyDetailsStepper = () => {
   const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
     (state) => state.surveyDetailReducer,
   );
-  // const steps = ['Draft', 'Publish', 'Close'];
   const stepperLabels = [
     `Drafted ${formatDate(dateCreated)}`,
     datePublished
@@ -147,7 +188,7 @@ const SurveyDetailsStepper = () => {
     >
       {stepperLabels.map((label) => (
         <Step key={label}>
-          <StepLabel>{label}</StepLabel>
+          <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
         </Step>
       ))}
     </Stepper>
