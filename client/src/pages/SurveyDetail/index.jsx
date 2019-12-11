@@ -223,7 +223,6 @@ const SurveyDetail = ({ match }) => {
   useEffect(() => {
     const { id: idFromUrl } = match.params;
     getSurvey(idFromUrl, dispatch);
-    getEmployees(dispatch);
   }, [match.params, dispatch]);
 
   const {
@@ -261,7 +260,9 @@ const SurveyDetail = ({ match }) => {
             </Box>
           )}
           <Box display='flex' flexDirection='column'>
-            {status === 'active' && <CloseSurveyButton surveyId={match.params.id} />}
+            {status === 'active' && (
+              <CloseSurveyButton surveyId={match.params.id} />
+            )}
             {(status === 'active' || status === 'closed') && (
               <Box m={4}>
                 <SurveyDetailProgressWheel />
