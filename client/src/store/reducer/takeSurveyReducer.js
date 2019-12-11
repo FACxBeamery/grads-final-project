@@ -50,7 +50,6 @@ const takeSurveyReducer = (state = initalState, action) => {
         activeQuestion: state.activeQuestion - 1,
       };
     case 'ADD_RESPONSE':
-      console.log(state.answers);
       return {
         ...state,
         answers: state.answers.map((response) =>
@@ -81,6 +80,7 @@ const takeSurveyReducer = (state = initalState, action) => {
         ...state,
         answers: state.questions.map((question) => {
           return {
+            // eslint-disable-next-line no-underscore-dangle
             questionId: question._id,
             answer: '',
             comment: '',
