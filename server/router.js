@@ -21,8 +21,9 @@ router.get('/test', (req, res) =>
 );
 
 // router.get("/surveys", getSurveys)
-//TODO change this endpoint when survey routes are protected
-router.get('/surveys/:id', getSurveyAndQuestions);
+
+// TODO change this endpoint when survey routes are protected
+router.get('/surveys:id', getSurveyAndQuestions);
 
 router.post('/login', postLogin);
 // router.get("/surveys", getSurveys)

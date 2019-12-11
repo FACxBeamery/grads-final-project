@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { getDb } = require('../databaseConnection');
 
 const createSurvey = async (surveyObj, newQuestionsArray) => {
@@ -14,9 +15,8 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
 
     if (queryResult.result.ok !== 1) {
       return new Error('Query not acknowledged');
-    } else {
-      return 'success';
     }
+    return 'success';
   } catch (e) {
     console.log("There's been an error doing the survey query");
     return new Error(e.message);
