@@ -5,11 +5,11 @@ import TemplateSurveysTable from './components/TemplateSurveysTable';
 const SurveyBuilderFromTemplate = () => {
   return (
     <Box>
-      <Typography gutterBottom variant='h3'>
+      <Typography gutterBottom variant='h2'>
         Create Survey From Template
       </Typography>
       <Typography gutterBottom variant='subtitle1'>
-        Duplicate one of the surveys you have previously built.
+        Use existing surveys as templates.
       </Typography>
 
       <TemplateSurveysTable />
