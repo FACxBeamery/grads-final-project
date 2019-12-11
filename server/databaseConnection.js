@@ -8,7 +8,9 @@ const dummyQuestions = require('./dummyData/dummyQuestions');
 const dummySurveys = require('./dummyData/dummySurveys');
 const mongoUri = require('./utils/mongo/getMongoUri');
 const NODE_ENV = require('./utils/getNODE_ENV')();
+
 const updateEmployeesWithSlackID = require('./queries/updateEmployeesWithSlackID');
+
 const connectionConfig = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

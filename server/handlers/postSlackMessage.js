@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 const sendSlackMessage = require('../utils/sendSlackMessage');
 
 const postSlackMessage = async (req, res) => {

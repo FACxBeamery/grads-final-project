@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable camelcase */
 const getSLACK_OAUTH = () => {
   try {
     if (!process.env.SLACK_OAUTH)

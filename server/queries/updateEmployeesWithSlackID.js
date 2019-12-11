@@ -12,16 +12,16 @@ const updateEmployeesWithSlackID = async (db) => {
   const allEmployeeEmails = allEmployees.map((employee) => employee.email);
 
   const addSlackIDtoEmployee = async (email) => {
-    //console.log("I'm getting here");
     const slackIDURL = `https://slack.com/api/users.lookupByEmail?token=${slackOAuthToken}&email=${email}`;
     try {
       const response = await axios.get(slackIDURL);
-      //console.log('RESPONSE', response.data);
+
       if (response && response.data.user) {
         const slackID = response.data.user.id;
         addSlackInfo(db, email, slackID);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
