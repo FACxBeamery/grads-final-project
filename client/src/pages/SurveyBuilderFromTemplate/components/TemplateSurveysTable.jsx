@@ -43,6 +43,8 @@ const TemplateSurveysTable = ({ history }) => {
       });
 
       dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+      dispatch({ type: 'RESET_SURVEY_DATA' });
+      dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
       dispatch({
         type: 'SET_SURVEY_DATA_FROM_TEMPLATE',
         payload: surveySelected,
@@ -105,7 +107,9 @@ const TemplateSurveysTable = ({ history }) => {
                   <TableCell scope='row'>
                     <Tooltip title='Duplicate From' aria-label='duplicatefrom'>
                       <Button
-                        onClick={goToSurveyBuilderWithPreexistingData(_id)}
+                        onClick={() =>
+                          goToSurveyBuilderWithPreexistingData(_id)
+                        }
                       >
                         <FileCopyOutlinedIcon style={{ fontSize: 20 }} />
                       </Button>
