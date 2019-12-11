@@ -66,6 +66,14 @@ const createSurveyReducer = (state = initalState, action) => {
       return { ...state, openModal: !state.openModal };
     case 'SET_SURVEY_DATA':
       return { ...state, ...payload };
+    case 'SET_SURVEY_DATA_FROM_TEMPLATE':
+      return {
+        ...state,
+        ...payload,
+        title: `COPY FROM - ${payload.title}`,
+        responses: [],
+        dateCreated: Date.now(),
+      };
     case 'TOGGLE_CREATE_SURVEY_MODAL':
       return { ...state, openCreateSurveyModal: !state.openCreateSurveyModal };
     case 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL':
