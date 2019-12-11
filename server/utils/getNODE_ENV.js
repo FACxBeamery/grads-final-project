@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const getNODE_ENV = () => {
   try {
-    if (process.env.NODE_ENV === undefined)
+    if (!process.env.NODE_ENV)
       throw new Error('NODE_ENV environment variable not configured.');
 
     return process.env.NODE_ENV;

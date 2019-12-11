@@ -32,7 +32,7 @@ const Dashboard = ({ history }) => {
 
   const ActiveSurveyCards = () => {
     const publishedSurveys = surveys.filter(
-      (survey) => survey.status === 'published',
+      (survey) => survey.status === 'active',
     );
     const isPublishedSurveysEmpty = publishedSurveys.length === 0;
     return (

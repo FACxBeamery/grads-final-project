@@ -16,7 +16,7 @@ describe('Testing PATCH /surveys/:id', () => {
     done();
     // const documentIdToUpdate = '507f1f77bcf86cd799439001';
     // const updateWith = {
-    //   status: 'published',
+    //   status: 'active',
     //   datePublished: 1,
     // };
     // request(app)

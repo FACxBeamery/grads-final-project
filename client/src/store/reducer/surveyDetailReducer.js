@@ -5,7 +5,7 @@ const initalState = {
 };
 
 const getStatusStep = (status) => {
-  const surveyStatusToIndex = { draft: 1, published: 2, closed: 3 };
+  const surveyStatusToIndex = { draft: 1, active: 2, closed: 3 };
   return surveyStatusToIndex[status];
 };
 
