@@ -10,20 +10,24 @@ const mockLoginAdmin = (username, password) => {
 
   return new Promise((resolve) => {
     if (params.username === '' || params.password === '')
-      return resolve({ message: 'Missing credentials' });
+      return resolve({ data: { message: 'Missing credentials' } });
 
     if (
       params.username === users.username &&
       params.password === users.password
     )
       return resolve({
-        auth: true,
-        token: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUxOWYxZjc3YmNmODZjZDc5OTQzOTE3MyIsImlhdCI6MTU3NDkzNzgyOSwiZXhwIjoxNTc0OTQxNDI5fQ.XfwpCljmFN9KAruZMWna6uxbW9e4gTU7XTxT-vEJsN4`,
-        message: 'Credentials verified and user logged in. MOCKED',
+        data: {
+          auth: true,
+          token: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUxOWYxZjc3YmNmODZjZDc5OTQzOTE3MyIsImlhdCI6MTU3NDkzNzgyOSwiZXhwIjoxNTc0OTQxNDI5fQ.XfwpCljmFN9KAruZMWna6uxbW9e4gTU7XTxT-vEJsN4`,
+          message: 'Credentials verified and user logged in. MOCKED',
+        },
       });
 
     return resolve({
-      message: 'Bad credentials. Username and password do not match.',
+      data: {
+        message: 'Bad credentials. Username and password do not match.',
+      },
     });
   });
 };

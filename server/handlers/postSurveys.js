@@ -7,7 +7,7 @@ const createSurvey = require('../queries/createSurvey');
         id: ObjectID (auto generated)
         title: string
         description: string
-        status: created/published/closed
+        status: created/active/closed
         dateCreated: date
         dateToPublish: date
         datePublished: date
@@ -41,7 +41,7 @@ const postSurveys = async (req, res) => {
   //       .min(5)
   //       .max(140)
   //       .required(),
-  //     status: Joi.string().valid('created', 'published', 'closed'),
+  //     status: Joi.string().valid('created', 'active', 'closed'),
   //     dateCreated: Joi.string(),
   //     dateToPublish: Joi.string(),
   //     datePublished: Joi.string(),
