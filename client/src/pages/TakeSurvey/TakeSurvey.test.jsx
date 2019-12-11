@@ -12,7 +12,7 @@ const dummySurvey = {
   description:
     'A survey description that is about 1 sentence long yeah blah blah',
   status: 'created',
-  disclaimer: "some disclaimer",
+  disclaimer: 'some disclaimer',
   dateCreated: 1573826615,
   dateToPublish: 1574345041,
   datePublished: '',
@@ -60,13 +60,7 @@ const dummySurvey = {
       type: 'multichoice',
       required: true,
       commentEnabled: true,
-      options: [
-        { text: 'really bad', position: 0 },
-        { text: 'bad', position: 1 },
-        { text: 'meh', position: 2 },
-        { text: 'good', position: 3 },
-        { text: 'great', position: 4 },
-      ],
+      options: ['really bad', 'bad', 'meh', 'good', 'great'],
     },
     {
       id: 3,
@@ -75,11 +69,11 @@ const dummySurvey = {
       required: true,
       commentEnabled: true,
       options: [
-        { text: 'strongly disagree', position: 0 },
-        { text: 'disagree', position: 1 },
-        { text: 'neutral', position: 2 },
-        { text: 'agree', position: 3 },
-        { text: 'strongly agree', position: 4 },
+        'strongly disagree',
+        'disagree',
+        'neutral',
+        'agree',
+        'strongly agree',
       ],
     },
   ],
@@ -122,7 +116,7 @@ describe('test take survey components work together', () => {
     fireEvent.click(PreviousButton);
     const SurveyDescriptionText = getByTestId('survey-description');
     const SurveyTitleText = getByTestId('survey-title');
-    const SurveyDisclaimerText = getByTestId("survey-disclaimer");
+    const SurveyDisclaimerText = getByTestId('survey-disclaimer');
     expect(SurveyDescriptionText).toBeInTheDocument();
     expect(SurveyDisclaimerText).toBeInTheDocument();
     expect(SurveyTitleText).toBeInTheDocument();
@@ -150,14 +144,14 @@ describe('test take survey components work together', () => {
 
     const multichoiceAnswer1 = getByText('meh', { exact: false });
     fireEvent.click(multichoiceAnswer1);
-  
+
     const NextButton3 = getByTestId('next-button');
     fireEvent.click(NextButton3);
 
     const multichoiceAnswer2 = getByText('neutral', { exact: false });
-  
+
     fireEvent.click(multichoiceAnswer2);
-     const NextButton4 = getByTestId('next-button');
+    const NextButton4 = getByTestId('next-button');
     fireEvent.click(NextButton4);
 
     const SurveySubmit = getByTestId('survey-submit');

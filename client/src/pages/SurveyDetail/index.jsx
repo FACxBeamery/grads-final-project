@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -21,7 +22,7 @@ import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
-    status: 'published',
+    status: 'active',
     datePublished: Date.now(),
   });
 
@@ -40,22 +41,10 @@ const getSurvey = async (idToSend, dispatch) => {
     const { data } = await axios.get(`/surveys/${idToSend}`);
     setSurveyData(data, dispatch);
   } catch (error) {
-    setSurveyData({});
+    setSurveyData({}, dispatch);
   }
 };
 
-const setEmployeeData = (data, dispatch) => {
-  const payload = data;
-  dispatch({ type: 'SET_EMPLOYEE_DATA', payload });
-};
-const getEmployees = async (dispatch) => {
-  try {
-    const { data } = await axios.get(`/employees`);
-    setEmployeeData(data, dispatch);
-  } catch (error) {
-    setSurveyData({});
-  }
-};
 const closeSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
     status: 'closed',
@@ -65,9 +54,8 @@ const closeSurvey = async (_id, dispatch) => {
   dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
 };
 
-const PublishSurveyButton = () => {
+const PublishSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
 
   return (
     <Button
@@ -76,8 +64,9 @@ const PublishSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await publishSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+        await publishSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Publish Survey
@@ -85,9 +74,8 @@ const PublishSurveyButton = () => {
   );
 };
 
-const CloseSurveyButton = () => {
+const CloseSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
 
   return (
     <Button
@@ -96,8 +84,9 @@ const CloseSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await closeSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+        await closeSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Close Survey
@@ -188,7 +177,7 @@ const SnackbarPublish = () => {
     <Snackbar
       message={
         successfulPublish
-          ? 'The survey is now published and can welcome responses.'
+          ? 'The survey is now active and can welcome responses.'
           : 'There was an error publishing survey. Please try again.'
       }
       variant={successfulPublish ? 'success' : 'error'}
@@ -245,6 +234,13 @@ const SurveyDetail = ({ match }) => {
     successfulClose,
   } = useSelector((state) => state.surveyDetailReducer);
 
+  useEffect(() => {
+    const { id } = match.params;
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+    dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
+    getSurvey(id, dispatch);
+  }, [match.params, dispatch]);
+
   return (
     <Box display='flex' flexDirection='column' align-items='flex-start'>
       <Box display='flex' justifyContent='space-between'>
@@ -260,13 +256,13 @@ const SurveyDetail = ({ match }) => {
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
             <Box display='flex' flexDirection='column'>
-              <PublishSurveyButton />
+              <PublishSurveyButton surveyId={match.params.id} />
               <EditSurveyButton />
             </Box>
           )}
           <Box display='flex' flexDirection='column'>
-            {status === 'published' && <CloseSurveyButton />}
-            {(status === 'published' || status === 'closed') && (
+            {status === 'active' && <CloseSurveyButton surveyId={match.params.id} />}
+            {(status === 'active' || status === 'closed') && (
               <Box m={4}>
                 <SurveyDetailProgressWheel />
               </Box>
@@ -274,13 +270,14 @@ const SurveyDetail = ({ match }) => {
           </Box>
         </Box>
       </Box>
-      {status === 'published' && (
-        <Box display='flex' flexDirection='column'>
-          <Box alignSelf='flex-start' py={2}>
-            <Button variant='outlined' color='secondary'>
-              Add recipients
-            </Button>
-          </Box>
+      {status && (
+        <Box display='flex' flexDirection='column' mt={4}>
+          <Typography variant='h5' color='secondary'>
+            Recipients
+          </Typography>
+          {status === 'draft' && (
+            <Typography>To edit recipient list, select Edit Survey</Typography>
+          )}
           <EmployeeCompletionTable />
         </Box>
       )}
@@ -293,6 +290,8 @@ const SurveyDetail = ({ match }) => {
 SurveyDetail.propTypes = {
   match: PropTypes.shape({ params: PropTypes.shape({ id: PropTypes.string }) })
     .isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  surveyId: PropTypes.string.isRequired,
 };
 
 export default SurveyDetail;

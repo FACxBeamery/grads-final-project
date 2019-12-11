@@ -21,10 +21,10 @@ const postLogin = (req, res, next) => {
             info.message === 'Empty username.' ||
             info.message === 'Empty password.'
           ) {
-            res.status(401).send(info.message);
+            res.status(401).json({ message: info.message });
           }
 
-          res.status(403).send(info.message);
+          res.status(403).json({ message: info.message });
         } else if (user) {
           // eslint-disable-next-line no-underscore-dangle
           const token = jwt.sign({ id: user._id }, jwtSecret, {
@@ -36,7 +36,7 @@ const postLogin = (req, res, next) => {
             message: 'Credentials verified and user logged in.',
           });
         } else {
-          res.status(403).send('User could not be authenticated.'); // fallback condition
+          res.status(403).json({ message: 'User could not be authenticated.' }); // fallback condition
         }
       } catch (error) {
         res.status(500).json({ message: error.message });

@@ -1,25 +1,21 @@
-const { initDb, closeDb } = require('../databaseConnection');
+/* eslint-disable no-undef */
 const { ObjectID } = require('mongodb');
+const { initDb, closeDb } = require('../databaseConnection');
 const addQuestions = require('./addQuestions');
 
-beforeAll(() => {
-  return initDb();
-});
-afterAll(() => {
-  return closeDb();
-});
-
 it('Testing that adding questions to the questions collection works', async () => {
+  await initDb();
+
   const dummyQuestions = [
     {
-      id: ObjectID('707f1f42bcf86dd799439011'),
+      _id: ObjectID('707f1f42bcf86da799439011'),
       title: 'Please describe your first week in one or two sentences',
       type: 'text',
       required: true,
       commentEnabled: true,
     },
     {
-      id: ObjectID('707f1f87bcf86dd799439021'),
+      _id: ObjectID('707f1f87bcf86da799439021'),
       title: 'How was your week?',
       type: 'multichoice',
       required: true,
@@ -51,4 +47,6 @@ it('Testing that adding questions to the questions collection works', async () =
 
   const result = await addQuestions(dummyQuestions);
   expect(result.length).toBe(2);
+
+  return closeDb();
 });
