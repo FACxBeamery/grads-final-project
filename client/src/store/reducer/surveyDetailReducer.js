@@ -23,6 +23,7 @@ const surveyDetailReducer = (state = initalState, action) => {
         activeStep: 1,
         successfulPublish: undefined,
         successfulClose: undefined,
+        slackMessageText: '',
       };
 
     case 'SET_SURVEY_DATA_SURVEY_DETAIL':
