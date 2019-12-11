@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core';
 import Snackbar from '../../components/Snackbar';
 
-import EmployeesTable from '../../components/EmployeeTable';
 import SlackModal from '../../components/SlackModal/SlackModal';
 
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
@@ -32,6 +31,19 @@ const setSurveyData = (data, dispatch) => {
   const payload = data;
   dispatch({ type: 'SET_SURVEY_DATA_SURVEY_DETAIL', payload });
   dispatch({ type: 'SET_ACTIVE_STEP' });
+};
+
+const setEmployeeData = (data, dispatch) => {
+  const payload = data;
+  dispatch({ type: 'SET_EMPLOYEE_DATA', payload });
+};
+const getEmployees = async (dispatch) => {
+  try {
+    const { data } = await axios.get(`/employees`);
+    setEmployeeData(data, dispatch);
+  } catch (error) {
+    setEmployeeData([], dispatch);
+  }
 };
 
 const getSurvey = async (idToSend, dispatch) => {
@@ -65,6 +77,7 @@ const PublishSurveyButton = ({ surveyId }) => {
         dispatch({ type: 'RESET_EMPLOYEE_DATA' });
         await publishSurvey(surveyId, dispatch);
         await getSurvey(surveyId, dispatch);
+        await getEmployees();
       }}
     >
       Publish Survey
@@ -83,6 +96,7 @@ const CloseSurveyButton = ({ surveyId }) => {
       color='secondary'
       onClick={async () => {
         dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+
         await closeSurvey(surveyId, dispatch);
         await getSurvey(surveyId, dispatch);
       }}
@@ -167,6 +181,7 @@ const SurveyDetail = ({ match }) => {
 
   useEffect(() => {
     const { id } = match.params;
+
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
     getSurvey(id, dispatch);
@@ -203,8 +218,8 @@ const SurveyDetail = ({ match }) => {
               Add recipients
             </Button>
           </Box>
-          <EmployeeCompletionTable />
           <SlackModal />
+          <EmployeeCompletionTable />
         </Box>
       )}
 
