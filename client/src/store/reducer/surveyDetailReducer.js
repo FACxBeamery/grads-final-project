@@ -2,6 +2,8 @@ const initalState = {
   activeStep: 1,
   successfulPublish: undefined,
   successfulClose: undefined,
+  openExportModal: false,
+  anonymousExport: false,
 };
 
 const getStatusStep = (status) => {
@@ -27,6 +29,13 @@ const surveyDetailReducer = (state = initalState, action) => {
       return { ...state, successfulPublish: payload };
     case 'SET_SUCCESSFUL_CLOSE':
       return { ...state, successfulClose: payload };
+    case 'TOGGLE_EXPORT_MODAL':
+      return { ...state, openExportModal: !state.openExportModal };
+    case 'TOGGLE_ANONYMOUS_EXPORT':
+      return {
+        ...state,
+        anonymousExport: !state.anonymousExport,
+      };
     default:
       return state;
   }
