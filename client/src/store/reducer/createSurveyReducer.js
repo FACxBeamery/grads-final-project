@@ -107,6 +107,11 @@ const createSurveyReducer = (state = initalState, action) => {
           },
         ],
         dateCreated: Date.now(),
+        dateEdited: undefined,
+        dateToPublish: undefined,
+        datePublished: undefined,
+        dateToClose: undefined,
+        dateClosed: undefined,
       };
     case 'SET_METADATA':
       return { ...state, ...payload };
