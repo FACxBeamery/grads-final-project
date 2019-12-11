@@ -104,7 +104,6 @@ const updateSurvey = async (surveyId, changes) => {
         $set: changes,
       },
     );
-    console.log(result);
     return result;
   } catch (err) {
     return err;

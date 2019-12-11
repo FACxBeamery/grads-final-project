@@ -3,8 +3,7 @@ const readSurvey = require('../queries/readSurvey');
 const getSurvey = async (req, res) => {
   try {
     // checks if params contains key id or if params itself is just one string
-    const id = !req.params.id ? req.params : req.params.id;
-
+    const { id } = req.params
     const result = await readSurvey(id.toString());
     res.status(200).json(result);
   } catch (err) {
