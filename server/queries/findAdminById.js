@@ -1,12 +1,12 @@
 const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
-const findAdminById = async (_id) => {
+const findAdminById = async (id) => {
   const db = await getDb();
   const adminsCollection = await db.collection('Admins');
   try {
     return await adminsCollection.findOne({
-      _id: ObjectID(_id),
+      _id: ObjectID(id),
       type: 'admin',
     });
   } catch (err) {

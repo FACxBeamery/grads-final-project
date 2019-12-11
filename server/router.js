@@ -10,7 +10,7 @@ const getSurvey = require('./handlers/getSurvey');
 const postSurveys = require('./handlers/postSurveys');
 const { getEmployees } = require('./handlers/getEmployees');
 //const patchSurveys = require('./handlers/patchSurveys');
-const patchEmployeesWithSlackID = require('./handlers/patchEmployeesWithSlackID');
+//const patchEmployeesWithSlackID = require('./handlers/patchEmployeesWithSlackID');
 // const postEmployees = require('./handlers/postEmployees');
 
 const getAdmins = require('./handlers/getAdmins');
@@ -39,6 +39,9 @@ router.post('/surveys', postSurveys);
 router.get('/employees', getEmployees);
 // router.post("/employees", postEmployees)
 router.get('/admins', getAdmins);
-router.patch('/employees', patchEmployeesWithSlackID);
+
+//router.patch('/employees', patchEmployeesWithSlackID);
+
+router.post('/login', postLogin);
 
 module.exports = router;

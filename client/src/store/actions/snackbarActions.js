@@ -1,3 +1,2 @@
-const OPEN_SNACKBAR = 'OPEN_SNACKBAR';
-
-export default { OPEN_SNACKBAR };
+export const UPDATE_SNACKBAR = 'UPDATE_SNACKBAR';
+export const SET_SNACKBAR_OPEN = 'SET_SNACKBAR_OPEN';
