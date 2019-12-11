@@ -215,7 +215,7 @@ const EmployeesTable = () => {
             </Table>
           </Box>
           <TablePagination
-            rowsPerPageOptions={[5, 10]}
+            rowsPerPageOptions={[5, 10, 15]}
             component='div'
             count={filteredEmployeeData.length}
             rowsPerPage={rowsPerPage}
@@ -229,6 +229,54 @@ const EmployeesTable = () => {
   );
 };
 
+const completionHeadCells = [
+  {
+    id: 'name',
+    disablePadding: true,
+    label: 'Name',
+  },
+  { id: 'job-title', disablePadding: false, label: 'Job Title' },
+  {
+    id: 'department',
+    disablePadding: false,
+    label: 'Department',
+  },
+  { id: 'office', disablePadding: false, label: 'Office' },
+  {
+    id: 'start-date',
+    disablePadding: false,
+    label: 'Start Date',
+  },
+  {
+    id: 'survey-completion',
+    disablePadding: false,
+    label: 'Completion',
+  },
+];
+
+const CompletionTableHead = () => {
+  const { status } = useSelector((state) => state.surveyDetailReducer);
+
+  const statusDependentHeadCells =
+    status === 'draft' ? completionHeadCells.slice(0, -1) : completionHeadCells;
+  return (
+    <TableHead>
+      <TableRow>
+        {statusDependentHeadCells.map((headCell) => (
+          <TableCell
+            align={headCell.label === 'Name' ? 'left' : 'right'}
+            key={headCell.id}
+            padding={headCell.disablePadding ? 'none' : 'default'}
+          >
+            <Typography style={{ fontWeight: 700 }}>
+              {headCell.label}
+            </Typography>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+};
 const EmployeeCompletionTable = () => {
   const dispatch = useDispatch();
 
@@ -240,15 +288,30 @@ const EmployeeCompletionTable = () => {
     (state) => state.surveyDetailReducer.recipients,
   );
 
-  const { status } = useSelector((state) => state.surveyDetailReducer.status);
+  const { _id, status } = useSelector((state) => state.surveyDetailReducer);
+
+  const isCompleted = (id) => {
+    return recipientsFromRequest.find((obj) => {
+      return obj.employeeId === id;
+    }).completed;
+  };
 
   useEffect(() => {
     const getEmployees = async () => {
       dispatch({ type: 'RESET_EMPLOYEE_DATA' });
       const { data } = await axios.get(`/employees`);
-      const filteredData = data.filter((person) =>
-        recipientsFromRequest.map((obj) => obj.employeeId).includes(person._id),
-      );
+      const filteredData = data
+        .filter((person) =>
+          recipientsFromRequest
+            .map((obj) => obj.employeeId)
+            .includes(person._id),
+        )
+        .sort((x, y) => {
+          const xCompleted = isCompleted(x._id);
+          const yCompleted = isCompleted(y._id);
+          // eslint-disable-next-line no-nested-ternary
+          return xCompleted === yCompleted ? 0 : xCompleted ? 1 : -1;
+        });
 
       dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
       dispatch({
@@ -260,13 +323,7 @@ const EmployeeCompletionTable = () => {
 
     getEmployees();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, recipientsFromRequest]);
-
-  const isCompleted = (id) => {
-    return recipientsFromRequest.find((obj) => {
-      return obj.employeeId === id;
-    }).completed;
-  };
+  }, [_id, status, recipientsFromRequest]);
 
   const handleChangePage = (event, newPage) => {
     const payload = { page: newPage };
@@ -293,6 +350,8 @@ const EmployeeCompletionTable = () => {
               size='small'
               aria-label='employee table'
             >
+              <CompletionTableHead />
+
               <TableBody>
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -317,11 +376,14 @@ const EmployeeCompletionTable = () => {
                         <TableCell align='right'>{row.department}</TableCell>
                         <TableCell align='right'>{row.office}</TableCell>
                         <TableCell align='right'>{row.startDate}</TableCell>
-                        <TableCell
-                          style={{ color: completed ? '#28d592' : '#d28e29' }}
-                        >
-                          {completed ? 'Completed' : 'Incomplete'}
-                        </TableCell>
+                        {status !== 'draft' && (
+                          <TableCell
+                            align='right'
+                            style={{ color: completed ? '#28d592' : '#d28e29' }}
+                          >
+                            {completed ? 'Completed' : 'Incomplete'}
+                          </TableCell>
+                        )}
                       </TableRow>
                     );
                   })}
@@ -334,7 +396,7 @@ const EmployeeCompletionTable = () => {
             </Table>
           </Box>
           <TablePagination
-            rowsPerPageOptions={[5, 10]}
+            rowsPerPageOptions={[5, 10, 15]}
             component='div'
             count={filteredEmployeeData.length}
             rowsPerPage={rowsPerPage}
