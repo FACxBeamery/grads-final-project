@@ -1,5 +1,3 @@
-// import { SET_ACTIVE_STEP } from '../actions/surveyDetailActions';
-
 const initalState = {
   activeStep: 1,
   successfulPublish: undefined,
@@ -36,7 +34,7 @@ const surveyDetailReducer = (state = initalState, action) => {
       return { ...state, successfulClose: payload };
 
     case 'TOGGLE_OPEN_SLACK_MODAL':
-      return { ...state, openSlackModal: true };
+      return { ...state, openSlackModal: !state.openSlackModal };
     case 'ADD_SLACK_MESSAGE':
       return { ...state, slackMessageText: action.payload };
 

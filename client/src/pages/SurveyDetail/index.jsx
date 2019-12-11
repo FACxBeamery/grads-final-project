@@ -18,10 +18,8 @@ import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 
 import SlackModal from '../../components/SlackModal/SlackModal';
-
-import formatDate from '../../utils/formatDate';
-
 import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
+import formatDate from '../../utils/formatDate';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -133,9 +131,7 @@ const SurveyDetailsStepper = () => {
 
   const stepperLabels = [
     `Drafted\n${formatDate(dateCreated)}`,
-    datePublished
-      ? `Published\n${formatDate(datePublished)}`
-      : `Publish\npending`,
+    datePublished ? `Active\n${formatDate(datePublished)}` : `Active\npending`,
     dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
   ];
 
@@ -176,7 +172,7 @@ const SnackbarPublish = () => {
     <Snackbar
       message={
         successfulPublish
-          ? 'The survey is now published and can welcome responses.'
+          ? 'The survey is now active and can welcome responses.'
           : 'There was an error publishing survey. Please try again.'
       }
       variant={successfulPublish ? 'success' : 'error'}
