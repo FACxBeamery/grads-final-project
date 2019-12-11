@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable camelcase */
 const getNODE_ENV = () => {
   try {
     if (!process.env.NODE_ENV)

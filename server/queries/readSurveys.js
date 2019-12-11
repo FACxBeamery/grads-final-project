@@ -1,4 +1,5 @@
 const { getDb } = require('../databaseConnection');
+
 const readUsers = async () => {
   try {
     const db = getDb();

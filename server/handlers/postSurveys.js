@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+// const Joi = require('@hapi/joi');
 const addQuestions = require('../queries/addQuestions');
 const createSurvey = require('../queries/createSurvey');
 
@@ -28,9 +28,6 @@ const createSurvey = require('../queries/createSurvey');
     */
 
 const postSurveys = async (req, res) => {
-  console.log('postSurveys handler running');
-
-  const surveyObjectSchema = Joi.object();
   // !! ------ ONLY UNCOMMENT THIS ONCE SURVEY EDITOR IS FINISHED --- !!
   //   const surveyObjectSchema = Joi.object().keys({
   //     title: Joi.string()
@@ -66,7 +63,7 @@ const postSurveys = async (req, res) => {
   //     ),
   //   });
   const surveyObject = req.body;
-  const questions = surveyObject.questions;
+  const { questions } = surveyObject;
   try {
     const questionIdsObject = await addQuestions(questions);
     const questionIds = Object.values(questionIdsObject);

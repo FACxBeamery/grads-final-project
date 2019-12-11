@@ -1,5 +1,6 @@
-const { initDb, closeDb } = require('../databaseConnection');
+/* eslint-disable no-undef */
 const { ObjectID } = require('mongodb');
+const { initDb, closeDb } = require('../databaseConnection');
 const addQuestions = require('./addQuestions');
 
 it('Testing that adding questions to the questions collection works', async () => {

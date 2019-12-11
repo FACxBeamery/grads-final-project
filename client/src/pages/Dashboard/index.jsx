@@ -27,6 +27,8 @@ const Dashboard = ({ history }) => {
       const { data } = await axios.get('/surveys');
       const allSurveysData = data;
       dispatch({ type: 'SET_SURVEYS', payload: allSurveysData });
+      dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+      dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
     };
     getSurveys();
   }, [dispatch]);
