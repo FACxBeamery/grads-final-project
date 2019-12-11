@@ -49,7 +49,7 @@ const SurveyCard = ({ survey }) => {
             )}
           </Box>
           <Box display='flex' justifyContent='space-between' mb={1}>
-            <Box display='flex' flexDirection='column'>
+            <Box display='flex' flexDirection='column' mr={2}>
               <Typography variant='h6'>{title}</Typography>
               <Typography color='textSecondary' variant='body2'>
                 {description}
@@ -90,8 +90,8 @@ const SurveyCard = ({ survey }) => {
             )}
           </Button>
           <Chip
-            label={status === 'published' ? 'Active' : 'Ready to publish'}
-            className={styles.active}
+            label={status === 'active' ? 'Active' : 'Ready to publish'}
+            className={status === 'active' ? styles.active : styles.draft}
           />
         </CardActions>
       </Box>
