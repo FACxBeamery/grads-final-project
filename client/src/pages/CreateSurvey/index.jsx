@@ -48,12 +48,10 @@ const CreateSurvey = ({ history }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
     dispatch({ type: 'RESET_SURVEY_DATA' });
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
-
   }, [dispatch]);
 
   const setMetadata = (event, inputType) => {
@@ -75,190 +73,190 @@ const CreateSurvey = ({ history }) => {
       return obj;
     });
 
-  // TODO route back to dashboard on click
-  const saveSurvey = async () => {
+    // TODO route back to dashboard on click
+    const saveSurvey = async () => {
+      try {
+        surveyForSending = {
+          ...surveyForSending,
+          status: 'draft',
+          responses: [],
+          dateToClose: null,
+          dateClosed: null,
+          dateEdited: Date.now(),
+          datePublished: null,
+          dateToPublish: null,
+          recipients: recipientsToSend,
+          recipientIds: recipientsToSend,
+        };
+        delete surveyForSending.employeeData;
+        delete surveyForSending.openCreateSurveyModal;
+        delete surveyForSending.isConfirming;
+        delete surveyForSending.openModal;
 
-    try {
-      surveyForSending = {
-        ...surveyForSending,
-        status: 'draft',
-        responses: [],
-        dateToClose: null,
-        dateClosed: null,
-        dateEdited: Date.now(),
-        datePublished: null,
-        dateToPublish: null,
-        recipients: recipientsToSend,
-        recipientIds: recipientsToSend,
-      };
-      delete surveyForSending.employeeData;
-      delete surveyForSending.openCreateSurveyModal;
-      delete surveyForSending.isConfirming;
-      delete surveyForSending.openModal;
+        await axios.post('/surveys', surveyForSending);
+      } catch (e) {
+        throw new Error(e.message);
+      }
+    };
 
-      await axios.post('/surveys', surveyForSending);
-    } catch (e) {
-      throw new Error(e.message);
-    }
-  };
+    const toggleModal = () => {
+      dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
+    };
 
-  const toggleModal = () => {
-    dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
-  };
+    const confirmEditing = () => {
+      dispatch({ type: 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL' });
 
-  const confirmEditing = () => {
-    dispatch({ type: 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL' });
+      saveSurvey();
+    };
 
-    saveSurvey();
-  };
+    const redirectToDashboard = () => {
+      history.push('/admin');
+    };
 
-  const redirectToDashboard = () => {
-    history.push('/admin');
-  };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      toggleModal();
+    };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    toggleModal();
-  };
+    const PromptMessage = () => {
+      return (
+        <Prompt
+          message={
+            () =>
+              'Are you sure you want to leave this page? Your changes will not be saved.'
+            // eslint-disable-next-line react/jsx-curly-newline
+          }
+        />
+      );
+    };
 
-  const PromptMessage = () => {
-    return (
-      <Prompt
-        message={
-          () =>
-            'Are you sure you want to leave this page? Your changes will not be saved.'
-          // eslint-disable-next-line react/jsx-curly-newline
-        }
-      />
-    );
-  };
-
-  const ConfirmChanges = () => {
-    return (
-      <>
-        <Typography variant='h5' id='simple-modal-title'>
-          Are you sure you want to save your changes?
-        </Typography>
-        <Box mt={6} display='flex' justifyContent='space-between'>
-          <Button onClick={redirectToDashboard} color='primary'>
-            Go back to dashboard
-          </Button>
-          <Button onClick={toggleModal} color='primary'>
-            Cancel
-          </Button>
-          <Button onClick={confirmEditing} color='secondary'>
-            Yes
-          </Button>
-        </Box>
-      </>
-    );
-  };
-
-  const ChangesConfirmed = () => {
-    return (
-      <>
-        <Typography variant='h5' style={{ textAlign: 'center' }}>
-          Survey created successfully!
-        </Typography>
-        <Box mt={6}>
-          <Button contained color='secondary' onClick={redirectToDashboard}>
-            Go Back to Dashboard
-          </Button>
-        </Box>
-      </>
-    );
-  };
-
-  return (
-    <Box>
-      {isConfirming && <PromptMessage />}
-
-      <form onSubmit={handleSubmit}>
-        <Box display='flex' flexDirection='column' my={8}>
-          <Box mb={4}>
-            <Typography variant='h2'>Survey Editor</Typography>
-          </Box>
-          <Typography variant='h4'>Start building your survey...</Typography>
-          <Box my={2}>
-            <Typography>
-              {`Date created: ${formatDate(dateCreated)}`}
-            </Typography>
-          </Box>
-
-          <TextField
-            margin='normal'
-            required
-            error={title && title.length > 60}
-            helperText={
-              title &&
-              title.length > 60 &&
-              'Title must be less than 60 characters!'
-            }
-            value={title}
-            name='title'
-            label='Survey title'
-            onChange={setMetadata}
-          />
-          <TextField
-            margin='normal'
-            required
-            error={description && description.length > 280}
-            helperText={
-              description &&
-              description.length > 280 &&
-              'Description must be less than 280 characters!'
-            }
-            value={description}
-            name='description'
-            label='Enter a description'
-            onChange={setMetadata}
-          />
-
-          <TextField
-            margin='normal'
-            required
-            error={disclaimer.length < 5}
-            helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
-            value={disclaimer}
-            name='disclaimer'
-            label='How will this data be used?'
-            onChange={setMetadata}
-          />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={anonymous}
-                onChange={(e) => setMetadata(e, 'switch')}
-                value='anonymous'
-                name='anonymous'
-                labelid='anonymous-switch'
-                inputProps={{ 'aria-label': 'Make survey anonymous' }}
-              />
-            }
-            label='Anonymous'
-          />
-          <RecipientsList />
-          <Divider variant='middle' />
-          <QuestionsList />
-          <Box alignSelf='center' mt={8}>
-            <Button type='submit' variant='contained' color='secondary'>
-              Save as draft
+    const ConfirmChanges = () => {
+      return (
+        <>
+          <Typography variant='h5' id='simple-modal-title'>
+            Are you sure you want to save your changes?
+          </Typography>
+          <Box mt={6} display='flex' justifyContent='space-between'>
+            <Button onClick={redirectToDashboard} color='primary'>
+              Go back to dashboard
+            </Button>
+            <Button onClick={toggleModal} color='primary'>
+              Cancel
+            </Button>
+            <Button onClick={confirmEditing} color='secondary'>
+              Yes
             </Button>
           </Box>
-        </Box>
-      </form>
-      <Modal
-        aria-labelledby='simple-modal-title'
-        aria-describedby='simple-modal-description'
-        open={openCreateSurveyModal}
-        onClose={toggleModal}
-      >
-        <Box style={modalStyle} className={classes.paper}>
-          {isConfirming ? <ConfirmChanges /> : <ChangesConfirmed />}
-        </Box>
-      </Modal>
-    </Box>
-  );
+        </>
+      );
+    };
+
+    const ChangesConfirmed = () => {
+      return (
+        <>
+          <Typography variant='h5' style={{ textAlign: 'center' }}>
+            Survey created successfully!
+          </Typography>
+          <Box mt={6}>
+            <Button contained color='secondary' onClick={redirectToDashboard}>
+              Go Back to Dashboard
+            </Button>
+          </Box>
+        </>
+      );
+    };
+
+    return (
+      <Box>
+        {isConfirming && <PromptMessage />}
+
+        <form onSubmit={handleSubmit}>
+          <Box display='flex' flexDirection='column' my={8}>
+            <Box mb={4}>
+              <Typography variant='h2'>Survey Editor</Typography>
+            </Box>
+            <Typography variant='h4'>Start building your survey...</Typography>
+            <Box my={2}>
+              <Typography>
+                {`Date created: ${formatDate(dateCreated)}`}
+              </Typography>
+            </Box>
+
+            <TextField
+              margin='normal'
+              required
+              error={title && title.length > 60}
+              helperText={
+                title &&
+                title.length > 60 &&
+                'Title must be less than 60 characters!'
+              }
+              value={title}
+              name='title'
+              label='Survey title'
+              onChange={setMetadata}
+            />
+            <TextField
+              margin='normal'
+              required
+              error={description && description.length > 280}
+              helperText={
+                description &&
+                description.length > 280 &&
+                'Description must be less than 280 characters!'
+              }
+              value={description}
+              name='description'
+              label='Enter a description'
+              onChange={setMetadata}
+            />
+
+            <TextField
+              margin='normal'
+              required
+              error={disclaimer.length < 5}
+              helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
+              value={disclaimer}
+              name='disclaimer'
+              label='How will this data be used?'
+              onChange={setMetadata}
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={anonymous}
+                  onChange={(e) => setMetadata(e, 'switch')}
+                  value='anonymous'
+                  name='anonymous'
+                  labelid='anonymous-switch'
+                  inputProps={{ 'aria-label': 'Make survey anonymous' }}
+                />
+              }
+              label='Anonymous'
+            />
+            <RecipientsList />
+            <Divider variant='middle' />
+            <QuestionsList />
+            <Box alignSelf='center' mt={8}>
+              <Button type='submit' variant='contained' color='secondary'>
+                Save as draft
+              </Button>
+            </Box>
+          </Box>
+        </form>
+        <Modal
+          aria-labelledby='simple-modal-title'
+          aria-describedby='simple-modal-description'
+          open={openCreateSurveyModal}
+          onClose={toggleModal}
+        >
+          <Box style={modalStyle} className={classes.paper}>
+            {isConfirming ? <ConfirmChanges /> : <ChangesConfirmed />}
+          </Box>
+        </Modal>
+      </Box>
+    );
+  };
 };
 
 CreateSurvey.propTypes = {
