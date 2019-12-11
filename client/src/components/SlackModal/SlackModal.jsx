@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -10,7 +10,6 @@ import {
   TextField,
   Paper,
 } from '@material-ui/core';
-import sendSlackMessage from '../../utils/sendSlackMessage';
 
 const SlackMessageTextBox = () => {
   const dispatch = useDispatch();
@@ -61,8 +60,6 @@ const SlackModal = () => {
 
   const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
 
-  console.log(recipientsIDs, 'RECIPIENT IDS');
-
   const generateLink = (recipientID, surveyIdToDo) => {
     const link = `localhost:3000/${surveyIdToDo}/${recipientID}`;
     return link;
@@ -70,8 +67,6 @@ const SlackModal = () => {
   const generatedLinks = recipientsIDs.map((recipientID) =>
     generateLink(recipientID, _id),
   );
-
-  console.log('generated LINKS', generatedLinks);
 
   const customMessage = (link) => {
     const customMessagesWithLinks = `${slackMessageText} ${link}`;
@@ -83,14 +78,16 @@ const SlackModal = () => {
     .filter((employee) => recipientsIDs.includes(employee._id))
     .map((person) => person.slackID);
 
-  console.log(slackIDs, 'slack IDS');
-
   const handleSlackMessageSubmit = (event) => {
     event.preventDefault();
-    console.log('in the handle');
-    slackIDs.forEach((slackID, linkIndex) =>
-      sendSlackMessage(slackID, customMessage(generatedLinks[linkIndex])),
-    );
+
+    slackIDs.forEach((slackID, linkIndex) => {
+      const message = encodeURI(customMessage(generatedLinks[linkIndex]));
+
+      axios.post('/slack', { slackID, message });
+
+      // sendSlackMessage(slackID, customMessage(generatedLinks[linkIndex])),
+    });
   };
 
   return (
