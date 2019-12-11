@@ -22,9 +22,9 @@ const Main = () => {
         </Box>
         <Box mx={4}>
           <Switch>
-          <Route exact path='/admin/login'>
-            {auth ? <Redirect to='/admin' /> : <AdminLogin />}
-          </Route>
+            <Route exact path='/admin/login'>
+              {auth ? <Redirect to='/admin' /> : <AdminLogin />}
+            </Route>
             <Route exact path='/admin' component={Dashboard} />
             <Route
               exact
