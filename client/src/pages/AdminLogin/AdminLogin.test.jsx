@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -9,13 +10,14 @@ import AdminLogin from '.';
 jest.mock('./apiCalls');
 
 describe('My Connected React-Redux Component', () => {
-  beforeEach(() => {});
 
   it('<AdminLogin /> displays welcome message, two input fields and sign in button', async () => {
     const { getByText, getAllByLabelText, getAllByRole } = render(
-      <Provider store={store}>
-        <AdminLogin />
-      </Provider>,
+      <BrowserRouter>
+        <Provider store={store}>
+          <AdminLogin />
+        </Provider>
+      </BrowserRouter>
     );
 
     expect(getByText('Welcome.')).toBeInTheDocument();
