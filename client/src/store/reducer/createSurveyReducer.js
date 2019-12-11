@@ -73,6 +73,11 @@ const createSurveyReducer = (state = initalState, action) => {
         title: `COPY FROM - ${payload.title}`,
         responses: [],
         dateCreated: Date.now(),
+        dateEdited: undefined,
+        dateToPublish: undefined,
+        datePublished: undefined,
+        dateToClose: undefined,
+        dateClosed: undefined,
       };
     case 'TOGGLE_CREATE_SURVEY_MODAL':
       return { ...state, openCreateSurveyModal: !state.openCreateSurveyModal };
