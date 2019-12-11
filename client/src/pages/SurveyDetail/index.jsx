@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -12,8 +13,12 @@ import {
   Step,
   StepLabel,
 } from '@material-ui/core';
+
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
+import formatDate from '../../utils/formatDate';
+
+import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -90,17 +95,77 @@ const CloseSurveyButton = ({ surveyId }) => {
 };
 
 const SurveyDetailsStepper = () => {
-  const { activeStep } = useSelector((state) => state.surveyDetailReducer);
-  const steps = ['Draft', 'Publish', 'Close'];
+  const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
+
+  const stepperMuiTheme = createMuiTheme({
+    overrides: {
+      MuiStepIcon: {
+        root: {
+          zIndex: 1,
+          '&$active': {
+            color: '#F15852',
+          },
+          '&$completed': {
+            color: '#F15852',
+          },
+        },
+      },
+      MuiStepConnector: {
+        active: {
+          '& $line': {
+            backgroundColor: '#201E5A',
+            border: 0,
+            height: 3,
+          },
+        },
+        completed: {
+          '& $line': {
+            backgroundColor: '#201E5A',
+            border: 0,
+            height: 3,
+          },
+        },
+      },
+    },
+  });
+
+  const stepperLabels = [
+    `Drafted\n${formatDate(dateCreated)}`,
+    datePublished
+      ? `Published\n${formatDate(datePublished)}`
+      : `Publish\npending`,
+    dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
+  ];
 
   return (
-    <Stepper alternativeLabel activeStep={activeStep}>
-      {steps.map((label) => (
-        <Step key={label}>
-          <StepLabel>{label}</StepLabel>
-        </Step>
-      ))}
-    </Stepper>
+    <MuiThemeProvider theme={stepperMuiTheme}>
+      <Stepper alternativeLabel activeStep={activeStep}>
+        {stepperLabels.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </MuiThemeProvider>
+  );
+};
+
+const SurveyDetailProgressWheel = () => {
+  const { recipients, responses } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
+  const percentage = responses.length / recipients.length;
+
+  return (
+    <ProgressWheel
+      strokeWidth='10'
+      sqSize='100'
+      percentage={percentage || 0}
+      numerator={responses.length}
+      denominator={recipients.length}
+    />
   );
 };
 
@@ -154,6 +219,13 @@ const EditSurveyButton = () => {
 };
 const SurveyDetail = ({ match }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const { id: idFromUrl } = match.params;
+    getSurvey(idFromUrl, dispatch);
+    getEmployees(dispatch);
+  }, [match.params, dispatch]);
+
   const {
     title,
     description,
@@ -188,9 +260,14 @@ const SurveyDetail = ({ match }) => {
               <EditSurveyButton />
             </Box>
           )}
-          {status === 'active' && (
-            <CloseSurveyButton surveyId={match.params.id} />
-          )}
+          <Box display='flex' flexDirection='column'>
+            {status === 'active' && <CloseSurveyButton surveyId={match.params.id} />}
+            {(status === 'active' || status === 'closed') && (
+              <Box m={4}>
+                <SurveyDetailProgressWheel />
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
       {status && (
