@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Box } from '@material-ui/core';
@@ -24,12 +24,11 @@ const Main = () => {
 
   // eslint-disable-next-line react/prop-types
   const ProtectedRoute = ({ component: Component, ...rest }) => {
-    checkTokenIsAuth(dispatch);
     return (
       <Route 
         {...rest}
-        render={({ location }) => (
-          auth
+        render={({ location }) => {
+          return auth && checkTokenIsAuth(dispatch, auth)
           ? <Component />
           : (
             <Redirect
@@ -40,7 +39,7 @@ const Main = () => {
               }} 
             />
             )
-      )}
+        }}
       />
       )
   }
