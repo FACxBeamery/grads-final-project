@@ -17,7 +17,7 @@ import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
-    status: 'published',
+    status: 'active',
     datePublished: Date.now(),
   });
 
@@ -112,7 +112,7 @@ const SnackbarPublish = () => {
     <Snackbar
       message={
         successfulPublish
-          ? 'The survey is now published and can welcome responses.'
+          ? 'The survey is now active and can welcome responses.'
           : 'There was an error publishing survey. Please try again.'
       }
       variant={successfulPublish ? 'success' : 'error'}
@@ -188,12 +188,12 @@ const SurveyDetail = ({ match }) => {
               <EditSurveyButton />
             </Box>
           )}
-          {status === 'published' && (
+          {status === 'active' && (
             <CloseSurveyButton surveyId={match.params.id} />
           )}
         </Box>
       </Box>
-      {status === 'published' && (
+      {status === 'active' && (
         <Box display='flex' flexDirection='column'>
           <Box alignSelf='flex-start' py={2}>
             <Button variant='outlined' color='secondary'>

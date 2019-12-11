@@ -13,13 +13,9 @@ const addQuestions = async (questionsArray) => {
     if (querySuccessful) {
       const insertedIds = Object.values(returnFromQuery.insertedIds);
       return insertedIds; // array of ObjectIds for each question
-    } else {
-      console.log('Questions not added to DB!');
-
-      return new Error('Query not acknowledged');
     }
+    return new Error('Query not acknowledged');
   } catch (e) {
-    console.log('Error adding to questions collection');
     return new Error(e.message);
   }
 };
