@@ -32,12 +32,13 @@ const updateSurvey = async (surveyId, changes) => {
         // loop through the array and replace all the nulls with the questions that were just added to the collection
         orderedQuestionIds = orderedQuestionIds.map((questionId) => {
           if (questionId === null) {
-            const newQuestion = newQuestions.insertedIds[`${counter}`].toString();
+            const newQuestion = newQuestions.insertedIds[
+              `${counter}`
+            ].toString();
             counter += 1;
             return newQuestion;
           }
           return questionId;
-
         });
       }
       const questionsFromSurvey = changes.questions;
@@ -94,7 +95,7 @@ const updateSurvey = async (surveyId, changes) => {
           }
         }
       });
-      return result
+      return result;
     }
     const result = await surveys.updateOne(
       {
@@ -104,7 +105,6 @@ const updateSurvey = async (surveyId, changes) => {
         $set: changes,
       },
     );
-    console.log(result);
     return result;
   } catch (err) {
     return err;
