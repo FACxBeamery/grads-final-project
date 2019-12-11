@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -11,13 +11,13 @@ import {
   Stepper,
   Step,
   StepLabel,
-  StepConnector,
 } from '@material-ui/core';
-import clsx from 'clsx';
 
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 import formatDate from '../../utils/formatDate';
+
+import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
@@ -105,93 +105,78 @@ const CloseSurveyButton = () => {
   );
 };
 
-const ColorlibConnector = withStyles({
-  alternativeLabel: {
-    top: 22,
-  },
-  active: {
-    '& $line': {
-      backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
-    },
-  },
-  completed: {
-    '& $line': {
-      backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
-    },
-  },
-  line: {
-    height: 3,
-    border: 0,
-    backgroundColor: '#eaeaf0',
-    borderRadius: 1,
-  },
-})(StepConnector);
-
-const useColorlibStepIconStyles = makeStyles({
-  root: {
-    backgroundColor: '#ccc',
-    zIndex: 1,
-    color: '#fff',
-    width: 50,
-    height: 50,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  active: {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-  },
-  completed: {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-  },
-});
-
-function ColorlibStepIcon(props) {
-  const classes = useColorlibStepIconStyles();
-  const { active, completed } = props;
-
-  return (
-    <div
-      className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
-      })}
-    >
-      {/* {"g"} */}
-    </div>
-  );
-}
-
 const SurveyDetailsStepper = () => {
   const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
     (state) => state.surveyDetailReducer,
   );
+
+  const stepperMuiTheme = createMuiTheme({
+    overrides: {
+      MuiStepIcon: {
+        root: {
+          zIndex: 1,
+          '&$active': {
+            color: '#F15852',
+          },
+          '&$completed': {
+            color: '#F15852',
+          },
+        },
+      },
+      MuiStepConnector: {
+        active: {
+          '& $line': {
+            backgroundColor: '#201E5A',
+            border: 0,
+            height: 3,
+          },
+        },
+        completed: {
+          '& $line': {
+            backgroundColor: '#201E5A',
+            border: 0,
+            height: 3,
+          },
+        },
+      },
+    },
+  });
+
   const stepperLabels = [
-    `Drafted ${formatDate(dateCreated)}`,
+    `Drafted\n${formatDate(dateCreated)}`,
     datePublished
-      ? `Published ${formatDate(datePublished)}`
-      : 'Publish pending',
-    dateClosed ? `Closed ${formatDate(dateClosed)}` : 'Closed pending',
+      ? `Published\n${formatDate(datePublished)}`
+      : `Publish\npending`,
+    dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
   ];
 
   return (
-    <Stepper
-      alternativeLabel
-      activeStep={activeStep}
-      connector={<ColorlibConnector />}
-    >
-      {stepperLabels.map((label) => (
-        <Step key={label}>
-          <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-        </Step>
-      ))}
-    </Stepper>
+    <MuiThemeProvider theme={stepperMuiTheme}>
+      <Stepper alternativeLabel activeStep={activeStep}>
+        {stepperLabels.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </MuiThemeProvider>
+  );
+};
+
+const SurveyDetailProgressWheel = () => {
+  const { recipients, responses } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
+  const percentage = responses.length / recipients.length;
+
+  return (
+    <ProgressWheel
+      strokeWidth='10'
+      sqSize='100'
+      percentage={percentage || 0}
+      numerator={responses.length}
+      denominator={recipients.length}
+    />
   );
 };
 
@@ -245,6 +230,13 @@ const EditSurveyButton = () => {
 };
 const SurveyDetail = ({ match }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const { id: idFromUrl } = match.params;
+    getSurvey(idFromUrl, dispatch);
+    getEmployees(dispatch);
+  }, [match.params, dispatch]);
+
   const {
     title,
     description,
@@ -252,17 +244,6 @@ const SurveyDetail = ({ match }) => {
     successfulPublish,
     successfulClose,
   } = useSelector((state) => state.surveyDetailReducer);
-
-  // const { employeeData } = useSelector((state) => state.employeeTableReducer);
-
-  // if (!employeeData) {
-  //   getEmployees(dispatch);
-  // }
-  useEffect(() => {
-    const { id: idFromUrl } = match.params;
-    getSurvey(idFromUrl, dispatch);
-    getEmployees(dispatch);
-  }, [match.params, dispatch]);
 
   return (
     <Box display='flex' flexDirection='column' align-items='flex-start'>
@@ -283,7 +264,14 @@ const SurveyDetail = ({ match }) => {
               <EditSurveyButton />
             </Box>
           )}
-          {status === 'published' && <CloseSurveyButton />}
+          <Box display='flex' flexDirection='column'>
+            {status === 'published' && <CloseSurveyButton />}
+            {(status === 'published' || status === 'closed') && (
+              <Box m={4}>
+                <SurveyDetailProgressWheel />
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
       {status === 'published' && (
