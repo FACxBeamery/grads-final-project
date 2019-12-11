@@ -8,7 +8,6 @@ import { Typography, Button, Grid, Box } from '@material-ui/core';
 
 import SurveyCard from './components/SurveyCard';
 import AllSurveysTable from './components/AllSurveysTable';
-import SplitButton from '../../components/SplitButton';
 
 const Dashboard = ({ history }) => {
   const { surveys, showActiveSurveys } = useSelector((state) => ({
@@ -34,6 +33,11 @@ const Dashboard = ({ history }) => {
 
   const goToSurveyBuilder = () => {
     history.push(`/admin/surveys/create`);
+    dispatch({ type: 'RESET_SURVEY_DATA' });
+  };
+
+  const goToSurveyBuilderFromTemplate = () => {
+    history.push(`/admin/surveys/template`);
     dispatch({ type: 'RESET_SURVEY_DATA' });
   };
 
@@ -100,7 +104,7 @@ const Dashboard = ({ history }) => {
   const SurveyTable = () => {
     return (
       <Grid container>
-        <AllSurveysTable surveys={surveys} />
+        <AllSurveysTable />
       </Grid>
     );
   };
@@ -121,16 +125,26 @@ const Dashboard = ({ history }) => {
   };
   return (
     <Box>
-      <Box display='flex' justifyContent='space-between' alignItems='center'>
+      <Box display='flex' alignItems='center' justifyContent='space-between'>
         <Typography variant='h2'>Dashboard</Typography>
-        <SplitButton />
-        {/* <Button
-          onClick={goToSurveyBuilder}
-          variant='contained'
-          color='secondary'
-        >
-          Create New Survey
-        </Button> */}
+        <Box display='flex' flexDirection='column' alignItems='center'>
+          <Box mb={2}>
+            <Button
+              onClick={goToSurveyBuilder}
+              variant='contained'
+              color='secondary'
+            >
+              Create Survey
+            </Button>
+          </Box>
+          <Button
+            onClick={goToSurveyBuilderFromTemplate}
+            variant='outlined'
+            color='secondary'
+          >
+            Create From Template
+          </Button>
+        </Box>
       </Box>
       <Box display='flex' justifyContent='center' my={4}>
         <DashboardButton />
