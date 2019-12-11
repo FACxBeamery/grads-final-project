@@ -31,7 +31,6 @@ const uploadCSV = async (req, res, next) => {
           })
           .pipe(csv({ delimiter: ',' }))
           .on('data', (row) => {
-            console.log('WE got here');
             console.log(row);
           })
           .on('end', () => {
