@@ -107,8 +107,9 @@ const TemplateSurveysTable = ({ history }) => {
                   <TableCell scope='row'>
                     <Tooltip title='Duplicate From' aria-label='duplicatefrom'>
                       <Button
-                        onClick={() =>
-                          goToSurveyBuilderWithPreexistingData(_id)
+                        onClick={
+                          () => goToSurveyBuilderWithPreexistingData(_id)
+                          // eslint-disable-next-line react/jsx-curly-newline
                         }
                       >
                         <FileCopyOutlinedIcon style={{ fontSize: 20 }} />
