@@ -1,17 +1,15 @@
-const { getDb } = require('../databaseConnection');
 const { ObjectID } = require('mongodb');
+const { getDb } = require('../databaseConnection');
+
 const addResponse = async (employeeId, surveyId, anonymous, answers) => {
   console.log('Reached response query');
   const db = getDb();
-  surveysCollection = db.collection('Surveys');
+  const surveysCollection = db.collection('Surveys');
   const responseForDb = {
     employeeId: anonymous ? null : ObjectID(employeeId),
     answers,
   };
   try {
-    const survey = await surveysCollection
-      .findOne({ _id: new ObjectID(surveyId) })
-      .toArray();
     const firstQueryReturn = await surveysCollection.updateOne(
       { _id: ObjectID(surveyId) },
       { $push: { responses: responseForDb } },
@@ -31,6 +29,7 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
       console.log('Query unsuccessful!');
       return new Error('Query unsuccessful');
     }
+    return 'success'
   } catch (err) {
     console.log('Unable to add response to database.');
     return new Error(err.message);

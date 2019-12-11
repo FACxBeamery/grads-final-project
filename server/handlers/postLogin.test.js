@@ -1,4 +1,4 @@
-// /* eslint-disable no-undef */
+/* eslint-disable no-undef */
 const request = require('supertest');
 const { initDb, closeDb } = require('../databaseConnection');
 const app = require('../app');

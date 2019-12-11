@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-const { initDb, closeDb } = require('../databaseConnection');
-const { ObjectID } = require('mongodb');
+// const { ObjectID } = require('mongodb');
+// const { initDb, closeDb } = require('../databaseConnection');
 
-const readSurvey = require('./readSurvey');
+// const readSurvey = require('./readSurvey');
 
 // beforeEach(() => {
 //   return initDb();
