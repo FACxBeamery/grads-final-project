@@ -33,8 +33,6 @@ const SplitButton = () => {
   };
 
   const handleMenuItemClick = (event, index) => {
-    console.log(index);
-
     dispatch({ type: 'SET_ACTIVE_INDEX', payload: index });
     dispatch({ type: 'TOGGLE_SPLIT_BUTTON' });
   };
@@ -54,13 +52,13 @@ const SplitButton = () => {
     <Box>
       <ButtonGroup
         variant='contained'
-        color='primary'
+        color='secondary'
         ref={anchorRef}
         aria-label='split button'
       >
         <Button onClick={handleClick}>{options[selectedIndex]}</Button>
         <Button
-          color='primary'
+          color='secondary'
           size='small'
           aria-controls={openSplitButton ? 'split-button-menu' : undefined}
           aria-expanded={openSplitButton ? 'true' : undefined}
