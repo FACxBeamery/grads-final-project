@@ -16,7 +16,7 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
     );
     const firstUpdateSuccessful = firstQueryReturn.result.ok === 1;
     // set recipient completed status to true
-    await surveysCollection.updateOne(
+    const secondQueryReturn = await surveysCollection.updateOne(
       {
         _id: ObjectID(surveyId),
         'recipients.employeeId': ObjectID(employeeId),
