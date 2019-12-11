@@ -1,7 +1,6 @@
-import { React, useEffect } from 'react';
+import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 
 import {
   Box,
@@ -15,6 +14,7 @@ import sendSlackMessage from '../../utils/sendSlackMessage';
 
 const SlackMessageTextBox = () => {
   const dispatch = useDispatch();
+
   const { slackMessageText } = useSelector(
     (state) => state.surveyDetailReducer,
   );
@@ -53,66 +53,75 @@ const SlackMessageTextBox = () => {
 
 const SlackModal = () => {
   const dispatch = useDispatch();
-  const {
-    openSlackModal,
-    recipients,
-    slackMessageText,
-    employees,
-    id,
-  } = useSelector((state) => state.surveyDetailReducer);
 
-  useEffect(() => {
-    const getEmployees = async () => {
-      const { data } = await axios.get(`/employees`);
-      dispatch({ type: 'SET_EMPLOYEES', payload: data });
-      getEmployees();
-    };
-  }, [dispatch]);
+  const { openSlackModal, recipients, slackMessageText, _id } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
+  const { employeeData } = useSelector((state) => state.employeeTableReducer);
 
   const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
+
+  console.log(recipientsIDs, 'RECIPIENT IDS');
 
   const generateLink = (recipientID, surveyIdToDo) => {
     const link = `localhost:3000/${surveyIdToDo}/${recipientID}`;
     return link;
   };
   const generatedLinks = recipientsIDs.map((recipientID) =>
-    generateLink(recipientID, id),
+    generateLink(recipientID, _id),
   );
 
+  console.log('generated LINKS', generatedLinks);
+
   const customMessage = (link) => {
-    return link.map((link) => `${slackMessageText} ${link}`);
+    const customMessagesWithLinks = `${slackMessageText} ${link}`;
+
+    return customMessagesWithLinks;
   };
 
-  const slackIDs = employees
+  const slackIDs = employeeData
     .filter((employee) => recipientsIDs.includes(employee._id))
     .map((person) => person.slackID);
 
+  console.log(slackIDs, 'slack IDS');
+
   const handleSlackMessageSubmit = (event) => {
     event.preventDefault();
+    console.log('in the handle');
     slackIDs.forEach((slackID, linkIndex) =>
       sendSlackMessage(slackID, customMessage(generatedLinks[linkIndex])),
     );
   };
 
   return (
-    <Modal
-      open={openSlackModal}
-      aria-labelledby='send-slack-message-modal'
-      onClose={() => dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' })}
-    >
-      <Paper>
-        <Box my={4} p={4}>
-          <SlackMessageTextBox />
-          <Button
-            variant='contained'
-            color='secondary'
-            onClick={handleSlackMessageSubmit}
-          >
-            Send Slack Invite
-          </Button>
-        </Box>
-      </Paper>
-    </Modal>
+    <Box my={4} alignSelf='center'>
+      <Button
+        onClick={() => dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' })}
+        color='secondary'
+        variant='contained'
+        size='large'
+      >
+        Send Survey Invite
+      </Button>
+      <Modal
+        open={openSlackModal}
+        aria-labelledby='send-slack-message-modal'
+        onClose={() => dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' })}
+      >
+        <Paper>
+          <Box my={4} p={4}>
+            <SlackMessageTextBox />
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={handleSlackMessageSubmit}
+            >
+              Send Slack Invite
+            </Button>
+          </Box>
+        </Paper>
+      </Modal>
+    </Box>
   );
 };
 
