@@ -68,11 +68,7 @@ const SlackModal = () => {
     generateLink(recipientID, _id),
   );
 
-  const customMessage = (link) => {
-    const customMessagesWithLinks = `${slackMessageText} ${link}`;
-
-    return customMessagesWithLinks;
-  };
+  const customMessageWithLinks = (link) => `${slackMessageText} ${link}`;
 
   const slackIDs = employeeData
     .filter((employee) => recipientsIDs.includes(employee._id))
@@ -82,14 +78,17 @@ const SlackModal = () => {
     event.preventDefault();
 
     slackIDs.forEach((slackID, linkIndex) => {
-      const message = encodeURI(customMessage(generatedLinks[linkIndex]));
+      const message = encodeURI(
+        customMessageWithLinks(generatedLinks[linkIndex]),
+      );
 
       axios.post('/slack', { slackID, message });
-
-      // sendSlackMessage(slackID, customMessage(generatedLinks[linkIndex])),
     });
   };
 
+  const closeModal = () => {
+    dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
+  };
   return (
     <Box my={4} alignSelf='center'>
       <Button
@@ -115,6 +114,7 @@ const SlackModal = () => {
             >
               Send Slack Invite
             </Button>
+            <Button onClick={closeModal}>X</Button>
           </Box>
         </Paper>
       </Modal>
