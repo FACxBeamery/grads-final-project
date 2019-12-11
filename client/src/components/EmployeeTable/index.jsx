@@ -70,10 +70,14 @@ const EnhancedTableHead = () => {
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
+            align={headCell.label === 'Name' ? 'left' : 'right'}
             key={headCell.id}
-            align='left'
             padding={headCell.disablePadding ? 'none' : 'default'}
-          />
+          >
+            <Typography style={{ fontWeight: 700 }}>
+              {headCell.label}
+            </Typography>
+          </TableCell>
         ))}
       </TableRow>
     </TableHead>
