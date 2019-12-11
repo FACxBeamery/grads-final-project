@@ -193,13 +193,15 @@ const SurveyDetail = ({ match }) => {
           )}
         </Box>
       </Box>
-      {status === 'published' && (
+      {status && (
         <Box display='flex' flexDirection='column'>
-          <Box alignSelf='flex-start' py={2}>
-            <Button variant='outlined' color='secondary'>
-              Add recipients
-            </Button>
-          </Box>
+          <Typography variant='h5'>Recipients</Typography>
+          {status === 'draft' && (
+            <Typography>
+              // eslint-disable-next-line react/no-unescaped-entities To edit
+              recipient list, select 'Edit Survey'
+            </Typography>
+          )}
           <EmployeeCompletionTable />
         </Box>
       )}
