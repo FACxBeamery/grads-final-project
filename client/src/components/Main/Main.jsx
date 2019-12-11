@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
@@ -13,30 +13,37 @@ import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
+import checkTokenIsAuth from '../../utils/checkTokenIsAuth';
+
 const Main = () => {
+  const dispatch = useDispatch();
+
   const { data } = useSelector((state) => state.adminLoginReducer);
   const { auth } = data;
   const { snackbar } = useSelector((state) => state.snackbarReducer);
 
   // eslint-disable-next-line react/prop-types
-  const ProtectedRoute = ({ component: Component, ...rest }) => (
-    <Route 
-      {...rest}
-      render={({ location }) => (
-        auth
-        ? <Component />
-        : (
-          <Redirect
-            push 
-            to={{
-              pathname: "/admin/login",
-              state: { from: location }
-            }} 
-          />
-          )
-    )}
-    />
-  )
+  const ProtectedRoute = ({ component: Component, ...rest }) => {
+    checkTokenIsAuth(dispatch);
+    return (
+      <Route 
+        {...rest}
+        render={({ location }) => (
+          auth
+          ? <Component />
+          : (
+            <Redirect
+              push 
+              to={{
+                pathname: "/admin/login",
+                state: { from: location }
+              }} 
+            />
+            )
+      )}
+      />
+      )
+  }
 
   const routes = [
     <Route exact key='/takesurvey' path='/takesurvey' component={TakeSurvey} />,
