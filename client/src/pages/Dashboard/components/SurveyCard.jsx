@@ -49,7 +49,7 @@ const SurveyCard = ({ survey }) => {
             )}
           </Box>
           <Box display='flex' justifyContent='space-between' mb={1}>
-            <Box display='flex' flexDirection='column'>
+            <Box display='flex' flexDirection='column' mr={2}>
               <Typography variant='h6'>{title}</Typography>
               <Typography color='textSecondary' variant='body2'>
                 {description}
