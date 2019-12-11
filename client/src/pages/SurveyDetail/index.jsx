@@ -101,6 +101,12 @@ const SurveyDetailsStepper = () => {
 
   const stepperMuiTheme = createMuiTheme({
     overrides: {
+      MuiStepper: {
+        root: {
+          margin: 0,
+          padding: 0,
+        },
+      },
       MuiStepIcon: {
         root: {
           zIndex: 1,
@@ -160,8 +166,8 @@ const SurveyDetailProgressWheel = () => {
 
   return (
     <ProgressWheel
-      strokeWidth='10'
-      sqSize='100'
+      strokeWidth='12.5'
+      sqSize='125'
       percentage={percentage || 0}
       numerator={responses.length}
       denominator={recipients.length}
@@ -247,10 +253,12 @@ const SurveyDetail = ({ match }) => {
           <Typography color='primary' variant='h2'>
             {title}
           </Typography>
+          <Box mt={2} mb={4}>
+            <Typography color='primary' variant='h6'>
+              {description}
+            </Typography>
+          </Box>
           <SurveyDetailsStepper />
-          <Typography color='primary' variant='h5'>
-            {description}
-          </Typography>
         </Box>
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
@@ -273,7 +281,7 @@ const SurveyDetail = ({ match }) => {
       </Box>
       {status && (
         <Box display='flex' flexDirection='column' mt={4}>
-          <Typography variant='h5' color='secondary'>
+          <Typography variant='h5' color='primary'>
             Recipients
           </Typography>
           {status === 'draft' && (
