@@ -54,7 +54,6 @@ const RecipientsList = () => {
           style={{
             width: '90vw',
             height: '78vh',
-            // overflowX: 'auto',
             transform: 'translate(6%, 20%)',
           }}
         >
