@@ -194,13 +194,12 @@ const SurveyDetail = ({ match }) => {
         </Box>
       </Box>
       {status && (
-        <Box display='flex' flexDirection='column'>
-          <Typography variant='h5'>Recipients</Typography>
+        <Box display='flex' flexDirection='column' mt={4}>
+          <Typography variant='h5' color='secondary'>
+            Recipients
+          </Typography>
           {status === 'draft' && (
-            <Typography>
-              // eslint-disable-next-line react/no-unescaped-entities To edit
-              recipient list, select 'Edit Survey'
-            </Typography>
+            <Typography>To edit recipient list, select Edit Survey</Typography>
           )}
           <EmployeeCompletionTable />
         </Box>
