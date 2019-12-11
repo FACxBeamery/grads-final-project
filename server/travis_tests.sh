@@ -8,7 +8,7 @@ echo ---------------------
 echo LINT SERVER
 echo ---------------------
 echo
-# npm run lint
+npm run lint
 echo
 echo ------------------
 echo  RUN SERVER TESTS
