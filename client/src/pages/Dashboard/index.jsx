@@ -18,6 +18,12 @@ const Dashboard = ({ history }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch({ type: 'RESET_SPLIT_BUTTON_STATE' });
+    dispatch({
+      type: 'SET_OPTIONS',
+      payload: ['Create Survey', 'Create from template'],
+    });
+
     const getSurveys = async () => {
       const { data } = await axios.get('/surveys');
       const allSurveysData = data;
