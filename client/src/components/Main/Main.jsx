@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
 
@@ -13,6 +14,8 @@ import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
 
+import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
+import deleteTokenOn401StatusCodes from '../../utils/deleteTokenOn401StatusCodes';
 import checkTokenIsAuth from '../../utils/checkTokenIsAuth';
 
 const Main = () => {
@@ -22,14 +25,19 @@ const Main = () => {
   const { auth } = data;
   const { snackbar } = useSelector((state) => state.snackbarReducer);
 
+  useEffect(() => {
+    addTokenToEveryRequest();
+    deleteTokenOn401StatusCodes(axios);
+  })
+
   // eslint-disable-next-line react/prop-types
   const ProtectedRoute = ({ component: Component, ...rest }) => {
     return (
       <Route 
         {...rest}
-        render={({ location }) => {
-          return auth && checkTokenIsAuth(dispatch, auth)
-          ? <Component />
+        render={({ location, match }) => {
+          return checkTokenIsAuth(dispatch, auth) && auth
+          ? <Component match={match} />
           : (
             <Redirect
               push 
