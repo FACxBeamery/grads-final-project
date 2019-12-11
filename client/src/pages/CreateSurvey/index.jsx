@@ -49,7 +49,7 @@ const CreateSurvey = ({ history }) => {
 
   useEffect(() => {
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
-    dispatch({ type: 'RESET_SURVEY_DATA' });
+    // dispatch({ type: 'RESET_SURVEY_DATA' });
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
   }, [dispatch]);
