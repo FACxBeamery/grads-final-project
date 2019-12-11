@@ -74,10 +74,5 @@ describe('Form works as expected', () => {
     fireEvent.change(titleInput, { target: { value: longString } });
 
     getByText('Title must be less than 60 characters!', { exact: false });
-
-    const buttonSaveChanges = getByText('Save changes');
-    fireEvent.click(buttonSaveChanges);
-
-    expect(getByText('Created on: 10/12/2019')).toBeInTheDocument();
   });
 });
