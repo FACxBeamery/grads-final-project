@@ -9,6 +9,7 @@ const isTokenAuthed = async (dispatch, currentAuth) => {
       headers: { Authorization: `JWT ${token}` },
     });
     if (res && res.status === 200 && currentAuth === false) {
+      console.log('authorising');
       const payload = {
         auth: true,
       };
