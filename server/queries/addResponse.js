@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 

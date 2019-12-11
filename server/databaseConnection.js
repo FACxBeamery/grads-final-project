@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-console */
 const assert = require('assert');
 const mongoClient = require('mongodb').MongoClient;
 const dummyAdmins = require('./dummyData/dummyAdmins');

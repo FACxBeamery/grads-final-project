@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { getDb } = require('../databaseConnection');
 
 const createSurvey = async (surveyObj, newQuestionsArray) => {
