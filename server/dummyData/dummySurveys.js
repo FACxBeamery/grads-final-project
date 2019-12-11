@@ -56,7 +56,7 @@ module.exports = [
     title: 'All employees survey',
     description:
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
-    status: 'published',
+    status: 'active',
 
     disclaimer: 'some disclaimer',
 
@@ -74,7 +74,7 @@ module.exports = [
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439012'),
-        completed: false,
+        completed: true,
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439013'),
@@ -250,56 +250,24 @@ module.exports = [
     anonymous: true,
     recipients: [
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439014'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439012'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439013'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439015'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439016'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439017'),
-        completed: false,
-      },
-      {
         employeeId: ObjectID('507f1f77bcf86cd799439011'),
-        completed: false,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439018'),
-        completed: false,
+        completed: true,
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439019'),
-        completed: false,
+        completed: true,
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439023'),
-        completed: false,
+        completed: true,
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439033'),
-        completed: false,
+        completed: true,
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439043'),
-        completed: false,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439053'),
-        completed: false,
+        completed: true,
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439063'),
@@ -311,18 +279,17 @@ module.exports = [
       },
     ],
     questions: [
-      ObjectID('707f1f87bdf76dd799439127'),
-      ObjectID('707f1f87bdf76dd799439126'),
       ObjectID('707f1f87bcf76dd789439121'),
+      ObjectID('707f1f87bdf76dd799439126'),
       ObjectID('707f1f87bcf86dd799439021'),
     ],
     responses: [
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439014'),
+        employeeId: ObjectID('507f1f77bcf86cd799439011'),
         answers: [
           {
-            questionId: ObjectID('507f1f77bcf86cd799439033'),
-            answer: 1,
+            questionId: ObjectID('707f1f87bcf76dd789439121'),
+            answer: 'strongly disagree',
           },
           {
             questionId: ObjectID('707f1f87bdf76dd799439126'),
@@ -330,16 +297,16 @@ module.exports = [
           },
           {
             questionId: ObjectID('707f1f87bcf86dd799439021'),
-            answer: 3,
+            answer: 'meh',
           },
         ],
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439012'),
+        employeeId: ObjectID('507f1f77bcf86cd799439019'),
         answers: [
           {
-            questionId: ObjectID('507f1f77bcf86cd799439033'),
-            answer: 0,
+            questionId: ObjectID('707f1f87bcf76dd789439121'),
+            answer: 'disagree',
           },
           {
             questionId: ObjectID('707f1f87bdf76dd799439126'),
@@ -347,16 +314,16 @@ module.exports = [
           },
           {
             questionId: ObjectID('707f1f87bcf86dd799439021'),
-            answer: 2,
+            answer: 'bad',
           },
         ],
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439013'),
+        employeeId: ObjectID('507f1f77bcf86cd799439023'),
         answers: [
           {
-            questionId: ObjectID('507f1f77bcf86cd799439033'),
-            answer: 0,
+            questionId: ObjectID('707f1f87bcf76dd789439121'),
+            answer: 'neutral',
           },
           {
             questionId: ObjectID('707f1f87bdf76dd799439126'),
@@ -364,16 +331,16 @@ module.exports = [
           },
           {
             questionId: ObjectID('707f1f87bcf86dd799439021'),
-            answer: 2,
+            answer: 'bad',
           },
         ],
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439015'),
+        employeeId: ObjectID('707f1f87bcf76dd789439121'),
         answers: [
           {
-            questionId: ObjectID('507f1f77bcf86cd799439033'),
-            answer: 0,
+            questionId: ObjectID('707f1f87bcf76dd789439121'),
+            answer: 'agree',
           },
           {
             questionId: ObjectID('707f1f87bdf76dd799439126'),
@@ -381,16 +348,16 @@ module.exports = [
           },
           {
             questionId: ObjectID('707f1f87bcf86dd799439021'),
-            answer: 1,
+            answer: 'really bad',
           },
         ],
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439016'),
+        employeeId: ObjectID('507f1f77bcf86cd799439043'),
         answers: [
           {
-            questionId: ObjectID('507f1f77bcf86cd799439033'),
-            answer: 1,
+            questionId: ObjectID('707f1f87bcf76dd789439121'),
+            answer: 'strongly agree',
           },
           {
             questionId: ObjectID('707f1f87bdf76dd799439126'),
@@ -398,7 +365,7 @@ module.exports = [
           },
           {
             questionId: ObjectID('707f1f87bcf86dd799439021'),
-            answer: 4,
+            answer: 'good',
           },
         ],
       },
