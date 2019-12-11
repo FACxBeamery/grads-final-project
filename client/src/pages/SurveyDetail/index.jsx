@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 
 import Snackbar from '../../components/Snackbar';
+import ExportModal from './ExportModal';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 import formatDate from '../../utils/formatDate';
 
@@ -90,6 +91,24 @@ const CloseSurveyButton = ({ surveyId }) => {
       }}
     >
       Close Survey
+    </Button>
+  );
+};
+
+const ExportSurveyButton = ({ surveyId }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <Button
+      type='button'
+      width='auto'
+      variant='contained'
+      color='secondary'
+      onClick={async () => {
+        dispatch({ type: 'TOGGLE_EXPORT_MODAL' });
+      }}
+    >
+      Export results
     </Button>
   );
 };
@@ -271,6 +290,9 @@ const SurveyDetail = ({ match }) => {
             {status === 'active' && (
               <CloseSurveyButton surveyId={match.params.id} />
             )}
+            {status === 'closed' && (
+              <ExportSurveyButton surveyId={match.params.id} />
+            )}
             {(status === 'active' || status === 'closed') && (
               <Box m={4}>
                 <SurveyDetailProgressWheel />
@@ -292,6 +314,7 @@ const SurveyDetail = ({ match }) => {
       )}
       {successfulPublish !== undefined && <SnackbarPublish />}
       {successfulClose !== undefined && <SnackbarClose />}
+      <ExportModal />
     </Box>
   );
 };
