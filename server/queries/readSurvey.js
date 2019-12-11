@@ -1,5 +1,6 @@
-const { getDb } = require('../databaseConnection');
+/* eslint-disable no-underscore-dangle */
 const { ObjectID } = require('mongodb');
+const { getDb } = require('../databaseConnection');
 
 const readSurvey = async (_id) => {
   try {
@@ -10,9 +11,9 @@ const readSurvey = async (_id) => {
       _id: ObjectID(_id),
     });
 
-    let surveyQuestions = survey.questions;
+    const surveyQuestions = survey.questions;
 
-    let questionIds = surveyQuestions.map((question) =>
+    const questionIds = surveyQuestions.map((question) =>
       ObjectID(question.toString()),
     );
 
