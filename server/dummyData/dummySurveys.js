@@ -250,35 +250,7 @@ module.exports = [
     anonymous: true,
     recipients: [
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439014'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439012'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439013'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439015'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439016'),
-        completed: true,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439017'),
-        completed: false,
-      },
-      {
         employeeId: ObjectID('507f1f77bcf86cd799439011'),
-        completed: false,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439018'),
         completed: false,
       },
       {
@@ -295,10 +267,6 @@ module.exports = [
       },
       {
         employeeId: ObjectID('507f1f77bcf86cd799439043'),
-        completed: false,
-      },
-      {
-        employeeId: ObjectID('507f1f77bcf86cd799439053'),
         completed: false,
       },
       {
