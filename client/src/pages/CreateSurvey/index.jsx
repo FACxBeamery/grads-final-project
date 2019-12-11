@@ -19,7 +19,6 @@ import {
 import QuestionsList from './Questions/QuestionsList';
 import RecipientsList from './RecipientsList';
 import formatDate from '../../utils/formatDate';
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -30,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }));
-
 const CreateSurvey = ({ history }) => {
   const classes = useStyles();
   const {
@@ -43,38 +41,30 @@ const CreateSurvey = ({ history }) => {
     modalStyle,
     isConfirming,
   } = useSelector((state) => state.createSurveyReducer);
-
   const { recipientIds } = useSelector((state) => state.employeeTableReducer);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
-    dispatch({ type: 'RESET_SURVEY_DATA' });
+    // dispatch({ type: 'RESET_SURVEY_DATA' });
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
-    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+    // dispatch({ type: 'RESET_EMPLOYEE_DATA' });
   }, [dispatch]);
-
   const setMetadata = (event, inputType) => {
     const payload = {};
     payload[event.target.name] =
       inputType === 'switch' ? event.target.checked : event.target.value;
     dispatch({ type: 'SET_METADATA', payload });
   };
-
   let surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
-
-  // const saveSurvey = async () => {
-  //   const recipientsToSend = recipientIds.map((id) => {
-  //     const obj = {};
-  //     obj.employeeId = id;
-  //     obj.completed = false;
-  //     return obj;
-  //   });
-
-  // TODO route back to dashboard on click
   const saveSurvey = async () => {
+    const recipientsToSend = recipientIds.map((id) => {
+      const obj = {};
+      obj.employeeId = id;
+      obj.completed = false;
+      return obj;
+    });
     try {
       surveyForSending = {
         ...surveyForSending,
@@ -92,32 +82,25 @@ const CreateSurvey = ({ history }) => {
       delete surveyForSending.openCreateSurveyModal;
       delete surveyForSending.isConfirming;
       delete surveyForSending.openModal;
-
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
       throw new Error(e.message);
     }
   };
-
   const toggleModal = () => {
     dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
   };
-
   const confirmEditing = () => {
     dispatch({ type: 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL' });
-
     saveSurvey();
   };
-
   const redirectToDashboard = () => {
     history.push('/admin');
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     toggleModal();
   };
-
   const PromptMessage = () => {
     return (
       <Prompt
@@ -129,7 +112,6 @@ const CreateSurvey = ({ history }) => {
       />
     );
   };
-
   const ConfirmChanges = () => {
     return (
       <>
@@ -150,7 +132,6 @@ const CreateSurvey = ({ history }) => {
       </>
     );
   };
-
   const ChangesConfirmed = () => {
     return (
       <>
@@ -165,11 +146,9 @@ const CreateSurvey = ({ history }) => {
       </>
     );
   };
-
   return (
     <Box>
       {isConfirming && <PromptMessage />}
-
       <form onSubmit={handleSubmit}>
         <Box display='flex' flexDirection='column' my={8}>
           <Box mb={4}>
@@ -181,7 +160,6 @@ const CreateSurvey = ({ history }) => {
               {`Date created: ${formatDate(dateCreated)}`}
             </Typography>
           </Box>
-
           <TextField
             margin='normal'
             required
@@ -210,7 +188,6 @@ const CreateSurvey = ({ history }) => {
             label='Enter a description'
             onChange={setMetadata}
           />
-
           <TextField
             margin='normal'
             required
@@ -257,10 +234,8 @@ const CreateSurvey = ({ history }) => {
     </Box>
   );
 };
-
 CreateSurvey.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
-
 export default CreateSurvey;
