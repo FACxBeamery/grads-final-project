@@ -25,7 +25,6 @@ const Header = ({ history, match }) => {
             onClick={() => history.push(`/admin`)}
             style={{ color: '#FFFFFF' }}
           >
-            {' '}
             My Dashboard
           </Button>
         </Box>
