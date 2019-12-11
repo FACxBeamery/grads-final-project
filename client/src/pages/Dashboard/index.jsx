@@ -8,6 +8,7 @@ import { Typography, Button, Grid, Box } from '@material-ui/core';
 
 import SurveyCard from './components/SurveyCard';
 import AllSurveysTable from './components/AllSurveysTable';
+import SplitButton from '../../components/SplitButton';
 
 const Dashboard = ({ history }) => {
   const { surveys, showActiveSurveys } = useSelector((state) => ({
@@ -116,13 +117,14 @@ const Dashboard = ({ history }) => {
     <Box>
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <Typography variant='h2'>Dashboard</Typography>
-        <Button
+        <SplitButton />
+        {/* <Button
           onClick={goToSurveyBuilder}
           variant='contained'
           color='secondary'
         >
           Create New Survey
-        </Button>
+        </Button> */}
       </Box>
       <Box display='flex' justifyContent='center' my={4}>
         <DashboardButton />
