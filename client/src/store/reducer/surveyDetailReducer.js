@@ -20,6 +20,8 @@ const surveyDetailReducer = (state = initalState, action) => {
         activeStep: 1,
         successfulPublish: undefined,
         successfulClose: undefined,
+        openExportModal: false,
+        anonymousExport: false,
       };
     case 'SET_SURVEY_DATA_SURVEY_DETAIL':
       return { ...state, ...payload };
