@@ -63,8 +63,7 @@ const Main = ({ history }) => {
 
   const routes = [
     <Route exact key='/takesurvey' path='/takesurvey' component={TakeSurvey} />,
-    <Route exact key='/admin/login' path='/admin/login' component={AdminLogin} />,
-    <Route component={PageNotFound} />
+    <Route exact key='/admin/login' path='/admin/login' component={AdminLogin} />
   ];
 
   const protectedRoutes = [ 
@@ -103,8 +102,9 @@ const Main = ({ history }) => {
         </Box>
         <Box mx={4}>
           <Switch>
-            { routes}
+            { routes }
             { protectedRoutes }
+            <Route component={PageNotFound} />
           </Switch>
         </Box>
       </Box>
