@@ -49,7 +49,7 @@ const OptionsCheckbox = ({ options, attribute }) => {
                 <Checkbox
                   checked={allChecked}
                   onChange={handleAllFilter}
-                  value={allChecked}
+                  value={allChecked || ''}
                   name='select-all'
                   inputProps={{
                     'aria-label': 'Show all: ',
@@ -71,7 +71,7 @@ const OptionsCheckbox = ({ options, attribute }) => {
                       (event) => handleOptionChange(event, option, attribute)
                       // eslint-disable-next-line react/jsx-curly-newline
                     }
-                    value={option}
+                    value={option || ''}
                   />
                 }
                 label={
@@ -146,7 +146,7 @@ const RecipientOptions = () => {
         type='search'
         margin='normal'
         variant='outlined'
-        value={name}
+        value={name || ''}
         onChange={handleSearchbarChange}
       />
     </Box>

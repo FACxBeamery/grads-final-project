@@ -70,7 +70,6 @@ describe('Main components for un/protected routes', () => {
       const localStorageSpy = jest.spyOn(Storage.prototype, 'getItem');
 
       const mockAxiosGet = jest.spyOn(axios, 'get').mockImplementation((url) => {
-        console.log(url)
         if (url === '/admins'){
           return Promise.resolve({status: 200})
         }

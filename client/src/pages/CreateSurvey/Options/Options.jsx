@@ -81,7 +81,7 @@ const Option = ({ optionIndex, questionIndex }) => {
           fullWidth
           required
           label='Answer text'
-          value={text}
+          value={text || ''}
           name='text'
           onChange={setOptionText}
         />

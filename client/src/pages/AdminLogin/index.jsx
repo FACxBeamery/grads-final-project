@@ -13,7 +13,10 @@ import {
 } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 
-import { SET_LOGIN, SET_HELPER_TEXT } from '../../store/actions/adminLoginActions';
+import {
+  SET_LOGIN,
+  SET_HELPER_TEXT,
+} from '../../store/actions/adminLoginActions';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
 import useStyles from './styles';
@@ -53,7 +56,7 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-  
+
       const response = await loginAdmin(username, password);
       const { auth, token, message } = response.data;
 
@@ -69,7 +72,7 @@ const AdminLogin = () => {
       dispatch({ type: UPDATE_SNACKBAR, payload });
     }
   };
- 
+
   // conditionals
   const isHelperTextEmptyString = helperText !== '';
 
@@ -84,7 +87,7 @@ const AdminLogin = () => {
       label='Email Address'
       name='username'
       autoComplete='email'
-      value={username}
+      value={username || ''}
       onChange={setLoginOnChange}
       color='secondary'
       error={isHelperTextEmptyString}
@@ -100,7 +103,7 @@ const AdminLogin = () => {
       label='Password'
       type='password'
       id='password'
-      value={password}
+      value={password || ''}
       onChange={setLoginOnChange}
       autoComplete='current-password'
       color='secondary'
@@ -138,7 +141,5 @@ const AdminLogin = () => {
     </Container>
   );
 };
-
-
 
 export default AdminLogin;
