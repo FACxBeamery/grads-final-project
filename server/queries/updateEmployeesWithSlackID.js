@@ -1,9 +1,8 @@
 const axios = require('axios');
 const addSlackInfo = require('./addSlackInfo');
+const SLACK_OAUTH = require('../utils/getSLACK_OAUTH')();
 
 const updateEmployeesWithSlackID = async (db) => {
-  const slackOAuthToken = process.env.SLACK_OAUTH;
-
   const allEmployees = await db
     .collection('Employees')
     .find({})
@@ -12,7 +11,7 @@ const updateEmployeesWithSlackID = async (db) => {
   const allEmployeeEmails = allEmployees.map((employee) => employee.email);
 
   const addSlackIDtoEmployee = async (email) => {
-    const slackIDURL = `https://slack.com/api/users.lookupByEmail?token=${slackOAuthToken}&email=${email}`;
+    const slackIDURL = `https://slack.com/api/users.lookupByEmail?token=${SLACK_OAUTH}&email=${email}`;
     try {
       const response = await axios.get(slackIDURL);
 

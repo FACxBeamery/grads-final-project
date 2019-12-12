@@ -1,9 +1,8 @@
 const axios = require('axios');
+const SLACK_OAUTH = require('./getSLACK_OAUTH')();
 
 const sendSlackMessage = (slackID, customMessage) => {
-  const slackOAuthToken = process.env.SLACK_OAUTH;
-
-  const slackPostMessageURL = `https://slack.com/api/chat.postMessage?token=${slackOAuthToken}&channel=${slackID}&text=${customMessage}`;
+  const slackPostMessageURL = `https://slack.com/api/chat.postMessage?token=${SLACK_OAUTH}&channel=${slackID}&text=${customMessage}`;
 
   axios.post(slackPostMessageURL);
 };
