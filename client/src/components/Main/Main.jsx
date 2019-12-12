@@ -9,11 +9,13 @@ import CreateSurvey from '../../pages/CreateSurvey';
 import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import TakeSurvey from '../../pages/TakeSurvey';
+import Snackbar from '../Snackbar';
 
 const Main = () => {
   const { data } = useSelector((state) => state.adminLoginReducer);
   const { auth } = data;
   const { snackbar } = useSelector((state) => state.snackbarReducer);
+  const { message, variant, timeOpened } = snackbar;
   return (
     <main>
       <Box>
@@ -41,7 +43,8 @@ const Main = () => {
           </Switch>
         </Box>
       </Box>
-      {snackbar}
+      {/* {snackbar} */}
+      <Snackbar message={message} variant={variant} timeopened={timeOpened} />
     </main>
   );
 };

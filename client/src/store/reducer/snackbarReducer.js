@@ -1,5 +1,5 @@
-import React from 'react';
-import Snackbar from '../../components/Snackbar';
+// import React from 'react';
+// import Snackbar from '../../components/Snackbar';
 import { UPDATE_SNACKBAR, SET_SNACKBAR_OPEN } from '../actions/snackbarActions';
 
 const initalState = {
@@ -19,13 +19,11 @@ const snackbarReducer = (state = initalState, action) => {
     case UPDATE_SNACKBAR:
       return {
         ...state,
-        snackbar: (
-          <Snackbar
-            message={payload.message}
-            variant={payload.variant}
-            timeopened={Date.now()}
-          />
-        ),
+        snackbar: {
+          message: payload.snackbar.message,
+          variant: payload.snackbar.variant,
+          timeOpened: payload.snackbar.timeOpened,
+        },
       };
     case SET_SNACKBAR_OPEN:
       return { ...state, open: payload.open };
