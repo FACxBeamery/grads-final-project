@@ -8,17 +8,13 @@ import '@testing-library/jest-dom/extend-expect';
 
 import store from '../../store';
 import Main from './Main';
+import { protectedRoutes } from './routes';
 
 import dummyData from './dummyData/dummyData'
 
 
 describe('Main components for un/protected routes', () => {
-    const protectedPaths = [
-        '/admin',
-        '/admin/surveys/create',
-        '/admin/surveys/edit/test',
-        '/admin/surveys/template'
-    ];
+    const protectedPaths = protectedRoutes.map(pr => pr.path)
 
     let history;
     beforeEach(() => {

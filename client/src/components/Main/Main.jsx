@@ -7,22 +7,14 @@ import axios from 'axios';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
 
-import { CHECKING_IF_AUTHED } from '../../store/actions/mainActions';
-
-import AdminLogin from '../../pages/AdminLogin';
-import Dashboard from '../../pages/Dashboard';
-import CreateSurvey from '../../pages/CreateSurvey';
-import EditSurvey from '../../pages/EditSurvey/index';
-import SurveyDetail from '../../pages/SurveyDetail';
-import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
-import TakeSurvey from '../../pages/TakeSurvey';
 import PageNotFound from '../../pages/PageNotFound';
-
 import LoadingPageOrRedirect from './LoadingPageOrRedirect'
+import { routes, protectedRoutes } from './routes'
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
 import deleteTokenOn401StatusCodes from '../../utils/deleteTokenOn401StatusCodes';
 import checkTokenIsAuth from '../../utils/checkTokenIsAuth';
+import { CHECKING_IF_AUTHED } from '../../store/actions/mainActions';
 
 const Main = ({ history }) => {
   const dispatch = useDispatch();
@@ -61,38 +53,8 @@ const Main = ({ history }) => {
       )
   }
 
-  const routes = [
-    <Route exact key='/takesurvey' path='/takesurvey' component={TakeSurvey} />,
-    <Route exact key='/admin/login' path='/admin/login' component={AdminLogin} />
-  ];
-
-  const protectedRoutes = [ 
-    <ProtectedRoute exact key='/admin' path='/admin' component={Dashboard} />,
-    <ProtectedRoute
-      exact
-      key='/admin/surveys/create'
-      path='/admin/surveys/create'
-      component={CreateSurvey}
-    />,
-    <ProtectedRoute
-      exact
-      key='/admin/surveys/edit/:id'
-      path='/admin/surveys/edit/:id'
-      component={EditSurvey}
-    />,
-    <ProtectedRoute
-      exact
-      key='/admin/surveys/template'
-      path='/admin/surveys/template'
-      component={SurveyBuilderFromTemplate}
-    />,
-    <ProtectedRoute 
-      exact 
-      key='/admin/surveys/:id' 
-      path='/admin/surveys/:id' 
-      component={SurveyDetail} 
-    />
-  ];
+  const routesMap = routes.map(rProps => <Route key={rProps.path} {...rProps} />)
+  const protectedRoutesMap = protectedRoutes.map(prProps => <ProtectedRoute key={prProps.path} {...prProps} />)
 
   return (
     <main>
@@ -102,8 +64,8 @@ const Main = ({ history }) => {
         </Box>
         <Box mx={4}>
           <Switch>
-            { routes }
-            { protectedRoutes }
+            { routesMap }
+            { protectedRoutesMap }
             <Route component={PageNotFound} />
           </Switch>
         </Box>

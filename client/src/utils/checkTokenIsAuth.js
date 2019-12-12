@@ -8,7 +8,11 @@ const isTokenAuthed = async (dispatch, currentAuth) => {
     const res = await axios.get('/admins', {
       headers: { Authorization: `JWT ${token}` },
     });
-    if (res && res.status === 200 && currentAuth === false) {
+
+    const isResponseWith200Status = res && res.status === 200;
+    const currentAuthStateIsFalse = currentAuth === false;
+
+    if (isResponseWith200Status && currentAuthStateIsFalse) {
       const payload = {
         auth: true,
       };
