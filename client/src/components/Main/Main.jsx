@@ -16,6 +16,7 @@ import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
+import PageNotFound from '../../pages/PageNotFound';
 
 import LoadingPageOrRedirect from './LoadingPageOrRedirect'
 
@@ -62,7 +63,8 @@ const Main = ({ history }) => {
 
   const routes = [
     <Route exact key='/takesurvey' path='/takesurvey' component={TakeSurvey} />,
-    <Route exact key='/admin/login' path='/admin/login' component={AdminLogin} />
+    <Route exact key='/admin/login' path='/admin/login' component={AdminLogin} />,
+    <Route component={PageNotFound} />
   ];
 
   const protectedRoutes = [ 
