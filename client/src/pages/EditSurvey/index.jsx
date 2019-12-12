@@ -35,12 +35,6 @@ const useStyles = makeStyles((theme) => ({
 const EditSurvey = ({ match, history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const setMetadata = (event, inputType) => {
-    const payload = {};
-    payload[event.target.name] =
-      inputType === 'switch' ? event.target.checked : event.target.value;
-    dispatch({ type: 'SET_METADATA', payload });
-  };
 
   const {
     title,
@@ -50,6 +44,35 @@ const EditSurvey = ({ match, history }) => {
     dateCreated,
     dateEdited,
   } = useSelector((state) => state.createSurveyReducer);
+
+  const errors = useSelector((state) => state.errorsBagReducer);
+
+  const setMetadata = (event, inputType, name, value, min, max) => {
+    const inputIsBiggerThanMaxValue =
+      event.target.value && event.target.value.length > max;
+    const inputIsSmallerThanMinValue =
+      event.target.value && event.target.value.length < min;
+    const inputIsEmpty = event.target.value === '';
+    if (
+      inputIsBiggerThanMaxValue ||
+      inputIsSmallerThanMinValue ||
+      inputIsEmpty
+    ) {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { [name]: true },
+      });
+    } else {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { ...errors, [name]: false },
+      });
+    }
+    const payload = {};
+    payload[event.target.name] =
+      inputType === 'switch' ? event.target.checked : event.target.value;
+    dispatch({ type: 'SET_METADATA', payload });
+  };
 
   const { openModal, modalStyle, isConfirming } = useSelector(
     (state) => state.editSurveyReducer,
@@ -63,6 +86,7 @@ const EditSurvey = ({ match, history }) => {
     const { id } = match.params;
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+    dispatch({ type: 'RESET_ERRORS_BAG' });
     const setSurveyData = (data) => {
       const payload = data;
       dispatch({ type: 'SET_SURVEY_DATA', payload });
@@ -74,7 +98,6 @@ const EditSurvey = ({ match, history }) => {
     const getSurvey = async () => {
       try {
         const { data } = await axios.get(`/surveys/${id}`);
-
         setSurveyData(data);
       } catch (error) {
         setSurveyData({});
@@ -118,7 +141,10 @@ const EditSurvey = ({ match, history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toggleModal();
+    const noErrorsExistInForm = !(Object.values(errors).indexOf(true) > -1);
+    if (noErrorsExistInForm) {
+      toggleModal();
+    }
   };
 
   const PromptMessage = () => {
@@ -133,6 +159,30 @@ const EditSurvey = ({ match, history }) => {
     );
   };
 
+  const fields = [
+    {
+      fieldName: 'title',
+      fieldLabel: 'Survey Title',
+      fieldValue: title,
+      min: 2,
+      max: 60,
+    },
+    {
+      fieldName: 'description',
+      fieldLabel: 'Survey Description',
+      fieldValue: description,
+      min: 2,
+      max: 280,
+    },
+    {
+      fieldName: 'disclaimer',
+      fieldLabel: 'Survey Disclaimer',
+      fieldValue: disclaimer,
+      min: 2,
+      max: 400,
+    },
+  ];
+  const errorsExistInForm = Object.values(errors).indexOf(true) > -1;
   return (
     <Box>
       {isConfirming && <PromptMessage />}
@@ -153,55 +203,39 @@ const EditSurvey = ({ match, history }) => {
               {`Last edited on: ${formatDateWithTime(dateEdited)}`}
             </Typography>
           </Box>
+          {fields.map((field) => {
+            const { fieldName, fieldLabel, fieldValue, min, max } = field;
+            return (
+              <TextField
+                key={fieldLabel}
+                margin='normal'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                required
+                error={Boolean(
+                  fieldValue &&
+                    (fieldValue.length > max || fieldValue.length < min),
+                )}
+                helperText={
+                  (fieldValue &&
+                    fieldValue.length > max &&
+                    `${fieldLabel} must be less than ${max} characters!`) ||
+                  (fieldValue &&
+                    fieldValue.length < min &&
+                    `${fieldLabel} must be more than ${min} characters!`) ||
+                  (fieldValue === '' && `${fieldLabel} is required.`)
+                }
+                value={fieldValue || ''}
+                name={fieldName}
+                label={fieldLabel}
+                onChange={(e) =>
+                  setMetadata(e, 'text', fieldName, fieldValue, min, max)
+                }
+              />
+            );
+          })}
 
-          <TextField
-            margin='normal'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            required
-            error={Boolean(title && title.length > 60)}
-            helperText={
-              title &&
-              title.length > 60 &&
-              'Title must be less than 60 characters!'
-            }
-            value={title || ''}
-            name='title'
-            label='Survey title'
-            onChange={setMetadata}
-          />
-          <TextField
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin='normal'
-            required
-            error={Boolean(description && description.length > 280)}
-            helperText={
-              description &&
-              description.length > 280 &&
-              'Description must be less than 280 characters!'
-            }
-            value={description || ''}
-            name='description'
-            label='Enter a description'
-            onChange={setMetadata}
-          />
-
-          <TextField
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin='normal'
-            required
-            error={Boolean(disclaimer.length < 5)}
-            helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
-            value={disclaimer || ''}
-            name='disclaimer'
-            label='How will this data be used?'
-            onChange={setMetadata}
-          />
           <FormControlLabel
             control={
               <Switch
@@ -220,7 +254,12 @@ const EditSurvey = ({ match, history }) => {
           <Divider variant='middle' />
           <QuestionsList />
           <Box alignSelf='center' mt={8}>
-            <Button type='submit' variant='contained' color='secondary'>
+            <Button
+              disabled={errorsExistInForm}
+              type='submit'
+              variant='contained'
+              color='secondary'
+            >
               Save changes
             </Button>
           </Box>
