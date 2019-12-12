@@ -3,12 +3,12 @@ import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 
-import NoPageFound from '.';
+import PageNotFound from '.';
 
 it('Testing the default route page', () => {
   const { getByText } = render(
     <BrowserRouter>
-      <NoPageFound location={{ pathname: '/nopage' }} />
+      <PageNotFound location={{ pathname: '/nopage' }} />
     </BrowserRouter>,
   );
 

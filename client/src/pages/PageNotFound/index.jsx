@@ -3,7 +3,7 @@ import { Typography, Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const NoPageFound = ({ location }) => {
+const PageNotFound = ({ location }) => {
   const { pathname } = location;
   return (
     <Box display='flex' alignItems='center' justifyContent='center'>
@@ -44,8 +44,8 @@ for you.
   );
 };
 
-NoPageFound.propTypes = {
+PageNotFound.propTypes = {
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
-export default NoPageFound;
+export default PageNotFound;
