@@ -92,13 +92,13 @@ const Question = ({ questionIndex }) => {
             <TextField
               fullWidth
               required
-              error={title && title.length > 280}
+              error={Boolean(title && title.length > 280)}
               helperText={
                 title &&
                 title.length > 280 &&
                 'Question must be less than 280 characters!'
               }
-              value={title}
+              value={title || ''}
               name='title'
               label='Question'
               onChange={setQuestionData}
@@ -131,7 +131,7 @@ const Question = ({ questionIndex }) => {
               <Select
                 labelid='question-type-select'
                 id='question-type-select'
-                value={type}
+                value={type || ''}
                 onChange={setQuestionData}
                 name='type'
                 inputProps={{

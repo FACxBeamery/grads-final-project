@@ -182,13 +182,13 @@ const CreateSurvey = ({ history }) => {
           <TextField
             margin='normal'
             required
-            error={title && title.length > 60}
+            error={Boolean(title && title.length > 60)}
             helperText={
               title &&
               title.length > 60 &&
               'Title must be less than 60 characters!'
             }
-            value={title}
+            value={title || ''}
             name='title'
             label='Survey title'
             onChange={setMetadata}
@@ -196,13 +196,13 @@ const CreateSurvey = ({ history }) => {
           <TextField
             margin='normal'
             required
-            error={description && description.length > 280}
+            error={Boolean(description && description.length > 280)}
             helperText={
               description &&
               description.length > 280 &&
               'Description must be less than 280 characters!'
             }
-            value={description}
+            value={description || ''}
             name='description'
             label='Enter a description'
             onChange={setMetadata}
@@ -211,9 +211,9 @@ const CreateSurvey = ({ history }) => {
           <TextField
             margin='normal'
             required
-            error={disclaimer.length < 5}
+            error={Boolean(disclaimer.length < 5)}
             helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
-            value={disclaimer}
+            value={disclaimer || ''}
             name='disclaimer'
             label='How will this data be used?'
             onChange={setMetadata}
