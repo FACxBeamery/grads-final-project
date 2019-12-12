@@ -10,6 +10,7 @@ import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
+import PageNotFound from '../../pages/PageNotFound';
 
 const Main = () => {
   const { data } = useSelector((state) => state.adminLoginReducer);
@@ -44,6 +45,7 @@ const Main = () => {
             />
             <Route exact path='/admin/surveys/:id' component={SurveyDetail} />
             <Route exact path='/takesurvey' component={TakeSurvey} />
+            <Route component={PageNotFound} />
           </Switch>
         </Box>
       </Box>
