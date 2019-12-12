@@ -12,8 +12,8 @@ afterEach(() => {
   return closeDb();
 });
 
-it('Testing readSurvey retrieves the correct document.', async (done) => {
-  done();
+it('Testing readSurvey retrieves the correct document.', async () => {
+
   const documentToFind = {
     _id: ObjectID('508f1f99bcf86cd799439014'),
     title: 'Graduates Onboarding',
@@ -57,9 +57,35 @@ it('Testing readSurvey retrieves the correct document.', async (done) => {
       },
     ],
     questions: [
-      ObjectID('707f1f87bcf86dd799439011'),
-      ObjectID('707f1f87bcf86dd799439021'),
-      ObjectID('707f1f87bcf86dd799439121'),
+      {
+        _id: ObjectID('707f1f87bcf86dd799439011'),
+        title: 'Please describe your first week in few sentences',
+        type: 'text',
+        required: true,
+        commentEnabled: true,
+      },
+      {
+        _id: ObjectID('707f1f87bcf86dd799439021'),
+        title: 'How did you feel at work this week?',
+        type: 'multichoice',
+        required: true,
+        commentEnabled: true,
+        options: ['really bad', 'bad', 'meh', 'good', 'great'],
+      },
+      {
+        _id: ObjectID('707f1f87bcf86dd799439121'),
+        title: "I see myself still working at B*amery in two years' time",
+        type: 'multichoice',
+        required: true,
+        commentEnabled: true,
+        options: [
+          'strongly disagree',
+          'disagree',
+          'neutral',
+          'agree',
+          'strongly agree',
+        ],
+      },
     ],
     responses: [],
   };
