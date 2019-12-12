@@ -147,7 +147,11 @@ const SurveyDetailsStepper = () => {
 
   return (
     <MuiThemeProvider theme={stepperMuiTheme}>
-      <Stepper alternativeLabel activeStep={activeStep}>
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        data-testid='survey-detail-stepper'
+      >
         {stepperLabels.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
