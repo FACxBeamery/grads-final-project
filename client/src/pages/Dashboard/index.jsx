@@ -28,6 +28,7 @@ const Dashboard = ({ history }) => {
       const allSurveysData = data;
       dispatch({ type: 'SET_SURVEYS', payload: allSurveysData });
       dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+      dispatch({ type: 'RESET_ERRORS_BAG' });
       dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
     };
     getSurveys();

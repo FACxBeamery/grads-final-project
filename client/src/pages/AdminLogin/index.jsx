@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  useHistory,
-  useLocation
-} from "react-router-dom";
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Button,
   TextField,
@@ -13,11 +10,14 @@ import {
 } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 
-import { SET_LOGIN, SET_HELPER_TEXT } from '../../store/actions/adminLoginActions';
+import {
+  SET_LOGIN,
+  SET_HELPER_TEXT,
+} from '../../store/actions/adminLoginActions';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
 import useStyles from './styles';
-import { login, unsuccessfulLogin, setAuth } from './eventHandlers'
+import { login, unsuccessfulLogin, setAuth } from './eventHandlers';
 import Copyright from '../../components/Copyright';
 import loginAdmin from './apiCalls';
 
@@ -28,17 +28,17 @@ const AdminLogin = () => {
   const history = useHistory();
   const location = useLocation();
 
-  const { from } = location.state || { from: { pathname: "/admin" } };
+  const { from } = location.state || { from: { pathname: '/admin' } };
 
   const { helperText, data } = useSelector((state) => state.adminLoginReducer);
   const { username, password } = data;
 
   useEffect(() => {
     const { auth } = data;
-    if (auth){
+    if (auth) {
       setTimeout(() => history.replace(from), 200);
     }
-  }, [from, history, data])
+  }, [from, history, data]);
 
   const setLoginOnChange = (event) => {
     const helperTextPayload = { helperText: '' };
@@ -53,13 +53,13 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-  
+
       const response = await loginAdmin(username, password);
       const { auth, token, message } = response.data;
 
       if (auth && token) login(dispatch, message, token);
       else unsuccessfulLogin(dispatch, message);
-      
+
       setAuth(dispatch, auth);
     } catch (err) {
       const payload = {
@@ -69,7 +69,7 @@ const AdminLogin = () => {
       dispatch({ type: UPDATE_SNACKBAR, payload });
     }
   };
- 
+
   // conditionals
   const isHelperTextEmptyString = helperText !== '';
 
@@ -84,7 +84,7 @@ const AdminLogin = () => {
       label='Email Address'
       name='username'
       autoComplete='email'
-      value={username}
+      value={username || ''}
       onChange={setLoginOnChange}
       color='secondary'
       error={isHelperTextEmptyString}
@@ -100,7 +100,7 @@ const AdminLogin = () => {
       label='Password'
       type='password'
       id='password'
-      value={password}
+      value={password || ''}
       onChange={setLoginOnChange}
       autoComplete='current-password'
       color='secondary'
@@ -138,7 +138,5 @@ const AdminLogin = () => {
     </Container>
   );
 };
-
-
 
 export default AdminLogin;
