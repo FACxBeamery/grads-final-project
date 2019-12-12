@@ -18,6 +18,7 @@ const Main = () => {
   const { message, variant, timeOpened } = useSelector(
     (state) => state.snackbarReducer.snackbar,
   );
+  const { open } = useSelector((state) => state.snackbarReducer);
 
   console.log('Snackabr state, in Main:', message, variant, timeOpened);
 
@@ -54,7 +55,9 @@ const Main = () => {
         </Box>
       </Box>
       {/* {snackbar} */}
-      <Snackbar message={message} variant={variant} timeopened={timeOpened} />
+      {open && (
+        <Snackbar message={message} variant={variant} timeopened={timeOpened} />
+      )}
     </main>
   );
 };
