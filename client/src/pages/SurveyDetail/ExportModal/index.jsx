@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import FileDownload from 'js-file-download';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -22,22 +23,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const downloadSurvey = async (id) => {
+const createValidFilename = (string) => {
+  // currently a rough implementation that just replaces everything with an underscore, this could be refined
+  const stringToFilename = string.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  return stringToFilename;
+};
+
+const downloadSurvey = async (id, anonymous, title) => {
   try {
-    axios({
-      url: `/download/${id}?username=admin`,
-      method: 'GET',
-      responseType: 'blob',
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'file.csv');
-      document.body.appendChild(link);
-      link.click();
-    });
+    // axios({
+    //   url: `/download/${id}?username=admin`,
+    //   method: 'GET',
+    //   responseType: 'blob',
+    // }).then((response) => {
+    //   const url = window.URL.createObjectURL(new Blob([response.data]));
+    //   const link = document.createElement('a');
+    //   link.href = url;
+    //   link.setAttribute('download', `${createValidFilename(title)}.csv`);
+    //   document.body.appendChild(link);
+    //   link.click();
+    // });
+    axios
+      .get(`/download/${id}/${anonymous}?username=admin`)
+      .then((response) => {
+        FileDownload(response.data, `${createValidFilename(title)}.csv`);
+      });
   } catch (error) {
-    // put error message here
+    // TODO put error message here
   }
 };
 
@@ -93,7 +105,7 @@ const ExportModal = () => {
         <Button
           variant='contained'
           color='secondary'
-          onClick={() => downloadSurvey(_id)}
+          onClick={() => downloadSurvey(_id, anonymous, title)}
         >
           Export results
         </Button>
