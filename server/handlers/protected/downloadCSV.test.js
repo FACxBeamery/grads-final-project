@@ -3,6 +3,20 @@ const request = require('supertest');
 const { initDb, closeDb } = require('../../databaseConnection');
 const app = require('../../app');
 
+const authenticate = async () => {
+  const loginResponse = await request(app)
+    .post('/login')
+    .send({
+      username: 'admin',
+      password: 'admin',
+    });
+
+  const {
+    body: { token },
+  } = loginResponse;
+
+  return token;
+};
 beforeEach(() => {
   return initDb();
 });
@@ -12,18 +26,14 @@ afterEach(() => {
 });
 
 describe('Testing GET /download/:id/:anonymous', () => {
-  it('Responds with status 204 when the survey has been updated successfully.', (done) => {
+  it('Responds with status 204 when the survey has been updated successfully.', async () => {
     const surveyIdToDownload = '509f1f99bcf86cd799439215';
 
-    request(app)
+    const token = await authenticate();
+    const res = await request(app)
       .get(`/download/${surveyIdToDownload}/false`)
       .set('Accept', 'application/json')
-      .expect(200)
-      .end((err) => {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
+      .set('Authorization', `JWT ${token}`);
+    expect(res.status).toEqual(200);
   });
 });
