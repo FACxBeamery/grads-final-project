@@ -31,7 +31,7 @@ const CommentBox = () => {
           fullWidth
           required
           autoComplete='off'
-          value={currentCommentText}
+          value={currentCommentText || ''}
           margin='normal'
           key={activeStep}
           name='comment-text-box'
@@ -80,7 +80,7 @@ const MultichoiceQuestionOptions = () => {
             color: buttonTextColor,
           }}
           data-testid={option}
-          value={option}
+          value={option || ''}
           key={option}
           onClick={handleButtonClick}
           margin='normal'
@@ -141,8 +141,8 @@ const TextQuestion = () => {
           fullWidth
           required
           autoComplete='off'
-          value={currentAnswerText}
-          error={currentAnswerText.length < 5}
+          value={currentAnswerText || ''}
+          error={Boolean(currentAnswerText.length < 5)}
           helperText={
             currentAnswerText < 5 ? 'You must provide a answer here' : ''
           }

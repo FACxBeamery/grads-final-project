@@ -42,12 +42,35 @@ const CreateSurvey = ({ history }) => {
     isConfirming,
   } = useSelector((state) => state.createSurveyReducer);
   const { recipientIds } = useSelector((state) => state.employeeTableReducer);
+  const errors = useSelector((state) => state.errorsBagReducer);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
   }, [dispatch]);
-  const setMetadata = (event, inputType) => {
+
+  const setMetadata = (event, inputType, name, value, min, max) => {
+    const inputIsBiggerThanMaxValue =
+      event.target.value && event.target.value.length > max;
+    const inputIsSmallerThanMinValue =
+      event.target.value && event.target.value.length < min;
+    const inputIsEmpty = event.target.value === '';
+    if (
+      inputIsBiggerThanMaxValue ||
+      inputIsSmallerThanMinValue ||
+      inputIsEmpty
+    ) {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { [name]: true },
+      });
+    } else {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { ...errors, [name]: false },
+      });
+    }
+
     const payload = {};
     payload[event.target.name] =
       inputType === 'switch' ? event.target.checked : event.target.value;
@@ -97,7 +120,10 @@ const CreateSurvey = ({ history }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    toggleModal();
+    const noErrorsExistInForm = !(Object.values(errors).indexOf(true) > -1);
+    if (noErrorsExistInForm) {
+      toggleModal();
+    }
   };
   const PromptMessage = () => {
     return (
@@ -144,6 +170,33 @@ const CreateSurvey = ({ history }) => {
       </>
     );
   };
+
+  const fields = [
+    {
+      fieldName: 'title',
+      fieldLabel: 'Survey Title',
+      fieldValue: title,
+      min: 2,
+      max: 60,
+    },
+    {
+      fieldName: 'description',
+      fieldLabel: 'Survey Description',
+      fieldValue: description,
+      min: 2,
+      max: 280,
+    },
+    {
+      fieldName: 'disclaimer',
+      fieldLabel: 'Survey Disclaimer',
+      fieldValue: disclaimer,
+      min: 2,
+      max: 400,
+    },
+  ];
+
+  const errorsExist = Object.values(errors).indexOf(true) > -1;
+
   return (
     <Box>
       {isConfirming && <PromptMessage />}
@@ -158,44 +211,41 @@ const CreateSurvey = ({ history }) => {
               {`Date created: ${formatDate(dateCreated)}`}
             </Typography>
           </Box>
-          <TextField
-            margin='normal'
-            required
-            error={title && title.length > 60}
-            helperText={
-              title &&
-              title.length > 60 &&
-              'Title must be less than 60 characters!'
-            }
-            value={title}
-            name='title'
-            label='Survey title'
-            onChange={setMetadata}
-          />
-          <TextField
-            margin='normal'
-            required
-            error={description && description.length > 280}
-            helperText={
-              description &&
-              description.length > 280 &&
-              'Description must be less than 280 characters!'
-            }
-            value={description}
-            name='description'
-            label='Enter a description'
-            onChange={setMetadata}
-          />
-          <TextField
-            margin='normal'
-            required
-            error={disclaimer.length < 5}
-            helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
-            value={disclaimer}
-            name='disclaimer'
-            label='How will this data be used?'
-            onChange={setMetadata}
-          />
+          {fields.map((field) => {
+            const { fieldName, fieldLabel, fieldValue, min, max } = field;
+            const inputIsBiggerThanMaxValue =
+              fieldValue && fieldValue.length > max;
+            const inputIsSmallerThanMinValue =
+              fieldValue && fieldValue.length < min;
+            const inputIsEmpty = fieldValue === '';
+            return (
+              <TextField
+                key={fieldLabel}
+                margin='normal'
+                required
+                error={Boolean(
+                  inputIsBiggerThanMaxValue ||
+                    inputIsSmallerThanMinValue ||
+                    inputIsEmpty,
+                )}
+                helperText={
+                  (inputIsBiggerThanMaxValue &&
+                    `${fieldLabel} must be less than ${max} characters!`) ||
+                  (inputIsSmallerThanMinValue &&
+                    `${fieldLabel} must be more than ${min} characters!`) ||
+                  (inputIsEmpty && `${fieldLabel} is required.`)
+                }
+                value={fieldValue || ''}
+                name={fieldName}
+                label={fieldLabel}
+                onChange={
+                  (e) => setMetadata(e, 'text', fieldName, fieldValue, min, max)
+                  // eslint-disable-next-line react/jsx-curly-newline
+                }
+              />
+            );
+          })}
+
           <FormControlLabel
             control={
               <Switch
@@ -213,7 +263,12 @@ const CreateSurvey = ({ history }) => {
           <Divider variant='middle' />
           <QuestionsList />
           <Box alignSelf='center' mt={8}>
-            <Button type='submit' variant='contained' color='secondary'>
+            <Button
+              disabled={errorsExist}
+              type='submit'
+              variant='contained'
+              color='secondary'
+            >
               Save as draft
             </Button>
           </Box>
