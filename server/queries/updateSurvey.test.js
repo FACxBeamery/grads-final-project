@@ -69,11 +69,12 @@ it('Testing updateSurvey updates a document successfully.', async (done) => {
     datePublished: 1,
     dateClosed: 2,
   });
+  // eslint-disable-next-line no-console
   console.log('updated doc: ', updatedDocument);
-  expect(updatedDocument.status).toStrictEqual('active')
+  expect(updatedDocument.status).toStrictEqual('active');
   expect(originalDocument.status).toStrictEqual('draft');
-  expect(updatedDocument.datePublished).toEqual(1)
+  expect(updatedDocument.datePublished).toEqual(1);
   expect(originalDocument.datePublished).toStrictEqual('');
-  expect(updatedDocument.dateClosed).toEqual(2)
+  expect(updatedDocument.dateClosed).toEqual(2);
   expect(originalDocument.dateClosed).toStrictEqual('');
 });
