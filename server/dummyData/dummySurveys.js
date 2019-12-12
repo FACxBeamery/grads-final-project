@@ -247,7 +247,7 @@ module.exports = [
     datePublished: 1574259113,
     dateToClose: 1576851113,
     dateClosed: 1576851113,
-    anonymous: true,
+    anonymous: false,
     recipients: [
       {
         employeeId: ObjectID('507f1f77bcf86cd799439011'),
