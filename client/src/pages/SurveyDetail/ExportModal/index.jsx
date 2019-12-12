@@ -61,32 +61,55 @@ const ExportModal = () => {
       }}
     >
       <Box
-        style={{ top: `50%`, left: `50%`, transform: `translate(-50%, -50%)` }}
+        style={{
+          top: `50%`,
+          left: `50%`,
+          transform: `translate(-50%, -50%)`,
+          height: `40vh`,
+          width: `50vw`,
+        }}
         className={classes.paper}
+        display='flex'
+        flexDirection='column'
+        justifyContent='space-between'
+        alignItems='center'
       >
-        <Typography variant='h4'>{`Export Survey: ${title}`}</Typography>
-        <Typography>
-          {anonymous
-            ? 'This survey was anonymous. Exports will not contain any reference to employee'
-            : 'This was an attributed survey. Choose below whether to export anonymously, or with names.'}
-        </Typography>
+        <Box display='flex' flexDirection='column'>
+          <Box my={2}>
+            <Box mb={1}>
+              <Typography variant='h4' color='primary'>
+                {'Export Survey:'}
+              </Typography>
+            </Box>
+            <Typography variant='h5' color='primary'>
+              {title}
+            </Typography>
+          </Box>
+          <Typography>
+            {anonymous
+              ? 'This survey was anonymous. Exports will not contain any reference to employee'
+              : 'This was an attributed survey. Choose below whether to export anonymously, or with names.'}
+          </Typography>
+        </Box>
         {!anonymous && (
-          <FormControlLabel
-            control={
-              // eslint-disable-next-line react/jsx-wrap-multilines
-              <Switch
-                checked={anonymousExport}
-                onChange={() => {
-                  dispatch({ type: 'TOGGLE_ANONYMOUS_EXPORT' });
-                }}
-                value='anonymous'
-                name='anonymous'
-                labelid='anonymous-switch'
-                inputProps={{ 'aria-label': 'Make survey anonymous' }}
-              />
-            }
-            label='Anonymous export'
-          />
+          <Box alignSelf='flex-start'>
+            <FormControlLabel
+              control={
+                // eslint-disable-next-line react/jsx-wrap-multilines
+                <Switch
+                  checked={anonymousExport}
+                  onChange={() => {
+                    dispatch({ type: 'TOGGLE_ANONYMOUS_EXPORT' });
+                  }}
+                  value='anonymous'
+                  name='anonymous'
+                  labelid='anonymous-switch'
+                  inputProps={{ 'aria-label': 'Make survey anonymous' }}
+                />
+              }
+              label='Anonymous export'
+            />
+          </Box>
         )}
         <Button
           variant='contained'
