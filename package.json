@@ -32,6 +32,8 @@
     },
     "devDependencies": {
         "enzyme": "^3.10.0",
-        "enzyme-adapter-react-16": "^1.15.1"
+        "enzyme-adapter-react-16": "^1.15.1",
+        "eslint-plugin-react": "^7.17.0",
+        "jest-cli": "^24.9.0"
     }
 }

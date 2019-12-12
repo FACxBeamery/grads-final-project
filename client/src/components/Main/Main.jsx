@@ -6,12 +6,12 @@ import axios from 'axios';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
 
-
 import AdminLogin from '../../pages/AdminLogin';
 import Dashboard from '../../pages/Dashboard';
 import CreateSurvey from '../../pages/CreateSurvey';
 import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
+import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
@@ -28,36 +28,41 @@ const Main = () => {
   useEffect(() => {
     addTokenToEveryRequest();
     deleteTokenOn401StatusCodes(axios);
-  })
+  });
 
   // eslint-disable-next-line react/prop-types
   const ProtectedRoute = ({ component: Component, ...rest }) => {
     return (
-      <Route 
+      <Route
         {...rest}
         render={({ location, match }) => {
-          return checkTokenIsAuth(dispatch, auth) && auth
-          ? <Component match={match} />
-          : (
+          return checkTokenIsAuth(dispatch, auth) && auth ? (
+            <Component match={match} />
+          ) : (
             <Redirect
-              push 
+              push
               to={{
-                pathname: "/admin/login",
-                state: { from: location }
-              }} 
+                pathname: '/admin/login',
+                state: { from: location },
+              }}
             />
-            )
+          );
         }}
       />
-      )
-  }
+    );
+  };
 
   const routes = [
     <Route exact key='/takesurvey' path='/takesurvey' component={TakeSurvey} />,
-    <Route exact key='/admin/login' path='/admin/login' component={AdminLogin} />
+    <Route
+      exact
+      key='/admin/login'
+      path='/admin/login'
+      component={AdminLogin}
+    />,
   ];
 
-  const protectedRoutes = [ 
+  const protectedRoutes = [
     <ProtectedRoute exact key='/admin' path='/admin' component={Dashboard} />,
     <ProtectedRoute
       exact
@@ -71,7 +76,12 @@ const Main = () => {
       path='/admin/surveys/edit/:id'
       component={EditSurvey}
     />,
-    <ProtectedRoute exact key={4} path='/admin/surveys/:id' component={SurveyDetail} />
+    <ProtectedRoute
+      exact
+      key={4}
+      path='/admin/surveys/:id'
+      component={SurveyDetail}
+    />,
   ];
 
   return (
@@ -82,8 +92,8 @@ const Main = () => {
         </Box>
         <Box mx={4}>
           <Switch>
-            { routes}
-            { protectedRoutes }
+            {routes}
+            {protectedRoutes}
           </Switch>
         </Box>
       </Box>
