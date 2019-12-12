@@ -22,16 +22,13 @@ const readSurvey = async (_id) => {
     const questions = await questionsCollection
       .find({ _id: { $in: questionIds } })
       .toArray();
-
     // order questions in data returned by id
-    survey.questions = questionIds.map((id) => {
-      return questions.find((element) => {
-        return element._id.equals(id);
-      });
-    });
+    survey.questions = questionIds.map((id) => questions.find((element) => element._id.equals(id)
+    )
+    );
     return survey;
   } catch (err) {
-    return err;
+    throw new Error(err.message);
   }
 };
 
