@@ -298,7 +298,6 @@ const EmployeeCompletionTable = () => {
 
   useEffect(() => {
     const getEmployees = async () => {
-      dispatch({ type: 'RESET_EMPLOYEE_DATA' });
       const { data } = await axios.get(`/employees`);
       const filteredData = data
         .filter((person) =>
