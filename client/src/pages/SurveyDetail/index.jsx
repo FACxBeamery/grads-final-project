@@ -223,9 +223,8 @@ const SurveyDetail = ({ match }) => {
     status,
     successfulPublish,
     successfulClose,
+    employeeDataForSlack,
   } = useSelector((state) => state.surveyDetailReducer);
-
-  const { employeeData } = useSelector((state) => state.employeeTableReducer);
 
   useEffect(() => {
     const { id } = match.params;
@@ -233,7 +232,7 @@ const SurveyDetail = ({ match }) => {
     dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
     const getEmployees = async () => {
       const { data } = await axios.get(`/employees`);
-      dispatch({ type: 'SET_EMPLOYEE_DATA', payload: data });
+      dispatch({ type: 'SET_EMPLOYEE_DATA_FOR_SLACK', payload: data });
     };
     getEmployees();
 
@@ -284,11 +283,11 @@ const SurveyDetail = ({ match }) => {
           )}
 
           <EmployeeCompletionTable />
-          {employeeData && <SlackModal />}
+          {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
-      {successfulPublish !== undefined && <SnackbarPublish />}
-      {successfulClose !== undefined && <SnackbarClose />}
+      {successfulPublish && <SnackbarPublish />}
+      {successfulClose && <SnackbarClose />}
     </Box>
   );
 };
