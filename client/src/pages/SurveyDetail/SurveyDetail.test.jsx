@@ -58,7 +58,7 @@ const dummySurveyClosed = {
 };
 
 describe('Testing the Survey Detail page', () => {
-  it('', async () => {
+  it('Testing the workings of the entire Survey Detail page, including the stepper and buttons.', async () => {
     // eslint-disable-next-line no-underscore-dangle
     const mockAxiosGetFirst = jest.spyOn(axios, 'get');
     mockAxiosGetFirst.mockImplementation((url) => {
