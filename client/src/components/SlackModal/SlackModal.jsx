@@ -53,10 +53,13 @@ const SlackMessageTextBox = () => {
 const SlackModal = () => {
   const dispatch = useDispatch();
 
-  const { openSlackModal, recipients, slackMessageText, _id } = useSelector(
-    (state) => state.surveyDetailReducer,
-  );
-  const { employeeData } = useSelector((state) => state.employeeTableReducer);
+  const {
+    openSlackModal,
+    recipients,
+    slackMessageText,
+    _id,
+    employeeDataForSlack,
+  } = useSelector((state) => state.surveyDetailReducer);
 
   const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
 
@@ -70,7 +73,7 @@ const SlackModal = () => {
 
   const customMessageWithLinks = (link) => `${slackMessageText} ${link}`;
 
-  const slackIDs = employeeData
+  const slackIDs = employeeDataForSlack
     .filter((employee) => recipientsIDs.includes(employee._id))
     .map((person) => person.slackID);
 
