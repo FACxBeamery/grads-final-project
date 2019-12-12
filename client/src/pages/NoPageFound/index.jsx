@@ -10,12 +10,24 @@ const NoPageFound = ({ location }) => {
       <Box display='flex' flexDirection='column' alignItems='center'>
         <Box mb={5}>
           <Typography color='primary' variant='h5'>
-            We&apos;re sorry, We couldn&apos;t find 
+            404: Page not found. We&apos;re sorry, we couldn&apos;t find
 {' '}
-{pathname}
+            {pathname}
 {' '}
 for you.
 </Typography>
+        </Box>
+
+        <Box mb={5}>
+          <Typography color='primary' variant='h5'>
+            Survey recipients, please check the link you have been sent.
+          </Typography>
+        </Box>
+
+        <Box>
+          <Typography color='primary' variant='h5'>
+            Are you an admin?
+          </Typography>
         </Box>
         <Button color='secondary' variant='contained' size='large'>
           <Link
