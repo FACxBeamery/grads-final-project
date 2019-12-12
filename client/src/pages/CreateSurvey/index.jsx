@@ -163,6 +163,30 @@ const CreateSurvey = ({ history }) => {
     );
   };
 
+  const fields = [
+    {
+      fieldName: 'title',
+      fieldLabel: 'Survey Title',
+      fieldValue: title,
+      min: 2,
+      max: 60,
+    },
+    {
+      fieldName: 'description',
+      fieldLabel: 'Survey Description',
+      fieldValue: description,
+      min: 2,
+      max: 280,
+    },
+    {
+      fieldName: 'disclaimer',
+      fieldLabel: 'Survey Disclaimer',
+      fieldValue: disclaimer,
+      min: 2,
+      max: 400,
+    },
+  ];
+
   return (
     <Box>
       {isConfirming && <PromptMessage />}
@@ -178,46 +202,34 @@ const CreateSurvey = ({ history }) => {
               {`Date created: ${formatDate(dateCreated)}`}
             </Typography>
           </Box>
+          {fields.map((field) => {
+            const { fieldName, fieldLabel, fieldValue, min, max } = field;
+            return (
+              <TextField
+                key={fieldLabel}
+                margin='normal'
+                required
+                error={Boolean(
+                  fieldValue &&
+                    (fieldValue.length > max || fieldValue.length < min),
+                )}
+                helperText={
+                  (fieldValue &&
+                    fieldValue.length > max &&
+                    `${fieldLabel} must be less than ${max} characters!`) ||
+                  (fieldValue &&
+                    fieldValue.length < min &&
+                    `${fieldLabel} must be more than ${min} characters!`) ||
+                  (fieldValue === '' && `${fieldLabel} is required.`)
+                }
+                value={fieldValue || ''}
+                name={fieldName}
+                label={fieldLabel}
+                onChange={setMetadata}
+              />
+            );
+          })}
 
-          <TextField
-            margin='normal'
-            required
-            error={Boolean(title && title.length > 60)}
-            helperText={
-              title &&
-              title.length > 60 &&
-              'Title must be less than 60 characters!'
-            }
-            value={title || ''}
-            name='title'
-            label='Survey title'
-            onChange={setMetadata}
-          />
-          <TextField
-            margin='normal'
-            required
-            error={Boolean(description && description.length > 280)}
-            helperText={
-              description &&
-              description.length > 280 &&
-              'Description must be less than 280 characters!'
-            }
-            value={description || ''}
-            name='description'
-            label='Enter a description'
-            onChange={setMetadata}
-          />
-
-          <TextField
-            margin='normal'
-            required
-            error={Boolean(disclaimer.length < 5)}
-            helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
-            value={disclaimer || ''}
-            name='disclaimer'
-            label='How will this data be used?'
-            onChange={setMetadata}
-          />
           <FormControlLabel
             control={
               <Switch
