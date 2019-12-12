@@ -229,8 +229,9 @@ const EditSurvey = ({ match, history }) => {
                 value={fieldValue || ''}
                 name={fieldName}
                 label={fieldLabel}
-                onChange={(e) =>
-                  setMetadata(e, 'text', fieldName, fieldValue, min, max)
+                onChange={
+                  (e) => setMetadata(e, 'text', fieldName, fieldValue, min, max)
+                  // eslint-disable-next-line react/jsx-curly-newline
                 }
               />
             );
