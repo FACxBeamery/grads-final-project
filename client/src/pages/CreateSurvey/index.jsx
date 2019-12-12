@@ -45,16 +45,35 @@ const CreateSurvey = ({ history }) => {
   } = useSelector((state) => state.createSurveyReducer);
 
   const { recipientIds } = useSelector((state) => state.employeeTableReducer);
+  const errors = useSelector((state) => state.errorsBagReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
-    // dispatch({ type: 'RESET_SURVEY_DATA' });
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
-    // dispatch({ type: 'RESET_EMPLOYEE_DATA' });
   }, [dispatch]);
 
-  const setMetadata = (event, inputType) => {
+  const setMetadata = (event, inputType, name, value, min, max) => {
+    const inputIsBiggerThanMaxValue =
+      event.target.value && event.target.value.length > max;
+    const inputIsSmallerThanMinValue =
+      event.target.value && event.target.value.length < min;
+    const inputIsEmpty = event.target.value === '';
+    if (
+      inputIsBiggerThanMaxValue ||
+      inputIsSmallerThanMinValue ||
+      inputIsEmpty
+    ) {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { [name]: true },
+      });
+    } else {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { ...errors, [name]: false },
+      });
+    }
     const payload = {};
     payload[event.target.name] =
       inputType === 'switch' ? event.target.checked : event.target.value;
@@ -112,7 +131,10 @@ const CreateSurvey = ({ history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toggleModal();
+    const noErrorsExistInForm = !(Object.values(errors).indexOf(true) > -1);
+    if (noErrorsExistInForm) {
+      toggleModal();
+    }
   };
 
   const PromptMessage = () => {
@@ -187,6 +209,7 @@ const CreateSurvey = ({ history }) => {
     },
   ];
 
+  const errorsExist = Object.values(errors).indexOf(true) > -1;
   return (
     <Box>
       {isConfirming && <PromptMessage />}
@@ -204,28 +227,35 @@ const CreateSurvey = ({ history }) => {
           </Box>
           {fields.map((field) => {
             const { fieldName, fieldLabel, fieldValue, min, max } = field;
+            const inputIsBiggerThanMaxValue =
+              fieldValue && fieldValue.length > max;
+            const inputIsSmallerThanMinValue =
+              fieldValue && fieldValue.length < min;
+            const inputIsEmpty = fieldValue === '';
             return (
               <TextField
                 key={fieldLabel}
                 margin='normal'
                 required
                 error={Boolean(
-                  fieldValue &&
-                    (fieldValue.length > max || fieldValue.length < min),
+                  inputIsBiggerThanMaxValue ||
+                    inputIsSmallerThanMinValue ||
+                    inputIsEmpty,
                 )}
                 helperText={
-                  (fieldValue &&
-                    fieldValue.length > max &&
+                  (inputIsBiggerThanMaxValue &&
                     `${fieldLabel} must be less than ${max} characters!`) ||
-                  (fieldValue &&
-                    fieldValue.length < min &&
+                  (inputIsSmallerThanMinValue &&
                     `${fieldLabel} must be more than ${min} characters!`) ||
-                  (fieldValue === '' && `${fieldLabel} is required.`)
+                  (inputIsEmpty && `${fieldLabel} is required.`)
                 }
                 value={fieldValue || ''}
                 name={fieldName}
                 label={fieldLabel}
-                onChange={setMetadata}
+                onChange={
+                  (e) => setMetadata(e, 'text', fieldName, fieldValue, min, max)
+                  // eslint-disable-next-line react/jsx-curly-newline
+                }
               />
             );
           })}
@@ -247,7 +277,12 @@ const CreateSurvey = ({ history }) => {
           <Divider variant='middle' />
           <QuestionsList />
           <Box alignSelf='center' mt={8}>
-            <Button type='submit' variant='contained' color='secondary'>
+            <Button
+              disabled={errorsExist}
+              type='submit'
+              variant='contained'
+              color='secondary'
+            >
               Save as draft
             </Button>
           </Box>
