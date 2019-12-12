@@ -1,3 +1,5 @@
+
+/* eslint-ignore no-console */
 const readSurvey = require('../queries/readSurvey');
 
 const getSurvey = async (req, res) => {

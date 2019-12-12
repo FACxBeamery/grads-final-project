@@ -6,7 +6,6 @@ const app = require('../app');
 
 describe('Testing GET /surveys/:id', () => {
   it('Responds with JSON and status 200 when the survey has been found successfully.', async () => {
-    // const documentIdToFind = '508f1f99bcf86cd799439014';
 
     await initDb();
 
