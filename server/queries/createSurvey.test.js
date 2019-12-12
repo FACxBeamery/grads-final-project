@@ -1,5 +1,6 @@
-const { initDb, closeDb } = require('../databaseConnection');
-const createSurvey = require('./createSurvey');
+/* eslint-disable no-undef */
+// const { initDb, closeDb } = require('../databaseConnection');
+// const createSurvey = require('./createSurvey');
 
 // beforeAll(() => {
 //   return initDb();

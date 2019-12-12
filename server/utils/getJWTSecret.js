@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable camelcase */
 const getJWTSecret = () => {
   try {
     if (!process.env.JWT_SECRET)
