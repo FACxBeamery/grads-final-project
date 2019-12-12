@@ -131,10 +131,11 @@ const SurveyDetailsStepper = () => {
 
   const stepperLabels = [
     `Drafted\n${formatDate(dateCreated)}`,
-    datePublished ? `Active\n${formatDate(datePublished)}` : `Active\npending`,
+    datePublished
+      ? `Published\n${formatDate(datePublished)}`
+      : `Publish\npending`,
     dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
   ];
-
   return (
     <MuiThemeProvider theme={stepperMuiTheme}>
       <Stepper
