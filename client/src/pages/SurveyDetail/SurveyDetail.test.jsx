@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -45,22 +45,33 @@ const dummySurvey = {
   responses: [],
 };
 
+const dummySurveyPublished = {
+  ...dummySurvey,
+  status: 'active',
+  datePublished: Date.now(),
+};
+
+const dummySurveyClosed = {
+  ...dummySurvey,
+  status: 'closed',
+  dateClosed: Date.now(),
+};
+
 describe('Testing the Survey Detail page', () => {
-  it('', () => {
+  it('', async () => {
     // eslint-disable-next-line no-underscore-dangle
-    const mockAxiosGet = jest.spyOn(axios, 'get');
-    // mockAxiosGet.mockImplementation((url) => {
-    //   if (url === '/employees') {
-    //     return Promise.resolve({ data: dummySurvey.recipients });
-    //   }
-    //   return Promise.resolve({ data: dummySurvey });
-    // });
+    const mockAxiosGetFirst = jest.spyOn(axios, 'get');
+    mockAxiosGetFirst.mockImplementation((url) => {
+      if (url === '/employees') {
+        return Promise.resolve({ data: dummySurvey.recipients });
+      }
+      return Promise.resolve({ data: dummySurvey });
+    });
 
-    mockAxiosGet.mockImplementationOnce(() =>
-      Promise.resolve({ data: dummySurvey.recipients }),
-    );
+    const mockAxiosPatch = jest.spyOn(axios, 'patch');
+    mockAxiosPatch.mockImplementation(() => Promise.resolve({}));
 
-    const { getByText } = render(
+    const { getByText, getByTestId } = render(
       <BrowserRouter>
         <Provider store={store}>
           <SurveyDetail
@@ -71,38 +82,83 @@ describe('Testing the Survey Detail page', () => {
       </BrowserRouter>,
     );
 
-    expect(getByText(dummySurvey.title)).toBeVisible();
+    const dummySurveyTitle = await waitForElement(() =>
+      getByText(dummySurvey.title),
+    );
+
+    expect(dummySurveyTitle).toBeVisible();
     expect(getByText(dummySurvey.description)).toBeVisible();
 
-    expect(getByText('EDIT SURVEY')).toBeVisible();
-    expect(getByText('PUBLISH SURVEY')).toBeVisible();
+    expect(getByText('Publish Survey')).toBeVisible();
+    expect(getByText('Edit survey')).toBeVisible();
 
     expect(
-      getByText(`Drafted\n${formatDate(dummySurvey.dateCreated)}`),
+      getByText(`Drafted ${formatDate(dummySurvey.dateCreated)}`),
     ).toBeVisible();
-    expect(getByText(`Publish\npending`)).toBeVisible();
-    expect(getByText(`Closed\npending`)).toBeVisible();
+    expect(getByText(`Publish pending`)).toBeVisible();
+    expect(getByText(`Closed pending`)).toBeVisible();
 
     expect(getByText('Recipients')).toBeVisible();
     expect(
       getByText('To edit recipient list, select Edit Survey'),
     ).toBeVisible();
 
-    fireEvent.click(getByText('PUBLISH SURVEY'));
+    mockAxiosGetFirst.mockRestore();
 
-    expect(getByText('PUBLISH SURVEY')).toNotBeVisible();
-    expect(getByText('EDIT SURVEY')).toNotBeVisible();
+    fireEvent.click(getByText('Publish Survey'));
 
-    expect(getByText(`Publish\npending`)).toNotBeVisible();
-    expect(getByText(/Published\n..\/..\/../)).toBeVisible();
+    const mockAxiosGetSecond = jest.spyOn(axios, 'get');
+    mockAxiosGetSecond.mockImplementation((url) => {
+      if (url === '/employees') {
+        return Promise.resolve({ data: dummySurveyPublished.recipients });
+      }
+      return Promise.resolve({ data: dummySurveyPublished });
+    });
 
-    expect(getByText('0/6 respondents')).toBeVisible();
+    const closeSurveyButton = await waitForElement(() =>
+      getByText('Close Survey'),
+    );
 
-    fireEvent.click(getByText('EXIT SURVEY'));
+    expect(closeSurveyButton).toBeVisible();
 
-    expect(getByText(`Closed\npending`)).toNotBeVisible();
-    expect(getByText(/Closed\n..\/..\/../)).toBeVisible();
+    expect(
+      getByText(`Published ${formatDate(dummySurveyPublished.datePublished)}`),
+    ).toBeVisible();
 
-    mockAxiosGet.mockRestore();
+    expect(getByTestId('survey-detail-stepper')).toBeVisible();
+
+    expect(
+      getByText(
+        `${dummySurveyPublished.responses.length}/${dummySurveyPublished.recipients.length}`,
+      ),
+    ).toBeVisible();
+    expect(getByText('respondents')).toBeVisible();
+
+    mockAxiosGetSecond.mockRestore();
+
+    fireEvent.click(getByText('Close Survey'));
+
+    const mockAxiosGetThird = jest.spyOn(axios, 'get');
+    mockAxiosGetThird.mockImplementation((url) => {
+      if (url === '/employees') {
+        return Promise.resolve({ data: dummySurveyClosed.recipients });
+      }
+      return Promise.resolve({ data: dummySurveyClosed });
+    });
+
+    const closedSurveyStepperText = await waitForElement(() =>
+      getByText(`Closed ${formatDate(dummySurveyClosed.dateClosed)}`),
+    );
+
+    expect(closedSurveyStepperText).toBeVisible();
+
+    expect(
+      getByText(
+        `${dummySurveyClosed.responses.length}/${dummySurveyClosed.recipients.length}`,
+      ),
+    ).toBeVisible();
+    expect(getByText('respondents')).toBeVisible();
+
+    mockAxiosGetThird.mockRestore();
   });
 });
