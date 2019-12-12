@@ -10,12 +10,8 @@ const PageNotFound = ({ location }) => {
       <Box display='flex' flexDirection='column' alignItems='center'>
         <Box mb={5}>
           <Typography color='primary' variant='h5'>
-            404: Page not found. We&apos;re sorry, we couldn&apos;t find
-{' '}
-            {pathname}
-{' '}
-for you.
-</Typography>
+            {`404: Page not found. We're sorry, we couldn't find ${pathname} for you.`}
+          </Typography>
         </Box>
 
         <Box mb={5}>
