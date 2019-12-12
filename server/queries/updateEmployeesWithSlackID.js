@@ -18,10 +18,13 @@ const updateEmployeesWithSlackID = async (db) => {
       if (response && response.data.user) {
         const slackID = response.data.user.id;
         addSlackInfo(db, email, slackID);
+        return response.data.user.id;
       }
+      return null;
     } catch (error) {
+      return error;
       // eslint-disable-next-line no-console
-      console.log(error);
+      // console.log(error);
     }
   };
 
