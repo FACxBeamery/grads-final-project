@@ -39,6 +39,6 @@ router.post('/login', postLogin);
 
 // protected routes
 router.post('/upload', uploadCSVHandler);
-router.get('/download/:id', downloadCSVHandler);
+router.get('/download/:id/:anonymous', downloadCSVHandler);
 
 module.exports = router;
