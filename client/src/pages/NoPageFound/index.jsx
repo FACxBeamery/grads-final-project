@@ -36,7 +36,7 @@ for you.
               pathname: `/admin/`,
             }}
           >
-            Take me to the Dashboard
+            Go to the Dashboard
           </Link>
         </Button>
       </Box>
