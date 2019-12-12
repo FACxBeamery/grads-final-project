@@ -2,46 +2,78 @@ const passport = require('passport');
 const { Parser } = require('json2csv');
 const fs = require('fs');
 const readSurvey = require('../../queries/readSurvey');
-
+const readEmployees = require('../../queries/readEmployees');
 const downloadCSV = async (req, res, next) => {
   passport.authenticate('jwt', { session: false }, async (err, user, info) => {
     if (err) {
-      console.log('not authenticated');
       throw new Error(err);
     }
     if (info) {
       res.status(401).json({ message: info.message });
     } else if (user.username === req.query.username) {
-      console.log('authenticated');
       if (user) {
         try {
           const id = !req.params.id ? req.params : req.params.id;
           const survey = await readSurvey(id.toString());
-          const responses = survey.responses.map(
-            (response) => response.answers,
-          );
-          console.log(responses);
+          const { responses, questions } = survey;
 
-          const arrayOfSizeResponses = new Array(responses.length);
-          const fields = arrayOfSizeResponses.map(
-            (item, index) => `Question ${index + 1}`,
+          const anonymous = survey.anonymous || req.params.anonymous;
+          console.log(anonymous, 'ANONYMOUS');
+          let employees;
+
+          if (!anonymous) {
+            employees = await readEmployees();
+          }
+
+          const fields = questions.reduce(
+            (acc, question) =>
+              question.commentEnabled
+                ? [...acc, question.title, `Comment on ${question.title}`]
+                : [...acc, question.title],
+            [],
           );
+
+          if (!anonymous) {
+            fields.unshift('Name');
+          }
+
+          const responsesWithQuestionTitles = responses.map((response) => {
+            const responseObj = {};
+            if (!anonymous) {
+              responseObj.Name = employees.find(
+                (employee) => response.employeeId === employee._id,
+              );
+            }
+            console.log(responseObj, 'RESP OBJ');
+            response.answers.forEach((answer) => {
+              const currentQuestion = questions.find((question) => {
+                // eslint-disable-next-line no-underscore-dangle
+                return question._id.equals(answer.questionId);
+              });
+              responseObj[currentQuestion.title] = answer.answer;
+
+              if (currentQuestion.commentEnabled) {
+                responseObj[`Comment on ${currentQuestion.title}`] =
+                  answer.comment;
+              }
+            });
+            return responseObj;
+          });
 
           const json2csvParser = new Parser({ fields });
-          const csv = json2csvParser.parse(responses);
-
-          console.log(csv);
+          const csv = json2csvParser.parse(responsesWithQuestionTitles);
 
           const file = `${__dirname}/../../temp/sample2return.csv`;
 
           fs.writeFileSync(file, csv);
 
           res.download(file, () =>
+            // eslint-disable-next-line no-console
             fs.unlinkSync(file, (err2) => console.error(err2)),
           );
-        } catch (err) {
-          console.log('in catch');
-          // do this
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(error);
         }
       } else {
         res
