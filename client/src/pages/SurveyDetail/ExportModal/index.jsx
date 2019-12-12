@@ -31,23 +31,9 @@ const createValidFilename = (string) => {
 
 const downloadSurvey = async (id, anonymous, title) => {
   try {
-    // axios({
-    //   url: `/download/${id}?username=admin`,
-    //   method: 'GET',
-    //   responseType: 'blob',
-    // }).then((response) => {
-    //   const url = window.URL.createObjectURL(new Blob([response.data]));
-    //   const link = document.createElement('a');
-    //   link.href = url;
-    //   link.setAttribute('download', `${createValidFilename(title)}.csv`);
-    //   document.body.appendChild(link);
-    //   link.click();
-    // });
-    axios
-      .get(`/download/${id}/${anonymous}?username=admin`)
-      .then((response) => {
-        FileDownload(response.data, `${createValidFilename(title)}.csv`);
-      });
+    axios.get(`/download/${id}/${anonymous}`).then((response) => {
+      FileDownload(response.data, `${createValidFilename(title)}.csv`);
+    });
   } catch (error) {
     // TODO put error message here
   }
@@ -105,7 +91,7 @@ const ExportModal = () => {
         <Button
           variant='contained'
           color='secondary'
-          onClick={() => downloadSurvey(_id, anonymous, title)}
+          onClick={() => downloadSurvey(_id, anonymousExport, title)}
         >
           Export results
         </Button>
