@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-// const { ObjectID } = require('mongodb');
 const { initDb, closeDb } = require('../databaseConnection');
 
 const updateSurvey = require('./updateSurvey');
