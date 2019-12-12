@@ -9,7 +9,10 @@ import {
 } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 
-import { SET_LOGIN, SET_HELPER_TEXT } from '../../store/actions/adminLoginActions';
+import {
+  SET_LOGIN,
+  SET_HELPER_TEXT,
+} from '../../store/actions/adminLoginActions';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
 import useStyles from './styles';
@@ -43,18 +46,18 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-  
+
       const response = await loginAdmin(username, password);
       const { auth, token, message } = response.data;
-  
+
       if (auth && token) {
         window.localStorage.setItem('jwt_token', token);
         const payload1 = {
-          message,
+          message: message ? message : '',
           variant: 'success',
         };
         dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
-  
+
         const payload2 = { helperText: '' };
         dispatch({ type: SET_HELPER_TEXT, payload: payload2 });
       } else {
@@ -63,7 +66,7 @@ const AdminLogin = () => {
           variant: 'error',
         };
         dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
-  
+
         const payload2 = { helperText: message };
         dispatch({ type: SET_HELPER_TEXT, payload: payload2 });
       }
@@ -76,7 +79,7 @@ const AdminLogin = () => {
       dispatch({ type: UPDATE_SNACKBAR, payload });
     }
   };
- 
+
   // conditionals
   const isHelperTextEmptyString = helperText !== '';
 
