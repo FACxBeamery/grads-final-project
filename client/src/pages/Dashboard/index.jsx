@@ -17,16 +17,29 @@ const Dashboard = ({ history }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch({ type: 'RESET_SPLIT_BUTTON_STATE' });
+    dispatch({
+      type: 'SET_OPTIONS',
+      payload: ['Create Survey', 'Create from template'],
+    });
+
     const getSurveys = async () => {
       const { data } = await axios.get('/surveys');
       const allSurveysData = data;
       dispatch({ type: 'SET_SURVEYS', payload: allSurveysData });
+      dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+      dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
     };
     getSurveys();
   }, [dispatch]);
 
   const goToSurveyBuilder = () => {
     history.push(`/admin/surveys/create`);
+    dispatch({ type: 'RESET_SURVEY_DATA' });
+  };
+
+  const goToSurveyBuilderFromTemplate = () => {
+    history.push(`/admin/surveys/template`);
     dispatch({ type: 'RESET_SURVEY_DATA' });
   };
 
@@ -93,7 +106,7 @@ const Dashboard = ({ history }) => {
   const SurveyTable = () => {
     return (
       <Grid container>
-        <AllSurveysTable surveys={surveys} />
+        <AllSurveysTable />
       </Grid>
     );
   };
@@ -114,15 +127,26 @@ const Dashboard = ({ history }) => {
   };
   return (
     <Box>
-      <Box display='flex' justifyContent='space-between' alignItems='center'>
+      <Box display='flex' alignItems='center' justifyContent='space-between'>
         <Typography variant='h2'>Dashboard</Typography>
-        <Button
-          onClick={goToSurveyBuilder}
-          variant='contained'
-          color='secondary'
-        >
-          Create New Survey
-        </Button>
+        <Box display='flex' flexDirection='column' alignItems='center'>
+          <Box mb={2}>
+            <Button
+              onClick={goToSurveyBuilder}
+              variant='contained'
+              color='secondary'
+            >
+              Create Survey
+            </Button>
+          </Box>
+          <Button
+            onClick={goToSurveyBuilderFromTemplate}
+            variant='outlined'
+            color='secondary'
+          >
+            Create From Template
+          </Button>
+        </Box>
       </Box>
       <Box display='flex' justifyContent='center' my={4}>
         <DashboardButton />

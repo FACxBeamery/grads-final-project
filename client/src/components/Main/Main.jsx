@@ -12,6 +12,7 @@ import Dashboard from '../../pages/Dashboard';
 import CreateSurvey from '../../pages/CreateSurvey';
 import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
+import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
@@ -35,15 +36,16 @@ const Main = () => {
     return (
       <Route 
         {...rest}
-        render={({ location, match }) => {
+        render={(props) => {
           return checkTokenIsAuth(dispatch, auth) && auth
-          ? <Component match={match} />
+          ? <Component {...props} />
           : (
             <Redirect
               push 
               to={{
                 pathname: "/admin/login",
-                state: { from: location }
+                // eslint-disable-next-line react/prop-types
+                state: { from: props.location }
               }} 
             />
             )
@@ -70,6 +72,11 @@ const Main = () => {
       key='/admin/surveys/edit/:id'
       path='/admin/surveys/edit/:id'
       component={EditSurvey}
+    />,
+    <ProtectedRoute
+      exact
+      path='/admin/surveys/template'
+      component={SurveyBuilderFromTemplate}
     />,
     <ProtectedRoute exact key={4} path='/admin/surveys/:id' component={SurveyDetail} />
   ];
