@@ -6,11 +6,9 @@ const app = require('../app');
 beforeEach(() => {
   return initDb();
 });
-
 afterEach(() => {
   return closeDb();
 });
-
 describe('Testing POST /login', () => {
   it('Responds with JSON and status 200 when correct credentials are provided.', (done) => {
     request(app)
@@ -36,7 +34,6 @@ describe('Testing POST /login', () => {
         return done();
       });
   });
-
   it('Responds with text and status 403 when incorrect credentials are provided.', (done) => {
     request(app)
       .post('/login')
@@ -57,7 +54,6 @@ describe('Testing POST /login', () => {
         return done();
       });
   });
-
   it('Responds with text and status 403 when credentials are missing.', (done) => {
     request(app)
       .post('/login')

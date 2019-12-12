@@ -1,4 +1,3 @@
-
 /* eslint-ignore no-console */
 const readSurvey = require('../queries/readSurvey');
 
@@ -9,7 +8,6 @@ const getSurvey = async (req, res) => {
     const result = await readSurvey(id.toString());
     res.status(200).json(result);
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
     res
       .status(500)
