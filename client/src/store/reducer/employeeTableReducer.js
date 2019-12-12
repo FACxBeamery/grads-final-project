@@ -8,6 +8,7 @@ const initalState = {
     name: '',
   },
   recipients: [],
+  recipientIds: [],
   page: 0,
   rowsPerPage: 10,
 };
@@ -114,6 +115,20 @@ const filterData = (filters, data, attribute) => {
 const employeeTableReducer = (state = initalState, action) => {
   const { payload } = action;
   switch (action.type) {
+    case 'RESET_EMPLOYEE_DATA':
+      return {
+        employeeData: undefined,
+        filteredEmployeeData: undefined,
+        filters: {
+          department: {},
+          office: {},
+          name: '',
+        },
+        recipients: [],
+        recipientIds: [],
+        page: 0,
+        rowsPerPage: 10,
+      };
     case 'SET_EMPLOYEE_DATA':
       return { ...state, employeeData: payload };
     case 'SET_FILTERED_EMPLOYEE_DATA':
@@ -128,7 +143,11 @@ const employeeTableReducer = (state = initalState, action) => {
         ),
       };
     case 'SET_EMPLOYEE_TABLE_RECIPIENTS':
-      return { ...state, recipients: payload };
+      return {
+        ...state,
+        recipients: payload,
+        recipientIds: payload.map((obj) => obj.employeeId),
+      };
     case 'CHANGE_PAGE':
       return { ...state, page: payload.page };
 
@@ -137,15 +156,16 @@ const employeeTableReducer = (state = initalState, action) => {
     case 'TOGGLE_RECIPIENT':
       return {
         ...state,
-        recipients: toggleSingleRecipient(state.recipients, payload.id),
+        recipientIds: toggleSingleRecipient(state.recipientIds, payload.id),
       };
     case 'TOGGLE_FILTERED_RECIPIENTS':
       return {
         ...state,
-        recipients: toggleRecipients(
-          state.recipients,
+        recipientIds: toggleRecipients(
+          state.recipientIds,
           payload.checked,
-          state.filteredEmployeeData.map((person) => person.id),
+          // eslint-disable-next-line no-underscore-dangle
+          state.filteredEmployeeData.map((person) => person._id),
         ),
       };
     case 'SET_INTITAL_FILTER_OPTIONS':
@@ -180,6 +200,13 @@ const employeeTableReducer = (state = initalState, action) => {
       return {
         ...state,
         filters: { ...state.filters, name: payload.text },
+      };
+    case 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS':
+      return {
+        ...state,
+        filteredEmployeeData: state.employeeData.filter((person) =>
+          state.recipientIds.find(person._id),
+        ),
       };
     default:
       return state;

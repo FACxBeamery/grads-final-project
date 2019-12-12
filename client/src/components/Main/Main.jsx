@@ -1,5 +1,6 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
 import AdminLogin from '../../pages/AdminLogin';
@@ -7,9 +8,13 @@ import Dashboard from '../../pages/Dashboard';
 import CreateSurvey from '../../pages/CreateSurvey';
 import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
+import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 const Main = () => {
+  const { data } = useSelector((state) => state.adminLoginReducer);
+  const { auth } = data;
+  const { snackbar } = useSelector((state) => state.snackbarReducer);
   return (
     <main>
       <Box>
@@ -18,7 +23,9 @@ const Main = () => {
         </Box>
         <Box mx={4}>
           <Switch>
-            <Route exact path='/admin/login' component={AdminLogin} />
+            <Route exact path='/admin/login'>
+              {auth ? <Redirect to='/admin' /> : <AdminLogin />}
+            </Route>
             <Route exact path='/admin' component={Dashboard} />
             <Route
               exact
@@ -30,11 +37,17 @@ const Main = () => {
               path='/admin/surveys/edit/:id'
               component={EditSurvey}
             />
+            <Route
+              exact
+              path='/admin/surveys/template'
+              component={SurveyBuilderFromTemplate}
+            />
             <Route exact path='/admin/surveys/:id' component={SurveyDetail} />
             <Route exact path='/takesurvey' component={TakeSurvey} />
           </Switch>
         </Box>
       </Box>
+      {snackbar}
     </main>
   );
 };

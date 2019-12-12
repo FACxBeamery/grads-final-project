@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
+/* eslint-disable camelcase */
+/* eslint-disable consistent-return */
 const getMONGO_URI = () => {
   try {
-    if (process.env.MONGO_URI === undefined)
+    if (!process.env.MONGO_URI) {
       throw new Error('MONGO_URI environment variable not configured.');
-
+    }
     return process.env.MONGO_URI;
   } catch (err) {
     console.error(err);

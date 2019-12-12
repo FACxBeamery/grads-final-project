@@ -39,8 +39,11 @@ const headCells = [
 ];
 
 const EnhancedTableHead = () => {
-  const { recipients, filteredEmployeeData } = useSelector(
+  const { filteredEmployeeData } = useSelector(
     (state) => state.employeeTableReducer,
+  );
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
   );
   const numSelected = recipients.length;
   const dispatch = useDispatch();
@@ -67,10 +70,14 @@ const EnhancedTableHead = () => {
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
+            align={headCell.label === 'Name' ? 'left' : 'right'}
             key={headCell.id}
-            align='left'
             padding={headCell.disablePadding ? 'none' : 'default'}
-          />
+          >
+            <Typography style={{ fontWeight: 700 }}>
+              {headCell.label}
+            </Typography>
+          </TableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -78,7 +85,9 @@ const EnhancedTableHead = () => {
 };
 
 const EnhancedTableToolbar = () => {
-  const { recipients } = useSelector((state) => state.employeeTableReducer);
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
+  );
 
   const numSelected = recipients.length;
   return (
@@ -100,8 +109,11 @@ const EnhancedTableToolbar = () => {
 };
 
 const EmployeesTable = () => {
-  const { filteredEmployeeData, recipients, page, rowsPerPage } = useSelector(
+  const { filteredEmployeeData, page, rowsPerPage } = useSelector(
     (state) => state.employeeTableReducer,
+  );
+  const recipients = useSelector(
+    (state) => state.employeeTableReducer.recipientIds,
   );
 
   const dispatch = useDispatch();
@@ -156,13 +168,17 @@ const EmployeesTable = () => {
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = row.id;
+                    // eslint-disable-next-line no-underscore-dangle
+                    const isItemSelected = isSelected(row._id);
+
+                    // eslint-disable-next-line no-underscore-dangle
+                    const labelId = row._id;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleRowClick(event, row.id)}
+                        // eslint-disable-next-line no-underscore-dangle
+                        onClick={(event) => handleRowClick(event, row._id)}
                         role='checkbox'
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -199,7 +215,7 @@ const EmployeesTable = () => {
             </Table>
           </Box>
           <TablePagination
-            rowsPerPageOptions={[5, 10]}
+            rowsPerPageOptions={[5, 10, 15]}
             component='div'
             count={filteredEmployeeData.length}
             rowsPerPage={rowsPerPage}
@@ -213,6 +229,54 @@ const EmployeesTable = () => {
   );
 };
 
+const completionHeadCells = [
+  {
+    id: 'name',
+    disablePadding: true,
+    label: 'Name',
+  },
+  { id: 'job-title', disablePadding: false, label: 'Job Title' },
+  {
+    id: 'department',
+    disablePadding: false,
+    label: 'Department',
+  },
+  { id: 'office', disablePadding: false, label: 'Office' },
+  {
+    id: 'start-date',
+    disablePadding: false,
+    label: 'Start Date',
+  },
+  {
+    id: 'survey-completion',
+    disablePadding: false,
+    label: 'Completion',
+  },
+];
+
+const CompletionTableHead = () => {
+  const { status } = useSelector((state) => state.surveyDetailReducer);
+
+  const statusDependentHeadCells =
+    status === 'draft' ? completionHeadCells.slice(0, -1) : completionHeadCells;
+  return (
+    <TableHead>
+      <TableRow>
+        {statusDependentHeadCells.map((headCell) => (
+          <TableCell
+            align={headCell.label === 'Name' ? 'left' : 'right'}
+            key={headCell.id}
+            padding={headCell.disablePadding ? 'none' : 'default'}
+          >
+            <Typography style={{ fontWeight: 700 }}>
+              {headCell.label}
+            </Typography>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+};
 const EmployeeCompletionTable = () => {
   const dispatch = useDispatch();
 
@@ -224,26 +288,41 @@ const EmployeeCompletionTable = () => {
     (state) => state.surveyDetailReducer.recipients,
   );
 
+  const { _id, status } = useSelector((state) => state.surveyDetailReducer);
+
+  const isCompleted = (id) => {
+    return recipientsFromRequest.find((obj) => {
+      return obj.employeeId === id;
+    }).completed;
+  };
+
   useEffect(() => {
     const getEmployees = async () => {
       const { data } = await axios.get(`/employees`);
-      const filteredData = data.filter((person) =>
-        recipients.map((obj) => obj.employeeId).includes(person._id),
-      );
+      const filteredData = data
+        .filter((person) =>
+          recipientsFromRequest
+            .map((obj) => obj.employeeId)
+            .includes(person._id),
+        )
+        .sort((x, y) => {
+          const xCompleted = isCompleted(x._id);
+          const yCompleted = isCompleted(y._id);
+          // eslint-disable-next-line no-nested-ternary
+          return xCompleted === yCompleted ? 0 : xCompleted ? 1 : -1;
+        });
+
+      dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
       dispatch({
         type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
         payload: recipientsFromRequest,
       });
       dispatch({ type: 'SET_EMPLOYEE_DATA', payload: filteredData });
-      dispatch({ type: 'SET_FILTERED_EMPLOYEE_DATA', payload: filteredData });
-      dispatch({ type: 'SET_FILTERED_EMPLOYEES_TO_RECIPIENTS' });
     };
-    getEmployees();
-  }, [dispatch, recipients, recipientsFromRequest]);
 
-  const isCompleted = (id) => {
-    return recipients.find((obj) => obj.employeeId === id).completed;
-  };
+    getEmployees();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_id, status, recipientsFromRequest]);
 
   const handleChangePage = (event, newPage) => {
     const payload = { page: newPage };
@@ -262,7 +341,7 @@ const EmployeeCompletionTable = () => {
 
   return (
     <Box pt={2}>
-      {filteredEmployeeData && (
+      {filteredEmployeeData && recipientsFromRequest && recipients.length && (
         <>
           <Box>
             <Table
@@ -270,12 +349,17 @@ const EmployeeCompletionTable = () => {
               size='small'
               aria-label='employee table'
             >
+              <CompletionTableHead />
+
               <TableBody>
                 {filteredEmployeeData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const completed = isCompleted(row._id);
-                    const labelId = row.id;
+                    const completed = recipientsFromRequest
+                      ? isCompleted(row._id)
+                      : false;
+
+                    const labelId = row._id;
 
                     return (
                       <TableRow hover tabIndex={-1} key={row.name}>
@@ -291,11 +375,14 @@ const EmployeeCompletionTable = () => {
                         <TableCell align='right'>{row.department}</TableCell>
                         <TableCell align='right'>{row.office}</TableCell>
                         <TableCell align='right'>{row.startDate}</TableCell>
-                        <TableCell
-                          style={{ color: completed ? '#28d592' : '#d28e29' }}
-                        >
-                          {completed ? 'Completed' : 'Incomplete'}
-                        </TableCell>
+                        {status !== 'draft' && (
+                          <TableCell
+                            align='right'
+                            style={{ color: completed ? '#28d592' : '#d28e29' }}
+                          >
+                            {completed ? 'Completed' : 'Incomplete'}
+                          </TableCell>
+                        )}
                       </TableRow>
                     );
                   })}
@@ -308,7 +395,7 @@ const EmployeeCompletionTable = () => {
             </Table>
           </Box>
           <TablePagination
-            rowsPerPageOptions={[5, 10]}
+            rowsPerPageOptions={[5, 10, 15]}
             component='div'
             count={filteredEmployeeData.length}
             rowsPerPage={rowsPerPage}

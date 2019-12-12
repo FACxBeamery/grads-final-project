@@ -18,7 +18,7 @@ router.get('/test', (req, res) =>
 );
 
 // router.get("/surveys", getSurveys)
-//TODO change this endpoint when survey routes are protected
+// TODO change this endpoint when survey routes are protected
 router.get('/surveys:id', getSurveyAndQuestions);
 
 router.post('/login', postLogin);
@@ -32,5 +32,6 @@ router.post('/surveys', postSurveys);
 router.get('/employees', getEmployees);
 // router.post("/employees", postEmployees)
 router.get('/admins', getAdmins);
+router.post('/login', postLogin);
 
 module.exports = router;

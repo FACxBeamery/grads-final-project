@@ -17,6 +17,7 @@ import {
   Modal,
 } from '@material-ui/core';
 import QuestionsList from '../CreateSurvey/Questions/QuestionsList';
+import RecipientsList from '../CreateSurvey/RecipientsList';
 import formatDate from '../../utils/formatDate';
 import formatDateWithTime from '../../utils/formatDateWithTime';
 
@@ -44,7 +45,6 @@ const EditSurvey = ({ match, history }) => {
   const {
     title,
     description,
-    recipients,
     disclaimer,
     anonymous,
     dateCreated,
@@ -61,14 +61,20 @@ const EditSurvey = ({ match, history }) => {
 
   useEffect(() => {
     const { id } = match.params;
-    dispatch({ type: 'RESET_STATE' });
+    dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     const setSurveyData = (data) => {
       const payload = data;
       dispatch({ type: 'SET_SURVEY_DATA', payload });
+      dispatch({
+        type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
+        payload: data.recipients,
+      });
     };
     const getSurvey = async () => {
       try {
         const { data } = await axios.get(`/surveys/${id}`);
+
         setSurveyData(data);
       } catch (error) {
         setSurveyData({});
@@ -78,7 +84,7 @@ const EditSurvey = ({ match, history }) => {
   }, [match.params, dispatch]);
 
   const toggleModal = () => {
-    dispatch({ type: 'TOGGLE_MODAL' });
+    dispatch({ type: 'TOGGLE_EDIT_SURVEY_MODAL' });
   };
 
   const saveEditedSurvey = async () => {
@@ -91,6 +97,10 @@ const EditSurvey = ({ match, history }) => {
       // remove _id key from data to edit on survey; This key is immutable.
       // eslint-disable-next-line dot-notation
       delete editedSurvey['_id'];
+      delete editedSurvey.modalStyle;
+      delete editedSurvey.openModal;
+      delete editedSurvey.isConfirming;
+
       await axios.patch(`/surveys/${id}`, editedSurvey);
     } catch (err) {
       throw new Error(err.message);
@@ -98,7 +108,7 @@ const EditSurvey = ({ match, history }) => {
   };
 
   const confirmEditing = () => {
-    dispatch({ type: 'TOGGLE_CONFIRMATION_MODAL' });
+    dispatch({ type: 'TOGGLE_EDIT_SURVEY_CONFIRMATION_MODAL' });
     saveEditedSurvey();
   };
 
@@ -178,16 +188,7 @@ const EditSurvey = ({ match, history }) => {
             label='Enter a description'
             onChange={setMetadata}
           />
-          <TextField
-            InputLabelProps={{
-              shrink: true,
-            }}
-            required
-            value={recipients[0]}
-            label='PLACEHOLDER FOR RECIPIENTS'
-            name='recipients'
-            onChange={setMetadata}
-          />
+
           <TextField
             InputLabelProps={{
               shrink: true,
@@ -214,6 +215,8 @@ const EditSurvey = ({ match, history }) => {
             }
             label='Anonymous'
           />
+          <Divider variant='middle' />
+          <RecipientsList />
           <Divider variant='middle' />
           <QuestionsList />
           <Box alignSelf='center' mt={8}>

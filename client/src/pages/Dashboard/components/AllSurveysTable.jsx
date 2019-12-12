@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -15,7 +16,7 @@ import styles from './AllSurveysTable.module.css';
 import formatDate from '../../../utils/formatDate';
 import sortArrayByObjsKey from '../../../utils/sortArrayByObjsKey';
 
-const AllSurveysTable = ({ surveys, history }) => {
+const AllSurveysTable = ({ history }) => {
   const cells = [
     'Survey',
     'Description',
@@ -25,7 +26,12 @@ const AllSurveysTable = ({ surveys, history }) => {
     'Status',
   ];
 
+  const { surveys } = useSelector((state) => ({
+    surveys: state.dashboardReducer.surveys,
+  }));
+
   const sortedSurveys = sortArrayByObjsKey(surveys, 'status', 'descending');
+  const dispatch = useDispatch();
   return (
     <Paper>
       <Table aria-label='all surveys table' className={styles.table}>
@@ -53,7 +59,10 @@ const AllSurveysTable = ({ surveys, history }) => {
               <TableRow
                 key={title}
                 className={styles.row}
-                onClick={() => history.push(`admin/surveys/${_id}`)}
+                onClick={() => {
+                  dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+                  history.push(`admin/surveys/${_id}`);
+                }}
               >
                 <TableCell scope='row'>{title}</TableCell>
                 <TableCell>{description}</TableCell>
@@ -71,8 +80,6 @@ const AllSurveysTable = ({ surveys, history }) => {
 };
 
 AllSurveysTable.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  surveys: PropTypes.array.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 

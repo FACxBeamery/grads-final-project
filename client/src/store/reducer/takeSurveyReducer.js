@@ -7,7 +7,6 @@ const initalState = {
   enableNext: true,
   responseSubmission: false,
 };
-
 const setActiveQuestion = (step, questions) => {
   const startSurveyPage = step === 0;
   const submitSurveyPage = step === questions.length + 1;
@@ -19,7 +18,6 @@ const setActiveQuestion = (step, questions) => {
   }
   return questions[step - 1];
 };
-
 const takeSurveyReducer = (state = initalState, action) => {
   switch (action.type) {
     case 'NEXT_STEP':
@@ -34,16 +32,13 @@ const takeSurveyReducer = (state = initalState, action) => {
       };
     case 'SET_SURVEY':
       return { ...state, survey: action.payload };
-
     case 'SET_QUESTIONS':
       return { ...state, questions: action.payload };
-
     case 'SET_ACTIVE_QUESTION':
       return {
         ...state,
         activeQuestion: setActiveQuestion(state.activeStep, state.questions),
       };
-
     case 'NEXT_QUESTION':
       return {
         ...state,
@@ -54,7 +49,6 @@ const takeSurveyReducer = (state = initalState, action) => {
         ...state,
         activeQuestion: state.activeQuestion - 1,
       };
-
     case 'ADD_RESPONSE':
       return {
         ...state,
@@ -64,10 +58,11 @@ const takeSurveyReducer = (state = initalState, action) => {
               ...response,
               answer: action.payload.answer,
             }
-            : response,
+            : {
+              ...response,
+            },
         ),
       };
-
     case 'ADD_COMMENT':
       return {
         ...state,
@@ -85,7 +80,8 @@ const takeSurveyReducer = (state = initalState, action) => {
         ...state,
         answers: state.questions.map((question) => {
           return {
-            questionId: question.id,
+            // eslint-disable-next-line no-underscore-dangle
+            questionId: question._id,
             answer: '',
             comment: '',
           };
@@ -101,26 +97,20 @@ const takeSurveyReducer = (state = initalState, action) => {
     case 'ENABLE_NEXT':
       return {
         ...state,
-
         enableNext: true,
       };
     case 'DISABLE_NEXT':
       return {
         ...state,
-
         enableNext: false,
       };
-
     case 'RESPONSE_SUBMISSION':
       return {
         ...state,
-
         responseSubmission: true,
       };
-
     default:
       return state;
   }
 };
-
 export default takeSurveyReducer;

@@ -39,7 +39,7 @@ const OptionsCheckbox = ({ options, attribute }) => {
   return (
     <Box mr={4}>
       <FormControl component='fieldset'>
-        <FormLabel component='legend'>
+        <FormLabel style={{ fontSize: '12px' }} component='legend'>
           {attribute === 'department' ? 'Department' : 'Office'}
         </FormLabel>
         <FormGroup>
@@ -52,11 +52,13 @@ const OptionsCheckbox = ({ options, attribute }) => {
                   value={allChecked}
                   name='select-all'
                   inputProps={{
-                    'aria-label': 'Select all: ',
+                    'aria-label': 'Show all: ',
                   }}
                 />
               }
-              label='Select all'
+              label={
+                <Typography style={{ fontSize: '12px' }}>Show all</Typography>
+              }
             />
             {options.map((option) => (
               <FormControlLabel
@@ -72,7 +74,9 @@ const OptionsCheckbox = ({ options, attribute }) => {
                     value={option}
                   />
                 }
-                label={option}
+                label={
+                  <Typography style={{ fontSize: '12px' }}>{option}</Typography>
+                }
               />
             ))}
           </Box>
@@ -107,7 +111,7 @@ const RecipientOptions = () => {
     <Box
       display='flex'
       justifyContent='space-between'
-      alignItems='flex-start'
+      alignItems='flex-end'
       pr={2}
     >
       <Box
@@ -118,20 +122,22 @@ const RecipientOptions = () => {
         pl={2}
       >
         <Box py={1}>
-          <Typography variant='h5'>Filters</Typography>
+          <Typography variant='subtitle1'>Filters</Typography>
         </Box>
         <Divider />
-        <Box display='flex' pt={2}>
+        <Box display='flex' flexDirection='column' pt={2}>
           <OptionsCheckbox
             key='department'
             options={departmentOptions}
             attribute='department'
           />
-          <OptionsCheckbox
-            key='office'
-            options={officeOptions}
-            attribute='office'
-          />
+          <Box mt={2}>
+            <OptionsCheckbox
+              key='office'
+              options={officeOptions}
+              attribute='office'
+            />
+          </Box>
         </Box>
       </Box>
       <TextField

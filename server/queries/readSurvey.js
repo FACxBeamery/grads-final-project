@@ -1,5 +1,6 @@
-const { getDb } = require('../databaseConnection');
+/* eslint-disable no-underscore-dangle */
 const { ObjectID } = require('mongodb');
+const { getDb } = require('../databaseConnection');
 
 const readSurvey = async (_id) => {
   try {
@@ -10,9 +11,9 @@ const readSurvey = async (_id) => {
       _id: ObjectID(_id),
     });
 
-    let surveyQuestions = survey.questions;
+    const surveyQuestions = survey.questions;
 
-    let questionIds = surveyQuestions.map((question) =>
+    const questionIds = surveyQuestions.map((question) =>
       ObjectID(question.toString()),
     );
 
@@ -21,16 +22,13 @@ const readSurvey = async (_id) => {
     const questions = await questionsCollection
       .find({ _id: { $in: questionIds } })
       .toArray();
-
     // order questions in data returned by id
-    survey.questions = questionIds.map((id) => {
-      return questions.find((element) => {
-        return element._id.equals(id);
-      });
-    });
+    survey.questions = questionIds.map((id) => questions.find((element) => element._id.equals(id)
+    )
+    );
     return survey;
   } catch (err) {
-    return err;
+    throw new Error(err.message);
   }
 };
 

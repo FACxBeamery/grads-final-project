@@ -11,7 +11,6 @@ import AlreadyCompletedMessage from './AlreadyCompletedMessage/AlreadyCompletedM
 
 const TakeSurvey = () => {
   const dispatch = useDispatch();
-
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
@@ -51,5 +50,4 @@ const TakeSurvey = () => {
 
 
 };
-
 export default TakeSurvey;
