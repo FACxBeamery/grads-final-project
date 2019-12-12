@@ -15,8 +15,12 @@ import Snackbar from '../Snackbar';
 const Main = () => {
   const { data } = useSelector((state) => state.adminLoginReducer);
   const { auth } = data;
-  const { snackbar } = useSelector((state) => state.snackbarReducer);
-  const { message, variant, timeOpened } = snackbar;
+  const { message, variant, timeOpened } = useSelector(
+    (state) => state.snackbarReducer.snackbar,
+  );
+
+  console.log('Snackabr state, in Main:', message, variant, timeOpened);
+
   return (
     <main>
       <Box>

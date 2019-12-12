@@ -53,8 +53,12 @@ const AdminLogin = () => {
       if (auth && token) {
         window.localStorage.setItem('jwt_token', token);
         const payload1 = {
-          message: message ? message : '',
-          variant: 'success',
+          open: true,
+          snakbar: {
+            message,
+            variant: 'success',
+            timeOpened: Date.now(),
+          },
         };
         dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
 

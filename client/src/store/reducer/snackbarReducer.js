@@ -9,7 +9,6 @@ const initalState = {
     variant: 'success',
     timeOpened: Date.now(),
   },
-
   open: false,
 };
 
@@ -19,11 +18,7 @@ const snackbarReducer = (state = initalState, action) => {
     case UPDATE_SNACKBAR:
       return {
         ...state,
-        snackbar: {
-          message: payload.snackbar.message,
-          variant: payload.snackbar.variant,
-          timeOpened: payload.snackbar.timeOpened,
-        },
+        snackbar: { ...state.snackbar, ...payload.snackbar },
       };
     case SET_SNACKBAR_OPEN:
       return { ...state, open: payload.open };
