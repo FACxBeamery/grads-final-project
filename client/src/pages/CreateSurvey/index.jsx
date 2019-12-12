@@ -45,7 +45,6 @@ const CreateSurvey = ({ history }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
-
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
   }, [dispatch]);
   const setMetadata = (event, inputType) => {
