@@ -8,6 +8,7 @@ const updateSurvey = async (surveyId, changes) => {
     const db = getDb();
     const surveys = db.collection('Surveys');
     const questions = db.collection('Questions');
+
     // checking if survey is anon
     const surveyBeforeChanges = await surveys.findOne({
       _id: ObjectID(surveyId),
@@ -97,6 +98,7 @@ const updateSurvey = async (surveyId, changes) => {
       });
       return result;
     }
+
     const result = await surveys.updateOne(
       {
         _id: ObjectID(surveyId),

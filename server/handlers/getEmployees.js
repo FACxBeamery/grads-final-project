@@ -4,7 +4,7 @@ const {
 } = require('../queries/readEmployees');
 
 // Due to time constraints, pagination has not been used on the backend for now.
-// The handler and query for pagination has been left in for later development.
+
 const getEmployees = async (req, res) => {
   try {
     const result = await readEmployees();

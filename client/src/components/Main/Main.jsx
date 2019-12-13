@@ -13,6 +13,7 @@ import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
+import PageNotFound from '../../pages/PageNotFound';
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
 import deleteTokenOn401StatusCodes from '../../utils/deleteTokenOn401StatusCodes';

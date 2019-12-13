@@ -66,6 +66,7 @@ const createSurveyReducer = (state = initalState, action) => {
       return { ...state, openModal: !state.openModal };
     case 'SET_SURVEY_DATA':
       return { ...state, ...payload };
+
     case 'SET_SURVEY_DATA_FROM_TEMPLATE':
       return {
         ...state,

@@ -19,7 +19,6 @@ import {
 import QuestionsList from './Questions/QuestionsList';
 import RecipientsList from './RecipientsList';
 import formatDate from '../../utils/formatDate';
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -30,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }));
-
 const CreateSurvey = ({ history }) => {
   const classes = useStyles();
   const {
@@ -43,11 +41,9 @@ const CreateSurvey = ({ history }) => {
     modalStyle,
     isConfirming,
   } = useSelector((state) => state.createSurveyReducer);
-
   const { recipientIds } = useSelector((state) => state.employeeTableReducer);
   const errors = useSelector((state) => state.errorsBagReducer);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
@@ -74,16 +70,15 @@ const CreateSurvey = ({ history }) => {
         payload: { ...errors, [name]: false },
       });
     }
+
     const payload = {};
     payload[event.target.name] =
       inputType === 'switch' ? event.target.checked : event.target.value;
     dispatch({ type: 'SET_METADATA', payload });
   };
-
   let surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
-
   const saveSurvey = async () => {
     const recipientsToSend = recipientIds.map((id) => {
       const obj = {};
@@ -91,7 +86,6 @@ const CreateSurvey = ({ history }) => {
       obj.completed = false;
       return obj;
     });
-
     try {
       surveyForSending = {
         ...surveyForSending,
@@ -109,26 +103,21 @@ const CreateSurvey = ({ history }) => {
       delete surveyForSending.openCreateSurveyModal;
       delete surveyForSending.isConfirming;
       delete surveyForSending.openModal;
-
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
       throw new Error(e.message);
     }
   };
-
   const toggleModal = () => {
     dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
   };
-
   const confirmEditing = () => {
     dispatch({ type: 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL' });
     saveSurvey();
   };
-
   const redirectToDashboard = () => {
     history.push('/admin');
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const noErrorsExistInForm = !(Object.values(errors).indexOf(true) > -1);
@@ -136,7 +125,6 @@ const CreateSurvey = ({ history }) => {
       toggleModal();
     }
   };
-
   const PromptMessage = () => {
     return (
       <Prompt
@@ -148,7 +136,6 @@ const CreateSurvey = ({ history }) => {
       />
     );
   };
-
   const ConfirmChanges = () => {
     return (
       <>
@@ -169,7 +156,6 @@ const CreateSurvey = ({ history }) => {
       </>
     );
   };
-
   const ChangesConfirmed = () => {
     return (
       <>
@@ -210,10 +196,10 @@ const CreateSurvey = ({ history }) => {
   ];
 
   const errorsExist = Object.values(errors).indexOf(true) > -1;
+
   return (
     <Box>
       {isConfirming && <PromptMessage />}
-
       <form onSubmit={handleSubmit}>
         <Box display='flex' flexDirection='column' my={8}>
           <Box mb={4}>
@@ -301,10 +287,8 @@ const CreateSurvey = ({ history }) => {
     </Box>
   );
 };
-
 CreateSurvey.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
-
 export default CreateSurvey;
