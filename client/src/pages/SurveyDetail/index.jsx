@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-alert */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -59,9 +61,11 @@ const PublishSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
-        await publishSurvey(surveyId, dispatch);
-        await getSurvey(surveyId, dispatch);
+        if (confirm('Are you sure you want to publish this survey?')) {
+          dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+          await publishSurvey(surveyId, dispatch);
+          await getSurvey(surveyId, dispatch);
+        }
       }}
     >
       Publish Survey
@@ -77,9 +81,15 @@ const CloseSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
-        await closeSurvey(surveyId, dispatch);
-        await getSurvey(surveyId, dispatch);
+        if (
+          confirm(
+            'Are you sure you want to close this survey? This action cannot be undone.',
+          )
+        ) {
+          dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+          await closeSurvey(surveyId, dispatch);
+          await getSurvey(surveyId, dispatch);
+        }
       }}
     >
       Close Survey
@@ -221,7 +231,7 @@ const SurveyDetail = ({ match }) => {
         message: successfulPublish
           ? 'The survey is now active and can welcome responses.'
           : 'There was an error publishing survey. Please try again.',
-        variant: successfulClose ? 'success' : 'error',
+        variant: successfulPublish ? 'success' : 'error',
         timeopened: Date.now(),
       },
     };
