@@ -10,7 +10,7 @@ import PageNotFound from '../../pages/PageNotFound';
 import LoadingPageOrRedirect from './LoadingPageOrRedirect';
 import { routes, protectedRoutes } from './routes';
 
-import Snackbar from '../Snackbar'
+import Snackbar from '../Snackbar';
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
 import deleteTokenOn401StatusCodes from '../../utils/deleteTokenOn401StatusCodes';
@@ -85,6 +85,7 @@ const Main = ({ history }) => {
             {routesMap}
             {protectedRoutesMap}
             <Route component={PageNotFound} />
+
           </Switch>
         </Box>
       </Box>

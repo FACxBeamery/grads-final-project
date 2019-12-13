@@ -14,6 +14,9 @@ const postSlackMessage = require('./handlers/postSlackMessage');
 const getAdmins = require('./handlers/getAdmins');
 const postLogin = require('./handlers/postLogin');
 
+const uploadCSVHandler = require('./handlers/protected/uploadCSV');
+const downloadCSVHandler = require('./handlers/protected/downloadCSV');
+
 router.get('/test', (req, res) =>
   res.status(200).send('Successful connection to back end!'),
 );
@@ -33,5 +36,9 @@ router.get('/employees', getEmployees);
 
 router.get('/admins', getAdmins);
 router.post('/slack', postSlackMessage);
+
+// protected routes
+router.post('/upload', uploadCSVHandler);
+router.get('/download/:id/:anonymous', downloadCSVHandler);
 
 module.exports = router;

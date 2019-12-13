@@ -11,14 +11,13 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
   const newSurveyObj = { ...surveyObj, questions: newQuestionsArray };
   try {
     const queryResult = await surveysCollection.insertOne(newSurveyObj);
-    console.log('Survey added to DB!');
 
     if (queryResult.result.ok !== 1) {
       return new Error('Query not acknowledged');
     }
     return 'success';
   } catch (e) {
-    console.log("There's been an error doing the survey query");
+    console.warn("There's been an error doing the survey query");
     return new Error(e.message);
   }
 };
