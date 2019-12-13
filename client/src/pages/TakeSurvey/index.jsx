@@ -41,7 +41,7 @@ const TakeSurvey = ({ match }) => {
     return <SurveyClosedMessage />
   }
   return (
-    < Box display='flex' flexDirection='column' >
+    <Box display='flex' flexDirection='column' >
       <UserProgressStepper />
       {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
       {activeQuestion === 'end' && <SurveySubmit match={match} />}
