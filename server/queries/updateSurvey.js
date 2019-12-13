@@ -75,7 +75,6 @@ const updateSurvey = async (surveyId, changes) => {
     }
     // if recipient has answered
     if (changes.answers) {
-      console.log('got in here')
       await surveys.updateOne(
         {
           _id: ObjectID(surveyId),

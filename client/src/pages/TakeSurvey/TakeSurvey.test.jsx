@@ -5,6 +5,7 @@ import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import TakeSurvey from './index';
 import store from '../../store/index';
+import { BrowserRouter } from 'react-router-dom'
 
 const dummySurvey = {
   id: 1,
@@ -87,9 +88,11 @@ describe('test take survey components work together', () => {
       Promise.resolve({ data: dummySurvey }),
     );
     const { getByTestId } = render(
-      <Provider store={store}>
-        <TakeSurvey />
-      </Provider>,
+      <BrowserRouter>
+        <Provider store={store}>
+          <TakeSurvey />
+        </Provider>
+      </BrowserRouter>,
     );
 
     const NextButton = getByTestId('next-button');
