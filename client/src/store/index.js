@@ -6,7 +6,7 @@ import takeSurveyReducer from './reducer/takeSurveyReducer';
 import createSurveyReducer from './reducer/createSurveyReducer';
 import surveyDetailReducer from './reducer/surveyDetailReducer';
 import adminLoginReducer from './reducer/adminLoginReducer';
-import snackbarReducer from './reducer/snackbarReducer';
+import snackbarReducer from './reducer/snackbarReducer.js';
 import dashboardReducer from './reducer/dashboardReducer';
 import employeeTableReducer from './reducer/employeeTableReducer';
 import editSurveyReducer from './reducer/editSurveyReducer';
