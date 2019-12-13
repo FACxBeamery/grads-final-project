@@ -1,20 +1,21 @@
 const initialState = {};
 
 const swapKeyValuesInObject = (obj, key1, key2) => {
-  console.log('KEY1', key1);
-  console.log('KEY2', key2);
-  console.log('OBJECT', obj);
-
-  [obj[key1], obj[key2]] = [obj[key2], obj[key1]];
-  return obj;
+  const objectToSwapValues = {};
+  [objectToSwapValues[key1], objectToSwapValues[key2]] = [
+    objectToSwapValues[key2],
+    objectToSwapValues[key1],
+  ];
+  return objectToSwapValues;
 };
 
 const returnErrorsBagWithoutDeletedProperty = (state, key) => {
-  if (state[key]) {
-    delete state[key];
-    return state;
+  const updatedState = {};
+  if (updatedState[key]) {
+    delete updatedState[key];
+    return updatedState;
   }
-  return state;
+  return updatedState;
 };
 
 const returnErrorsBagWithTwoSwappedValues = (state, indices) => {
