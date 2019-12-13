@@ -66,7 +66,9 @@ const MultichoiceQuestionOptions = () => {
   return activeQuestion.options.map((option) => {
     const isAnswerSelected =
       currentAnswer && currentAnswer.toLowerCase() === option;
+
     const buttonColor = isAnswerSelected ? '#201E5A' : '#E6E6E6';
+
     const buttonTextColor = isAnswerSelected && '#fff';
     return (
       <Box mb={2} key={option}>
