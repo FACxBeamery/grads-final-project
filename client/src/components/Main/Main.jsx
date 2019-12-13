@@ -10,12 +10,17 @@ import EditSurvey from '../../pages/EditSurvey/index';
 import SurveyDetail from '../../pages/SurveyDetail';
 import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
+import Snackbar from '../Snackbar';
 import PageNotFound from '../../pages/PageNotFound';
 
 const Main = () => {
   const { data } = useSelector((state) => state.adminLoginReducer);
   const { auth } = data;
-  const { snackbar } = useSelector((state) => state.snackbarReducer);
+  const { message, variant, timeOpened } = useSelector(
+    (state) => state.snackbarReducer.snackbar,
+  );
+  const { open } = useSelector((state) => state.snackbarReducer);
+
   return (
     <main>
       <Box>
@@ -49,7 +54,9 @@ const Main = () => {
           </Switch>
         </Box>
       </Box>
-      {snackbar}
+      {open && (
+        <Snackbar message={message} variant={variant} timeopened={timeOpened} />
+      )}
     </main>
   );
 };
