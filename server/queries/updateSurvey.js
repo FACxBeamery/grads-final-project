@@ -43,9 +43,12 @@ const updateSurvey = async (surveyId, changes) => {
         });
       }
       const questionsFromSurvey = changes.questions;
+
       const changesToBeMade = {
         ...changes,
-        recipients: changes.recipients,
+        recipients: changes.recipientIds
+          ? changes.recipientIds
+          : changes.recipients,
         questions: orderedQuestionIds,
       };
       const result = await surveys.updateOne(
