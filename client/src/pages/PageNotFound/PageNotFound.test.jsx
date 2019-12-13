@@ -8,26 +8,18 @@ import PageNotFound from '.';
 it('Testing the default route page', () => {
   const { getByText } = render(
     <BrowserRouter>
-      <PageNotFound location={{ pathname: '/nopage' }} />
+      <PageNotFound />
     </BrowserRouter>,
   );
 
-  expect(
-    getByText(
-      /404: Page not found\. We're sorry, we couldn't find \/[\w]+ for you\./,
-    ),
-  ).toBeVisible();
+  expect(getByText('Sorry, that page doesn’t exist!')).toBeVisible();
 
-  expect(
-    getByText('Survey recipients, please check the link you have been sent.'),
-  ).toBeVisible();
+  expect(getByText('Taking a Survey?')).toBeVisible();
+  expect(getByText('Check if you got the right link')).toBeVisible();
+  expect(getByText('Are you an Admin?')).toBeVisible();
 
-  expect(getByText('Are you an admin?')).toBeVisible();
-
-  const goToDashboardButton = getByText('Go to the Dashboard');
+  const goToDashboardButton = getByText('Go to Dashboard');
   expect(goToDashboardButton).toBeVisible();
 
   fireEvent.click(goToDashboardButton);
-
-  expect(location.pathname).toBe('/admin/');
 });
