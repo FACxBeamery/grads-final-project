@@ -105,6 +105,7 @@ describe('Testing the Survey Detail page', () => {
 
     mockAxiosGetFirst.mockRestore();
 
+    global.confirm = jest.fn()
     fireEvent.click(getByText('Publish Survey'));
 
     const mockAxiosGetSecond = jest.spyOn(axios, 'get');
@@ -137,7 +138,6 @@ describe('Testing the Survey Detail page', () => {
     mockAxiosGetSecond.mockRestore();
 
     fireEvent.click(getByText('Close Survey'));
-
     const mockAxiosGetThird = jest.spyOn(axios, 'get');
     mockAxiosGetThird.mockImplementation((url) => {
       if (url === '/employees') {
