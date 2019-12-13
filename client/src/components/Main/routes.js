@@ -7,7 +7,7 @@ import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
 import TakeSurvey from '../../pages/TakeSurvey';
 
 export const routes = [
-  { path: '/takesurvey', component: TakeSurvey },
+  { path: '/surveys/:surveyId/:employeeId', component: TakeSurvey },
   { path: '/admin/login', component: AdminLogin },
 ];
 
