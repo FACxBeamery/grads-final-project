@@ -106,7 +106,7 @@ const AdminLogin = () => {
       label='Email Address'
       name='username'
       autoComplete='email'
-      value={username}
+      value={username || ''}
       onChange={setLoginOnChange}
       color='secondary'
       error={isHelperTextEmptyString}
@@ -122,7 +122,7 @@ const AdminLogin = () => {
       label='Password'
       type='password'
       id='password'
-      value={password}
+      value={password || ''}
       onChange={setLoginOnChange}
       autoComplete='current-password'
       color='secondary'

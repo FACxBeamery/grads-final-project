@@ -23,11 +23,42 @@ const Question = ({ questionIndex }) => {
     (state) => state.createSurveyReducer.questions[questionIndex],
   );
   const { questions } = useSelector((state) => state.createSurveyReducer);
-
+  const errors = useSelector((state) => state.errorsBagReducer);
   const dispatch = useDispatch();
 
-  const setQuestionData = (event, inputType) => {
+  const setQuestionData = (
+    event,
+    inputType,
+    name,
+    value,
+    min,
+    max,
+    questionIdentifier,
+  ) => {
     event.persist();
+
+    if (inputType === 'text') {
+      const questionTitleIsBiggerThanMaxValue =
+        event.target.value && event.target.value.length > max;
+      const questionTitleIsSmallerThanMinValue =
+        event.target.value && event.target.value.length < min;
+      const questionTitleIsEmpty = event.target.value === '';
+      if (
+        questionTitleIsBiggerThanMaxValue ||
+        questionTitleIsSmallerThanMinValue ||
+        questionTitleIsEmpty
+      ) {
+        dispatch({
+          type: 'ADD_ERROR',
+          payload: { [questionIdentifier]: true },
+        });
+      } else {
+        dispatch({
+          type: 'ADD_ERROR',
+          payload: { ...errors, [questionIdentifier]: false },
+        });
+      }
+    }
     const payload = {};
     payload.index = questionIndex;
     payload[event.target.name] =
@@ -39,22 +70,49 @@ const Question = ({ questionIndex }) => {
     const payload = {};
     payload.index = questionIndex;
     dispatch({ type: 'DELETE_QUESTION', payload });
+    dispatch({
+      type: 'REMOVE_ERROR',
+      payload: `question${questionIndex}`,
+    });
   };
 
   const handleUpClick = () => {
     const payload = {};
     payload.index = questionIndex;
     dispatch({ type: 'MOVE_QUESTION_UP', payload });
+    dispatch({
+      type: 'SWAP_ERRORS',
+      payload: [`question${questionIndex}`, `question${questionIndex - 1}`],
+    });
   };
 
   const handleDownClick = () => {
     const payload = {};
     payload.index = questionIndex;
     dispatch({ type: 'MOVE_QUESTION_DOWN', payload });
+    dispatch({
+      type: 'SWAP_ERRORS',
+      payload: [`question${questionIndex}`, `question${questionIndex + 1}`],
+    });
   };
 
   const isNotFirstQuestion = questionIndex !== 0;
   const isNotLastQuestion = questions.length - 1 !== questionIndex;
+  const questionTitleIsBiggerThanMaxValue = title && title.length > 280;
+  const questionTitleIsSmallerThanMinValue = title && title.length < 2;
+  const questionTitleIsEmpty = title === '';
+
+  const setQuestionTitleAndRefreshErrorsBag = (e) =>
+    setQuestionData(
+      e,
+      'text',
+      'title',
+      title,
+      2,
+      280,
+      `question${questionIndex}`,
+    );
+
   return (
     <Box display='flex'>
       <Box
@@ -92,16 +150,24 @@ const Question = ({ questionIndex }) => {
             <TextField
               fullWidth
               required
-              error={title && title.length > 280}
+              error={Boolean(
+                questionTitleIsBiggerThanMaxValue ||
+                  questionTitleIsSmallerThanMinValue ||
+                  questionTitleIsEmpty,
+              )}
               helperText={
-                title &&
-                title.length > 280 &&
-                'Question must be less than 280 characters!'
+                (questionTitleIsBiggerThanMaxValue &&
+                  `Question title must be less than 280 characters!`) ||
+                (questionTitleIsSmallerThanMinValue &&
+                  `Question title must be more than 2 characters!`) ||
+                (questionTitleIsEmpty && `Question title is required.`)
               }
-              value={title}
+              value={title || ''}
               name='title'
               label='Question'
-              onChange={setQuestionData}
+              onChange={setQuestionTitleAndRefreshErrorsBag}
+
+              // eslint-disable-next-line react/jsx-curly-newline
             />
           </Box>
           <Box justifySelf='flex-end'>
@@ -131,7 +197,7 @@ const Question = ({ questionIndex }) => {
               <Select
                 labelid='question-type-select'
                 id='question-type-select'
-                value={type}
+                value={type || ''}
                 onChange={setQuestionData}
                 name='type'
                 inputProps={{

@@ -10,6 +10,7 @@ import snackbarReducer from './reducer/snackbarReducer';
 import dashboardReducer from './reducer/dashboardReducer';
 import employeeTableReducer from './reducer/employeeTableReducer';
 import editSurveyReducer from './reducer/editSurveyReducer';
+import errorsBagReducer from './reducer/errorsBagReducer';
 
 const store = createStore(
   combineReducers({
@@ -22,6 +23,7 @@ const store = createStore(
     dashboardReducer,
     employeeTableReducer,
     editSurveyReducer,
+    errorsBagReducer,
   }),
   // eslint-disable-next-line no-underscore-dangle
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),

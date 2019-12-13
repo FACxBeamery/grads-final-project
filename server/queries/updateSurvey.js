@@ -8,6 +8,7 @@ const updateSurvey = async (surveyId, changes) => {
     const db = getDb();
     const surveys = db.collection('Surveys');
     const questions = db.collection('Questions');
+
     // checking if survey is anon
     const surveyBeforeChanges = await surveys.findOne({
       _id: ObjectID(surveyId),
@@ -32,12 +33,13 @@ const updateSurvey = async (surveyId, changes) => {
         // loop through the array and replace all the nulls with the questions that were just added to the collection
         orderedQuestionIds = orderedQuestionIds.map((questionId) => {
           if (questionId === null) {
-            const newQuestion = newQuestions.insertedIds[`${counter}`].toString();
+            const newQuestion = newQuestions.insertedIds[
+              `${counter}`
+            ].toString();
             counter += 1;
             return newQuestion;
           }
           return questionId;
-
         });
       }
       const questionsFromSurvey = changes.questions;
@@ -94,8 +96,9 @@ const updateSurvey = async (surveyId, changes) => {
           }
         }
       });
-      return result
+      return result;
     }
+
     const result = await surveys.updateOne(
       {
         _id: ObjectID(surveyId),

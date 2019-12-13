@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }));
-
 const CreateSurvey = ({ history }) => {
   const classes = useStyles();
   const {
@@ -43,28 +42,44 @@ const CreateSurvey = ({ history }) => {
     modalStyle,
     isConfirming,
   } = useSelector((state) => state.createSurveyReducer);
-
   const { recipientIds } = useSelector((state) => state.employeeTableReducer);
+  const errors = useSelector((state) => state.errorsBagReducer);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch({ type: 'RESET_CREATE_SURVEY_MODAL_STATE' });
-    // dispatch({ type: 'RESET_SURVEY_DATA' });
     dispatch({ type: 'RESET_EDIT_SURVEY_STATE' });
-    // dispatch({ type: 'RESET_EMPLOYEE_DATA' });
   }, [dispatch]);
 
-  const setMetadata = (event, inputType) => {
+  const setMetadata = (event, inputType, name, value, min, max) => {
+    const inputIsBiggerThanMaxValue =
+      event.target.value && event.target.value.length > max;
+    const inputIsSmallerThanMinValue =
+      event.target.value && event.target.value.length < min;
+    const inputIsEmpty = event.target.value === '';
+    if (
+      inputIsBiggerThanMaxValue ||
+      inputIsSmallerThanMinValue ||
+      inputIsEmpty
+    ) {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { [name]: true },
+      });
+    } else {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: { ...errors, [name]: false },
+      });
+    }
+
     const payload = {};
     payload[event.target.name] =
       inputType === 'switch' ? event.target.checked : event.target.value;
     dispatch({ type: 'SET_METADATA', payload });
   };
-
   let surveyForSending = {
     ...useSelector((state) => state.createSurveyReducer),
   };
-
   const saveSurvey = async () => {
     const recipientsToSend = recipientIds.map((id) => {
       const obj = {};
@@ -72,7 +87,6 @@ const CreateSurvey = ({ history }) => {
       obj.completed = false;
       return obj;
     });
-
     try {
       surveyForSending = {
         ...surveyForSending,
@@ -90,31 +104,28 @@ const CreateSurvey = ({ history }) => {
       delete surveyForSending.openCreateSurveyModal;
       delete surveyForSending.isConfirming;
       delete surveyForSending.openModal;
-
       await axios.post('/surveys', surveyForSending);
     } catch (e) {
       throw new Error(e.message);
     }
   };
-
   const toggleModal = () => {
     dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
   };
-
   const confirmEditing = () => {
     dispatch({ type: 'TOGGLE_CREATE_SURVEY_CONFIRMATION_MODAL' });
     saveSurvey();
   };
-
   const redirectToDashboard = () => {
     history.push('/admin');
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    toggleModal();
+    const noErrorsExistInForm = !(Object.values(errors).indexOf(true) > -1);
+    if (noErrorsExistInForm) {
+      toggleModal();
+    }
   };
-
   const PromptMessage = () => {
     return (
       <Prompt
@@ -126,7 +137,6 @@ const CreateSurvey = ({ history }) => {
       />
     );
   };
-
   const ConfirmChanges = () => {
     return (
       <>
@@ -147,7 +157,6 @@ const CreateSurvey = ({ history }) => {
       </>
     );
   };
-
   const ChangesConfirmed = () => {
     return (
       <>
@@ -163,10 +172,35 @@ const CreateSurvey = ({ history }) => {
     );
   };
 
+  const fields = [
+    {
+      fieldName: 'title',
+      fieldLabel: 'Survey Title',
+      fieldValue: title,
+      min: 2,
+      max: 60,
+    },
+    {
+      fieldName: 'description',
+      fieldLabel: 'Survey Description',
+      fieldValue: description,
+      min: 2,
+      max: 280,
+    },
+    {
+      fieldName: 'disclaimer',
+      fieldLabel: 'Survey Disclaimer',
+      fieldValue: disclaimer,
+      min: 2,
+      max: 1000,
+    },
+  ];
+
+  const errorsExist = Object.values(errors).indexOf(true) > -1;
+
   return (
     <Box>
       {isConfirming && <PromptMessage />}
-
       <form onSubmit={handleSubmit}>
         <Box display='flex' flexDirection='column' my={8}>
           <Box mb={4}>
@@ -178,46 +212,42 @@ const CreateSurvey = ({ history }) => {
               {`Date created: ${formatDate(dateCreated)}`}
             </Typography>
           </Box>
+          {fields.map((field) => {
+            const { fieldName, fieldLabel, fieldValue, min, max } = field;
+            const inputIsBiggerThanMaxValue =
+              fieldValue && fieldValue.length > max;
+            const inputIsSmallerThanMinValue =
+              fieldValue && fieldValue.length < min;
+            const inputIsEmpty = fieldValue === '';
+            return (
+              <TextField
+                key={fieldLabel}
+                margin='normal'
+                required
+                multiline='true'
+                error={Boolean(
+                  inputIsBiggerThanMaxValue ||
+                    inputIsSmallerThanMinValue ||
+                    inputIsEmpty,
+                )}
+                helperText={
+                  (inputIsBiggerThanMaxValue &&
+                    `${fieldLabel} must be less than ${max} characters!`) ||
+                  (inputIsSmallerThanMinValue &&
+                    `${fieldLabel} must be more than ${min} characters!`) ||
+                  (inputIsEmpty && `${fieldLabel} is required.`)
+                }
+                value={fieldValue || ''}
+                name={fieldName}
+                label={fieldLabel}
+                onChange={
+                  (e) => setMetadata(e, 'text', fieldName, fieldValue, min, max)
+                  // eslint-disable-next-line react/jsx-curly-newline
+                }
+              />
+            );
+          })}
 
-          <TextField
-            margin='normal'
-            required
-            error={title && title.length > 60}
-            helperText={
-              title &&
-              title.length > 60 &&
-              'Title must be less than 60 characters!'
-            }
-            value={title}
-            name='title'
-            label='Survey title'
-            onChange={setMetadata}
-          />
-          <TextField
-            margin='normal'
-            required
-            error={description && description.length > 280}
-            helperText={
-              description &&
-              description.length > 280 &&
-              'Description must be less than 280 characters!'
-            }
-            value={description}
-            name='description'
-            label='Enter a description'
-            onChange={setMetadata}
-          />
-
-          <TextField
-            margin='normal'
-            required
-            error={disclaimer.length < 5}
-            helperText={disclaimer < 5 ? 'You must provide a disclaimer' : ''}
-            value={disclaimer}
-            name='disclaimer'
-            label='How will this data be used?'
-            onChange={setMetadata}
-          />
           <FormControlLabel
             control={
               <Switch
@@ -235,7 +265,12 @@ const CreateSurvey = ({ history }) => {
           <Divider variant='middle' />
           <QuestionsList />
           <Box alignSelf='center' mt={8}>
-            <Button type='submit' variant='contained' color='secondary'>
+            <Button
+              disabled={errorsExist}
+              type='submit'
+              variant='contained'
+              color='secondary'
+            >
               Save as draft
             </Button>
           </Box>
@@ -254,10 +289,8 @@ const CreateSurvey = ({ history }) => {
     </Box>
   );
 };
-
 CreateSurvey.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
-
 export default CreateSurvey;

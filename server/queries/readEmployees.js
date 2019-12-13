@@ -7,6 +7,7 @@ const readEmployees = async () => {
   try {
     const db = getDb();
     const employees = db.collection('Employees');
+
     const result = await employees.find({}).toArray();
     return result;
   } catch (err) {
@@ -24,6 +25,7 @@ const readPaginatedEmployees = async (pageSize, pageNumber) => {
       .skip(skips)
       .limit(pageSize)
       .toArray();
+
     return result;
   } catch (err) {
     return err;

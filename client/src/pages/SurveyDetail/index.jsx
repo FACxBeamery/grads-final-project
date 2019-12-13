@@ -16,26 +16,24 @@ import {
 
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
-import formatDate from '../../utils/formatDate';
 
+import SlackModal from '../../components/SlackModal/SlackModal';
 import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
+import formatDate from '../../utils/formatDate';
 
 const publishSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
     status: 'active',
     datePublished: Date.now(),
   });
-
   const payload = response.status === 204;
   dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
 };
-
 const setSurveyData = (data, dispatch) => {
   const payload = data;
   dispatch({ type: 'SET_SURVEY_DATA_SURVEY_DETAIL', payload });
   dispatch({ type: 'SET_ACTIVE_STEP' });
 };
-
 const getSurvey = async (idToSend, dispatch) => {
   try {
     const { data } = await axios.get(`/surveys/${idToSend}`);
@@ -44,7 +42,6 @@ const getSurvey = async (idToSend, dispatch) => {
     setSurveyData({}, dispatch);
   }
 };
-
 const closeSurvey = async (_id, dispatch) => {
   const response = await axios.patch(`/surveys/${_id}`, {
     status: 'closed',
@@ -53,10 +50,8 @@ const closeSurvey = async (_id, dispatch) => {
   const payload = response.status === 204;
   dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
 };
-
 const PublishSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-
   return (
     <Button
       type='submit'
@@ -73,10 +68,8 @@ const PublishSurveyButton = ({ surveyId }) => {
     </Button>
   );
 };
-
 const CloseSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-
   return (
     <Button
       type='submit'
@@ -93,7 +86,6 @@ const CloseSurveyButton = ({ surveyId }) => {
     </Button>
   );
 };
-
 const SurveyDetailsStepper = () => {
   const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
     (state) => state.surveyDetailReducer,
@@ -144,10 +136,13 @@ const SurveyDetailsStepper = () => {
       : `Publish\npending`,
     dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
   ];
-
   return (
     <MuiThemeProvider theme={stepperMuiTheme}>
-      <Stepper alternativeLabel activeStep={activeStep}>
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        data-testid='survey-detail-stepper'
+      >
         {stepperLabels.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -174,7 +169,6 @@ const SurveyDetailProgressWheel = () => {
     />
   );
 };
-
 const SnackbarPublish = () => {
   const { successfulPublish } = useSelector(
     (state) => state.surveyDetailReducer,
@@ -191,10 +185,8 @@ const SnackbarPublish = () => {
     />
   );
 };
-
 const SnackbarClose = () => {
   const { successfulClose } = useSelector((state) => state.surveyDetailReducer);
-
   return (
     <Snackbar
       message={
@@ -207,7 +199,6 @@ const SnackbarClose = () => {
     />
   );
 };
-
 const EditSurveyButton = () => {
   const { _id } = useSelector((state) => state.surveyDetailReducer);
   return (
@@ -237,12 +228,19 @@ const SurveyDetail = ({ match }) => {
     status,
     successfulPublish,
     successfulClose,
+    employeeDataForSlack,
   } = useSelector((state) => state.surveyDetailReducer);
 
   useEffect(() => {
     const { id } = match.params;
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
+    const getEmployees = async () => {
+      const { data } = await axios.get(`/employees`);
+      dispatch({ type: 'SET_EMPLOYEE_DATA_FOR_SLACK', payload: data });
+    };
+    getEmployees();
+
     getSurvey(id, dispatch);
   }, [match.params, dispatch]);
 
@@ -279,6 +277,7 @@ const SurveyDetail = ({ match }) => {
           </Box>
         </Box>
       </Box>
+
       {status && (
         <Box display='flex' flexDirection='column' mt={4}>
           <Typography variant='h5' color='primary'>
@@ -287,20 +286,20 @@ const SurveyDetail = ({ match }) => {
           {status === 'draft' && (
             <Typography>To edit recipient list, select Edit Survey</Typography>
           )}
+
           <EmployeeCompletionTable />
+          {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
-      {successfulPublish !== undefined && <SnackbarPublish />}
-      {successfulClose !== undefined && <SnackbarClose />}
+      {successfulPublish && <SnackbarPublish />}
+      {successfulClose && <SnackbarClose />}
     </Box>
   );
 };
-
 SurveyDetail.propTypes = {
   match: PropTypes.shape({ params: PropTypes.shape({ id: PropTypes.string }) })
     .isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   surveyId: PropTypes.string.isRequired,
 };
-
 export default SurveyDetail;
