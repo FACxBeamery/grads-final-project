@@ -192,7 +192,7 @@ const CreateSurvey = ({ history }) => {
       fieldLabel: 'Survey Disclaimer',
       fieldValue: disclaimer,
       min: 2,
-      max: 400,
+      max: 1000,
     },
   ];
 
@@ -224,6 +224,7 @@ const CreateSurvey = ({ history }) => {
                 key={fieldLabel}
                 margin='normal'
                 required
+                multiline='true'
                 error={Boolean(
                   inputIsBiggerThanMaxValue ||
                     inputIsSmallerThanMinValue ||
