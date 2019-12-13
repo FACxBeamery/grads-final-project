@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -11,61 +13,45 @@ import {
   Step,
   StepLabel,
 } from '@material-ui/core';
+
 import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 
+import SlackModal from '../../components/SlackModal/SlackModal';
+import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
+import formatDate from '../../utils/formatDate';
 
+const publishSurvey = async (_id, dispatch) => {
+  const response = await axios.patch(`/surveys/${_id}`, {
+    status: 'active',
+    datePublished: Date.now(),
+  });
+  const payload = response.status === 204;
+  dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
+};
 const setSurveyData = (data, dispatch) => {
   const payload = data;
   dispatch({ type: 'SET_SURVEY_DATA_SURVEY_DETAIL', payload });
   dispatch({ type: 'SET_ACTIVE_STEP' });
 };
-
 const getSurvey = async (idToSend, dispatch) => {
   try {
     const { data } = await axios.get(`/surveys/${idToSend}`);
     setSurveyData(data, dispatch);
   } catch (error) {
-    setSurveyData({});
+    setSurveyData({}, dispatch);
   }
-};
-
-const setEmployeeData = (data, dispatch) => {
-  const payload = data;
-  dispatch({ type: 'SET_EMPLOYEE_DATA', payload });
-};
-const getEmployees = async (dispatch) => {
-  try {
-    const { data } = await axios.get(`/employees`);
-    setEmployeeData(data, dispatch);
-  } catch (error) {
-    setSurveyData({});
-  }
-};
-const publishSurvey = async (_id, dispatch) => {
-  // const response = await axios.patch(`/surveys/${_id}`, {
-  const response = await axios.patch(`/surveys/1234543454fdfgf`, {
-    status: 'published',
-    datePublished: Date.now(),
-  });
-
-  const payload = response.status === 204;
-  dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
 };
 const closeSurvey = async (_id, dispatch) => {
-  // const response = await axios.patch(`/surveys/${_id}`, {
-  const response = await axios.patch(`/surveys/gasdfshjkhlukftyd`, {
+  const response = await axios.patch(`/surveys/${_id}`, {
     status: 'closed',
     dateClosed: Date.now(),
   });
   const payload = response.status === 204;
   dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
 };
-
-const PublishSurveyButton = () => {
+const PublishSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
-
   return (
     <Button
       type='submit'
@@ -73,19 +59,17 @@ const PublishSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await publishSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+        await publishSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Publish Survey
     </Button>
   );
 };
-
-const CloseSurveyButton = () => {
+const CloseSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.surveyDetailReducer);
-
   return (
     <Button
       type='submit'
@@ -93,30 +77,98 @@ const CloseSurveyButton = () => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        await closeSurvey(_id, dispatch);
-        await getSurvey(_id, dispatch);
+        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+        await closeSurvey(surveyId, dispatch);
+        await getSurvey(surveyId, dispatch);
       }}
     >
       Close Survey
     </Button>
   );
 };
-
 const SurveyDetailsStepper = () => {
-  const { activeStep } = useSelector((state) => state.surveyDetailReducer);
-  const steps = ['Draft', 'Publish', 'Close'];
+  const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
 
+  const stepperMuiTheme = createMuiTheme({
+    overrides: {
+      MuiStepper: {
+        root: {
+          margin: 0,
+          padding: 0,
+        },
+      },
+      MuiStepIcon: {
+        root: {
+          zIndex: 1,
+          '&$active': {
+            color: '#F15852',
+          },
+          '&$completed': {
+            color: '#F15852',
+          },
+        },
+      },
+      MuiStepConnector: {
+        active: {
+          '& $line': {
+            backgroundColor: '#201E5A',
+            border: 0,
+            height: 3,
+          },
+        },
+        completed: {
+          '& $line': {
+            backgroundColor: '#201E5A',
+            border: 0,
+            height: 3,
+          },
+        },
+      },
+    },
+  });
+
+  const stepperLabels = [
+    `Drafted\n${formatDate(dateCreated)}`,
+    datePublished
+      ? `Published\n${formatDate(datePublished)}`
+      : `Publish\npending`,
+    dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
+  ];
   return (
-    <Stepper alternativeLabel activeStep={activeStep}>
-      {steps.map((label) => (
-        <Step key={label}>
-          <StepLabel>{label}</StepLabel>
-        </Step>
-      ))}
-    </Stepper>
+    <MuiThemeProvider theme={stepperMuiTheme}>
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        data-testid='survey-detail-stepper'
+      >
+        {stepperLabels.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </MuiThemeProvider>
   );
 };
 
+const SurveyDetailProgressWheel = () => {
+  const { recipients, responses } = useSelector(
+    (state) => state.surveyDetailReducer,
+  );
+  const percentage = responses.length / recipients.length;
+
+  return (
+    <ProgressWheel
+      strokeWidth='12.5'
+      sqSize='125'
+      percentage={percentage || 0}
+      numerator={responses.length}
+      denominator={recipients.length}
+    />
+  );
+};
 const SnackbarPublish = () => {
   const { successfulPublish } = useSelector(
     (state) => state.surveyDetailReducer,
@@ -125,7 +177,7 @@ const SnackbarPublish = () => {
     <Snackbar
       message={
         successfulPublish
-          ? 'The survey is now published and can welcome responses.'
+          ? 'The survey is now active and can welcome responses.'
           : 'There was an error publishing survey. Please try again.'
       }
       variant={successfulPublish ? 'success' : 'error'}
@@ -133,10 +185,8 @@ const SnackbarPublish = () => {
     />
   );
 };
-
 const SnackbarClose = () => {
   const { successfulClose } = useSelector((state) => state.surveyDetailReducer);
-
   return (
     <Snackbar
       message={
@@ -149,7 +199,6 @@ const SnackbarClose = () => {
     />
   );
 };
-
 const EditSurveyButton = () => {
   const { _id } = useSelector((state) => state.surveyDetailReducer);
   return (
@@ -167,18 +216,32 @@ const EditSurveyButton = () => {
 };
 const SurveyDetail = ({ match }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const { id: idFromUrl } = match.params;
+    getSurvey(idFromUrl, dispatch);
+  }, [match.params, dispatch]);
+
   const {
     title,
     description,
     status,
     successfulPublish,
     successfulClose,
+    employeeDataForSlack,
   } = useSelector((state) => state.surveyDetailReducer);
 
   useEffect(() => {
-    const { id: idFromUrl } = match.params;
-    getSurvey(idFromUrl, dispatch);
-    getEmployees(dispatch);
+    const { id } = match.params;
+    dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+    dispatch({ type: 'RESET_SURVEY_DETAIL_STATE' });
+    const getEmployees = async () => {
+      const { data } = await axios.get(`/employees`);
+      dispatch({ type: 'SET_EMPLOYEE_DATA_FOR_SLACK', payload: data });
+    };
+    getEmployees();
+
+    getSurvey(id, dispatch);
   }, [match.params, dispatch]);
 
   return (
@@ -188,40 +251,55 @@ const SurveyDetail = ({ match }) => {
           <Typography color='primary' variant='h2'>
             {title}
           </Typography>
+          <Box mt={2} mb={4}>
+            <Typography color='primary' variant='h6'>
+              {description}
+            </Typography>
+          </Box>
           <SurveyDetailsStepper />
-          <Typography color='primary' variant='h5'>
-            {description}
-          </Typography>
         </Box>
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
             <Box display='flex' flexDirection='column'>
-              <PublishSurveyButton />
+              <PublishSurveyButton surveyId={match.params.id} />
               <EditSurveyButton />
             </Box>
           )}
-          {status === 'published' && <CloseSurveyButton />}
+          <Box display='flex' flexDirection='column'>
+            {status === 'active' && (
+              <CloseSurveyButton surveyId={match.params.id} />
+            )}
+            {(status === 'active' || status === 'closed') && (
+              <Box m={4}>
+                <SurveyDetailProgressWheel />
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
-      {status === 'published' && (
-        <Box display='flex' flexDirection='column'>
-          <Box alignSelf='flex-start' py={2}>
-            <Button variant='outlined' color='secondary'>
-              Add recipients
-            </Button>
-          </Box>
+
+      {status && (
+        <Box display='flex' flexDirection='column' mt={4}>
+          <Typography variant='h5' color='primary'>
+            Recipients
+          </Typography>
+          {status === 'draft' && (
+            <Typography>To edit recipient list, select Edit Survey</Typography>
+          )}
+
           <EmployeeCompletionTable />
+          {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
-      {successfulPublish !== undefined && <SnackbarPublish />}
-      {successfulClose !== undefined && <SnackbarClose />}
+      {successfulPublish && <SnackbarPublish />}
+      {successfulClose && <SnackbarClose />}
     </Box>
   );
 };
-
 SurveyDetail.propTypes = {
   match: PropTypes.shape({ params: PropTypes.shape({ id: PropTypes.string }) })
     .isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  surveyId: PropTypes.string.isRequired,
 };
-
 export default SurveyDetail;
