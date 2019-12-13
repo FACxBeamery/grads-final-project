@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  useHistory,
+  useLocation
+} from "react-router-dom";
 import {
   Button,
   TextField,
@@ -16,31 +20,37 @@ import {
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
 import useStyles from './styles';
+import { login, unsuccessfulLogin, setAuth } from './eventHandlers'
 import Copyright from '../../components/Copyright';
 import loginAdmin from './apiCalls';
 
+// eslint-disable-next-line react/prop-types
 const AdminLogin = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+
+  const { from } = location.state || { from: { pathname: "/admin" } };
 
   const { helperText, data } = useSelector((state) => state.adminLoginReducer);
   const { username, password } = data;
 
-  const setLoginOnChange = (event) => {
-    const payload1 = { helperText: '' };
-    dispatch({ type: SET_HELPER_TEXT, payload: payload1 });
+  useEffect(() => {
+    const { auth } = data;
+    if (auth){
+      setTimeout(() => history.replace(from), 1);
+    }
+  }, [from, history, data])
 
-    const payload2 = {
+  const setLoginOnChange = (event) => {
+    const helperTextPayload = { helperText: '' };
+    dispatch({ type: SET_HELPER_TEXT, payload: helperTextPayload });
+
+    const inputfieldPayload = {
       [event.target.name]: event.target.value,
     };
-    dispatch({ type: SET_LOGIN, payload: payload2 });
-  };
-
-  const setLoginOnPost = (auth) => {
-    const payload = {
-      auth,
-    };
-    dispatch({ type: SET_LOGIN, payload });
+    dispatch({ type: SET_LOGIN, payload: inputfieldPayload });
   };
 
   const handleSubmit = async (e) => {
@@ -50,31 +60,18 @@ const AdminLogin = () => {
       const response = await loginAdmin(username, password);
       const { auth, token, message } = response.data;
 
-      if (auth && token) {
-        window.localStorage.setItem('jwt_token', token);
-        const payload1 = {
-          message,
-          variant: 'success',
-        };
-        dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
-
-        const payload2 = { helperText: '' };
-        dispatch({ type: SET_HELPER_TEXT, payload: payload2 });
-      } else {
-        const payload1 = {
-          message,
-          variant: 'error',
-        };
-        dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
-
-        const payload2 = { helperText: message };
-        dispatch({ type: SET_HELPER_TEXT, payload: payload2 });
-      }
-      setLoginOnPost(auth);
+      if (auth && token) login(dispatch, message, token);
+      else unsuccessfulLogin(dispatch, message);
+      
+      setAuth(dispatch, auth);
     } catch (err) {
       const payload = {
-        message: 'An unexpected error occured. Try again later.',
-        variant: 'error',
+        open: true,
+        snackbar: {
+          message: 'An unexpected error occured. Try again later.',
+          variant: 'error',
+          timeOpened: Date.now(),
+        },
       };
       dispatch({ type: UPDATE_SNACKBAR, payload });
     }

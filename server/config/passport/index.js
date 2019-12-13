@@ -18,7 +18,6 @@ module.exports = (passport) => {
       },
       async (username, password, done) => {
         try {
-          // TODO not working currently
           if (username === undefined) {
             return done(null, false, { message: 'Empty username.' });
           }
