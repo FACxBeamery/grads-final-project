@@ -205,6 +205,11 @@ const EditSurvey = ({ match, history }) => {
           </Box>
           {fields.map((field) => {
             const { fieldName, fieldLabel, fieldValue, min, max } = field;
+            const inputIsBiggerThanMaxValue =
+              fieldValue && fieldValue.length > max;
+            const inputIsSmallerThanMinValue =
+              fieldValue && fieldValue.length < min;
+            const inputIsEmpty = fieldValue === '';
             return (
               <TextField
                 key={fieldLabel}
@@ -214,17 +219,16 @@ const EditSurvey = ({ match, history }) => {
                 }}
                 required
                 error={Boolean(
-                  fieldValue &&
-                    (fieldValue.length > max || fieldValue.length < min),
+                  inputIsBiggerThanMaxValue ||
+                    inputIsSmallerThanMinValue ||
+                    inputIsEmpty,
                 )}
                 helperText={
-                  (fieldValue &&
-                    fieldValue.length > max &&
+                  (inputIsBiggerThanMaxValue &&
                     `${fieldLabel} must be less than ${max} characters!`) ||
-                  (fieldValue &&
-                    fieldValue.length < min &&
+                  (inputIsSmallerThanMinValue &&
                     `${fieldLabel} must be more than ${min} characters!`) ||
-                  (fieldValue === '' && `${fieldLabel} is required.`)
+                  (inputIsEmpty && `${fieldLabel} is required.`)
                 }
                 value={fieldValue || ''}
                 name={fieldName}
