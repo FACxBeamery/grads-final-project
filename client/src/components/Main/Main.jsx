@@ -6,10 +6,11 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
-
 import PageNotFound from '../../pages/PageNotFound';
 import LoadingPageOrRedirect from './LoadingPageOrRedirect';
 import { routes, protectedRoutes } from './routes';
+
+import Snackbar from '../Snackbar'
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
 import deleteTokenOn401StatusCodes from '../../utils/deleteTokenOn401StatusCodes';
@@ -21,7 +22,6 @@ const Main = ({ history }) => {
 
   const { data } = useSelector((state) => state.adminLoginReducer);
   const { auth } = data;
-  const { snackbar } = useSelector((state) => state.snackbarReducer);
   const { checkingIfAuthed } = useSelector((state) => state.mainReducer);
 
   useEffect(() => {
@@ -69,6 +69,10 @@ const Main = ({ history }) => {
   const protectedRoutesMap = protectedRoutes.map((prProps) => (
     <ProtectedRoute exact key={prProps.path} {...prProps} />
   ));
+  const { message, variant, timeOpened } = useSelector(
+    (state) => state.snackbarReducer.snackbar,
+  );
+  const { open } = useSelector((state) => state.snackbarReducer);
 
   return (
     <main>
@@ -84,7 +88,9 @@ const Main = ({ history }) => {
           </Switch>
         </Box>
       </Box>
-      {snackbar}
+      {open && (
+        <Snackbar message={message} variant={variant} timeopened={timeOpened} />
+      )}
     </main>
   );
 };

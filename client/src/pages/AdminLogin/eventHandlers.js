@@ -7,8 +7,12 @@ import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 const login = (dispatch, message, token) => {
   window.localStorage.setItem('jwt_token', token);
   const snackbarPayload = {
-    message,
-    variant: 'success',
+    open: true,
+    snackbar: {
+      message,
+      variant: 'success',
+      timeOpened: Date.now(),
+    },
   };
   const helperTextPayload = { helperText: '' };
 
@@ -18,8 +22,12 @@ const login = (dispatch, message, token) => {
 
 const unsuccessfulLogin = (dispatch, message) => {
   const snackbarPayload = {
-    message,
-    variant: 'error',
+    open: true,
+    snackbar: {
+      message,
+      variant: 'error',
+      timeOpened: Date.now(),
+    },
   };
   const helperTextPayload = { helperText: message };
 
