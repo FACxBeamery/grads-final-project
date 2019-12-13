@@ -36,7 +36,7 @@ const AdminLogin = () => {
   useEffect(() => {
     const { auth } = data;
     if (auth) {
-      setTimeout(() => history.replace(from), 200);
+      setTimeout(() => history.replace(from), 1);
     }
   }, [from, history, data]);
 
@@ -63,8 +63,12 @@ const AdminLogin = () => {
       setAuth(dispatch, auth);
     } catch (err) {
       const payload = {
-        message: 'An unexpected error occured. Try again later.',
-        variant: 'error',
+        open: true,
+        snackbar: {
+          message: 'An unexpected error occured. Try again later.',
+          variant: 'error',
+          timeOpened: Date.now(),
+        },
       };
       dispatch({ type: UPDATE_SNACKBAR, payload });
     }

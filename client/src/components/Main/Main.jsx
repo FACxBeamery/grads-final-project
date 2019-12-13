@@ -1,51 +1,61 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
-
-import AdminLogin from '../../pages/AdminLogin';
-import Dashboard from '../../pages/Dashboard';
-import CreateSurvey from '../../pages/CreateSurvey';
-import EditSurvey from '../../pages/EditSurvey/index';
-import SurveyDetail from '../../pages/SurveyDetail';
-import SurveyBuilderFromTemplate from '../../pages/SurveyBuilderFromTemplate';
-import TakeSurvey from '../../pages/TakeSurvey';
 import PageNotFound from '../../pages/PageNotFound';
+import LoadingPageOrRedirect from './LoadingPageOrRedirect';
+import { routes, protectedRoutes } from './routes';
+
+import Snackbar from '../Snackbar';
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
 import deleteTokenOn401StatusCodes from '../../utils/deleteTokenOn401StatusCodes';
 import checkTokenIsAuth from '../../utils/checkTokenIsAuth';
+import { CHECKING_IF_AUTHED } from '../../store/actions/mainActions';
 
-const Main = () => {
+const Main = ({ history }) => {
   const dispatch = useDispatch();
 
   const { data } = useSelector((state) => state.adminLoginReducer);
   const { auth } = data;
-  const { snackbar } = useSelector((state) => state.snackbarReducer);
+  const { checkingIfAuthed } = useSelector((state) => state.mainReducer);
 
   useEffect(() => {
     addTokenToEveryRequest();
     deleteTokenOn401StatusCodes(axios);
   });
 
+  useEffect(() => {
+    if (history.location.pathname.startsWith('/admin')) {
+      dispatch({
+        type: CHECKING_IF_AUTHED,
+        payload: { checkingIfAuthed: true },
+      });
+      checkTokenIsAuth(dispatch, auth).then(() =>
+        dispatch({
+          type: CHECKING_IF_AUTHED,
+          payload: { checkingIfAuthed: false },
+        }),
+      );
+    }
+  }, [auth, dispatch, history.action, history.location, history.location.key]);
+
   // eslint-disable-next-line react/prop-types
   const ProtectedRoute = ({ component: Component, ...rest }) => {
     return (
       <Route
         {...rest}
-        render={({ location, match }) => {
-          return checkTokenIsAuth(dispatch, auth) && auth ? (
-            <Component match={match} />
+        render={(props) => {
+          return !checkingIfAuthed && auth ? (
+            <Component {...props} />
           ) : (
-            <Redirect
-              push
-              to={{
-                pathname: '/admin/login',
-                state: { from: location },
-              }}
+            <LoadingPageOrRedirect
+              {...props}
+              checkingIfAuthed={checkingIfAuthed}
             />
           );
         }}
@@ -53,37 +63,16 @@ const Main = () => {
     );
   };
 
-  const routes = [
-    <Route exact key='/takesurvey' path='/takesurvey' component={TakeSurvey} />,
-    <Route
-      exact
-      key='/admin/login'
-      path='/admin/login'
-      component={AdminLogin}
-    />,
-  ];
-
-  const protectedRoutes = [
-    <ProtectedRoute exact key='/admin' path='/admin' component={Dashboard} />,
-    <ProtectedRoute
-      exact
-      key='/admin/surveys/create'
-      path='/admin/surveys/create'
-      component={CreateSurvey}
-    />,
-    <ProtectedRoute
-      exact
-      key='/admin/surveys/edit/:id'
-      path='/admin/surveys/edit/:id'
-      component={EditSurvey}
-    />,
-    <ProtectedRoute
-      exact
-      key={4}
-      path='/admin/surveys/:id'
-      component={SurveyDetail}
-    />,
-  ];
+  const routesMap = routes.map((rProps) => (
+    <Route exact key={rProps.path} {...rProps} />
+  ));
+  const protectedRoutesMap = protectedRoutes.map((prProps) => (
+    <ProtectedRoute exact key={prProps.path} {...prProps} />
+  ));
+  const { message, variant, timeOpened } = useSelector(
+    (state) => state.snackbarReducer.snackbar,
+  );
+  const { open } = useSelector((state) => state.snackbarReducer);
 
   return (
     <main>
@@ -93,14 +82,17 @@ const Main = () => {
         </Box>
         <Box mx={4}>
           <Switch>
-            {routes}
-            {protectedRoutes}
+            {routesMap}
+            {protectedRoutesMap}
+            <Route component={PageNotFound} />
           </Switch>
         </Box>
       </Box>
-      {snackbar}
+      {open && (
+        <Snackbar message={message} variant={variant} timeopened={timeOpened} />
+      )}
     </main>
   );
 };
 
-export default Main;
+export default withRouter(Main);

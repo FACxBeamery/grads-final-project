@@ -1,8 +1,5 @@
 export default (axios) => {
-  const successHandler = (response) => {
-    return response;
-  };
-
+  const successHandler = (response) => response;
   const errorHandler = (error) => {
     if (error.response.status === 401) {
       window.localStorage.removeItem('jwt_token');
