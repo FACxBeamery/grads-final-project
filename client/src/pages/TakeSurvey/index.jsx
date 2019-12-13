@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { withRouter } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import UserProgressStepper from './UserProgressStepper/UserProgressStepper';
 import QuestionCard from './QuestionCard/QuestionCard';
@@ -50,4 +49,4 @@ const TakeSurvey = ({ match }) => {
 
 
 };
-export default withRouter(TakeSurvey);
+export default TakeSurvey;

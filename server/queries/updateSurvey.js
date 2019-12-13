@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
+/* eslint-disable consistent-return */
 const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
@@ -63,7 +64,7 @@ const updateSurvey = async (surveyId, changes) => {
         recipients: changes.recipientIds,
         questions: orderedQuestionIds,
       };
-      const result = await surveys.updateOne(
+      await surveys.updateOne(
         {
           _id: ObjectID(surveyId),
         },
