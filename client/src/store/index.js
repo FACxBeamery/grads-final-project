@@ -10,6 +10,7 @@ import snackbarReducer from './reducer/snackbarReducer.js';
 import dashboardReducer from './reducer/dashboardReducer';
 import employeeTableReducer from './reducer/employeeTableReducer';
 import editSurveyReducer from './reducer/editSurveyReducer';
+import mainReducer from './reducer/mainReducer';
 import errorsBagReducer from './reducer/errorsBagReducer';
 
 const store = createStore(
@@ -23,6 +24,7 @@ const store = createStore(
     dashboardReducer,
     employeeTableReducer,
     editSurveyReducer,
+    mainReducer,
     errorsBagReducer,
   }),
   // eslint-disable-next-line no-underscore-dangle
