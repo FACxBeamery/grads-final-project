@@ -7,6 +7,24 @@ import { useSelector } from 'react-redux';
 const SurveyDescription = () => {
   const survey = useSelector((state) => state.takeSurveyReducer.survey);
 
+  const AnonymousDisclaimer = () => {
+    return (
+      <Typography>
+        This survey is anonymous. Your responses will not be linked to your
+        personal data.
+      </Typography>
+    );
+  };
+
+  const NonAnonymousDisclaimer = () => {
+    return (
+      <Typography>
+        This survey is not anonymous. Your responses will be linked to your
+        personal data.
+      </Typography>
+    );
+  };
+
   return (
     <Box
       mt={4}
@@ -26,6 +44,8 @@ const SurveyDescription = () => {
       <Typography data-testid='survey-disclaimer' variant='h5'>
         {survey.disclaimer}
       </Typography>
+      {survey.anonymous === true && <AnonymousDisclaimer />}
+      {survey.anonymous === false && <NonAnonymousDisclaimer />}
     </Box>
   );
 };
