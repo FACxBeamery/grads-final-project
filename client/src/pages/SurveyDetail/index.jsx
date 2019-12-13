@@ -246,6 +246,7 @@ const SurveyDetail = ({ match }) => {
     title,
     description,
     status,
+    recipients,
     successfulPublish,
     successfulClose,
     employeeDataForSlack,
@@ -310,7 +311,14 @@ const SurveyDetail = ({ match }) => {
             <Typography>To edit recipient list, select Edit Survey</Typography>
           )}
 
-          <EmployeeCompletionTable />
+          {recipients.length ? (
+            <EmployeeCompletionTable />
+          ) : (
+            <Typography>
+              No recipients have been added. Select Edit Survey to start adding.
+            </Typography>
+          )}
+
           {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
