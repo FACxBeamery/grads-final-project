@@ -40,7 +40,6 @@ const downloadSurvey = async (id, anonymous, title, dispatch) => {
     const res = await axios.get(`/download/${id}/${anonymous}`);
     FileDownload(res.data, `${createValidFilename(title)}.csv`);
   } catch (error) {
-    console.log('LOL');
     const snackbarPayload = {
       open: true,
       snackbar: {
