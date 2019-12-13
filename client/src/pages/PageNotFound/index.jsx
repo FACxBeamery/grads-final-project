@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 const PageNotFound = () => {
   const NotFoundImage = () => {
@@ -119,10 +118,6 @@ const PageNotFound = () => {
       </Box>
     </Box>
   );
-};
-
-PageNotFound.propTypes = {
-  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
 export default PageNotFound;
