@@ -273,7 +273,7 @@ const SurveyDetail = ({ match }) => {
             {title}
           </Typography>
           <Box mt={2} mb={4}>
-            <Typography color='primary' variant='h6'>
+            <Typography color='primary' variant='h5'>
               {description}
             </Typography>
           </Box>
@@ -281,8 +281,10 @@ const SurveyDetail = ({ match }) => {
         </Box>
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
-            <Box display='flex' flexDirection='column'>
-              <PublishSurveyButton surveyId={match.params.id} />
+            <Box display='flex' flexDirection='column' alignSelf='flex-start'>
+              <Box mb={2}>
+                <PublishSurveyButton surveyId={match.params.id} />
+              </Box>
               <EditSurveyButton />
             </Box>
           )}
@@ -304,9 +306,11 @@ const SurveyDetail = ({ match }) => {
 
       {status && (
         <Box display='flex' flexDirection='column' mt={4}>
-          <Typography variant='h5' color='primary'>
-            Recipients
-          </Typography>
+          <Box mt={4} mb={2}>
+            <Typography variant='h4' color='primary'>
+              Recipients
+            </Typography>
+          </Box>
           {status === 'draft' && (
             <Typography>To edit recipient list, select Edit Survey</Typography>
           )}
