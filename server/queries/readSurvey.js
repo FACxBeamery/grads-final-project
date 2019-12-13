@@ -6,13 +6,10 @@ const readSurvey = async (_id) => {
   try {
     const db = getDb();
     const surveys = db.collection('Surveys');
-    console.log('HEYYYYY');
 
     const survey = await surveys.findOne({
       _id: ObjectID(_id),
     });
-
-    console.log('survey: ', survey);
 
     const surveyQuestions = survey.questions;
 
