@@ -123,7 +123,6 @@ const EditSurvey = ({ match, history }) => {
       delete editedSurvey.modalStyle;
       delete editedSurvey.openModal;
       delete editedSurvey.isConfirming;
-
       await axios.patch(`/surveys/${id}`, editedSurvey);
     } catch (err) {
       throw new Error(err.message);
@@ -179,7 +178,7 @@ const EditSurvey = ({ match, history }) => {
       fieldLabel: 'Survey Disclaimer',
       fieldValue: disclaimer,
       min: 2,
-      max: 400,
+      max: 1000,
     },
   ];
   const errorsExistInForm = Object.values(errors).indexOf(true) > -1;
