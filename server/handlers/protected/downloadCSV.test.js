@@ -26,14 +26,20 @@ afterEach(() => {
 });
 
 describe('Testing GET /download/:id/:anonymous', () => {
-  it('Responds with status 204 when the survey has been updated successfully.', async () => {
-    const surveyIdToDownload = '509f1f99bcf86cd799439215';
+  it('Responds with status 204 when the survey has been updated successfully.', async (done) => {
+    try {
+      const surveyIdToDownload = '509f1f99bcf86cd799439215';
 
-    const token = await authenticate();
-    const res = await request(app)
-      .get(`/download/${surveyIdToDownload}/false`)
-      .set('Accept', 'application/json')
-      .set('Authorization', `JWT ${token}`);
-    expect(res.status).toEqual(200);
+      const token = await authenticate();
+      const res = await request(app)
+        .get(`/download/${surveyIdToDownload}/false`)
+        .set('Accept', 'application/json')
+        .set('Authorization', `JWT ${token}`);
+      expect(res.status).toEqual(200);
+
+      return done();
+    } catch (err) {
+      return done(err);
+    }
   });
 });
