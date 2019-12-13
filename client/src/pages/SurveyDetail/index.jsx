@@ -88,7 +88,7 @@ const CloseSurveyButton = ({ surveyId }) => {
   );
 };
 
-const ExportSurveyButton = ({ surveyId }) => {
+const ExportSurveyButton = () => {
   const dispatch = useDispatch();
 
   return (
