@@ -24,7 +24,6 @@ const updateEmployeesWithSlackID = async (db) => {
     } catch (error) {
       return error;
       // eslint-disable-next-line no-console
-      // console.log(error);
     }
   };
 

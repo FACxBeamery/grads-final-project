@@ -16,6 +16,7 @@ import {
   StepLabel,
 } from '@material-ui/core';
 
+import ExportModal from './ExportModal';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
@@ -96,6 +97,25 @@ const CloseSurveyButton = ({ surveyId }) => {
     </Button>
   );
 };
+
+const ExportSurveyButton = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <Button
+      type='button'
+      width='auto'
+      variant='contained'
+      color='secondary'
+      onClick={async () => {
+        dispatch({ type: 'TOGGLE_EXPORT_MODAL' });
+      }}
+    >
+      Export results
+    </Button>
+  );
+};
+
 const SurveyDetailsStepper = () => {
   const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
     (state) => state.surveyDetailReducer,
@@ -206,6 +226,7 @@ const SurveyDetail = ({ match }) => {
     title,
     description,
     status,
+    recipients,
     successfulPublish,
     successfulClose,
     employeeDataForSlack,
@@ -279,6 +300,9 @@ const SurveyDetail = ({ match }) => {
             {status === 'active' && (
               <CloseSurveyButton surveyId={match.params.id} />
             )}
+            {status === 'closed' && (
+              <ExportSurveyButton surveyId={match.params.id} />
+            )}
             {(status === 'active' || status === 'closed') && (
               <Box m={4}>
                 <SurveyDetailProgressWheel />
@@ -297,12 +321,20 @@ const SurveyDetail = ({ match }) => {
             <Typography>To edit recipient list, select Edit Survey</Typography>
           )}
 
-          <EmployeeCompletionTable />
+          {recipients.length ? (
+            <EmployeeCompletionTable />
+          ) : (
+            <Typography>
+              No recipients have been added. Select Edit Survey to start adding.
+            </Typography>
+          )}
+
           {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
-      {successfulPublish && SnackbarPublish(dispatch)}
-      {successfulClose && SnackbarClose(dispatch)}
+      {successfulPublish && SnackbarPublish()}
+      {successfulClose && SnackbarClose()}
+      <ExportModal />
     </Box>
   );
 };

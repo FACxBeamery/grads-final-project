@@ -4,20 +4,20 @@ import { Box, Typography, Button } from '@material-ui/core';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 
-const SurveySubmit = () => {
+const SurveySubmit = ({ match }) => {
   const dispatch = useDispatch();
   const answers = useSelector((state) => state.takeSurveyReducer.answers);
   const responseSubmission = useSelector(
     (state) => state.takeSurveyReducer.responseSubmission,
   );
   // REPLACE THE BELOW WITH STATE VARIABLES WHEN LINK IS INDIVIDUAL
-  const surveyId = '5de52524d55c7b00681530d8';
-  const employeeId = '507f1f77bcf86cd799439073';
+
+  const { surveyId, employeeId } = match.params
   const anonymous = true;
 
   const handleSurveySubmit = (event) => {
     event.preventDefault();
-    axios.patch('/surveys', { employeeId, anonymous, surveyId, answers });
+    axios.patch(`/surveys/${surveyId}`, { employeeId, anonymous, answers });
     dispatch({
       type: 'RESPONSE_SUBMISSION',
     });

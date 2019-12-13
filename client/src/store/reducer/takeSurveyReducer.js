@@ -55,12 +55,12 @@ const takeSurveyReducer = (state = initalState, action) => {
         answers: state.answers.map((response) =>
           response.questionId === action.payload.questionId
             ? {
-                ...response,
-                answer: action.payload.answer,
-              }
+              ...response,
+              answer: action.payload.answer,
+            }
             : {
-                ...response,
-              },
+              ...response,
+            },
         ),
       };
     case 'ADD_COMMENT':
@@ -69,9 +69,9 @@ const takeSurveyReducer = (state = initalState, action) => {
         answers: state.answers.map((response) =>
           response.questionId === action.payload.questionId
             ? {
-                ...response,
-                comment: action.payload.comment,
-              }
+              ...response,
+              comment: action.payload.comment,
+            }
             : response,
         ),
       };
@@ -87,6 +87,13 @@ const takeSurveyReducer = (state = initalState, action) => {
           };
         }),
       };
+
+    case 'SET_EMPLOYEE_COMPLETED':
+      return { ...state, employeeHasCompleted: action.payload }
+
+    case 'SET_SURVEY_CLOSED':
+      return { ...state, surveyClosed: action.payload }
+
     case 'ENABLE_NEXT':
       return {
         ...state,
