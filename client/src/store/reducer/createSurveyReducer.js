@@ -12,7 +12,8 @@ const initalState = {
   title: undefined,
   description: undefined,
   recipients: [],
-  disclaimer: 'This is the dummy disclaimer',
+  disclaimer:
+    'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy (www.beamery.com/privacy). If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
   anonymous: false,
   questions: [defaultQuestion],
   openModal: false,
@@ -96,7 +97,8 @@ const createSurveyReducer = (state = initalState, action) => {
         title: undefined,
         description: undefined,
         recipients: [],
-        disclaimer: 'This is the dummy disclaimer',
+        disclaimer:
+          'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy (www.beamery.com/privacy). If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
         anonymous: false,
         questions: [
           {
