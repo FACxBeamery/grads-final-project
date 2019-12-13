@@ -45,7 +45,7 @@ const updateSurvey = async (surveyId, changes) => {
       const questionsFromSurvey = changes.questions;
       const changesToBeMade = {
         ...changes,
-        recipients: changes.recipientIds,
+        recipients: changes.recipients,
         questions: orderedQuestionIds,
       };
       const result = await surveys.updateOne(
@@ -92,7 +92,7 @@ const updateSurvey = async (surveyId, changes) => {
               { $set: questionWithoutId },
             );
           } catch (error) {
-            console.log(error);
+            console.error(error);
           }
         }
       });
@@ -107,6 +107,7 @@ const updateSurvey = async (surveyId, changes) => {
         $set: changes,
       },
     );
+
     return result;
   } catch (err) {
     return err;
