@@ -8,7 +8,13 @@ const SurveyDescription = () => {
   const survey = useSelector((state) => state.takeSurveyReducer.survey);
 
   return (
-    <Box mt={4} alignItems='center' justifyContent='space-between'>
+    <Box
+      mt={4}
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      justifyContent='space-between'
+    >
       <Box mb={2}>
         <Typography data-testid='survey-title' variant='h3'>
           {survey.title}
@@ -17,7 +23,9 @@ const SurveyDescription = () => {
       <Typography data-testid='survey-description' variant='h5'>
         {survey.description}
       </Typography>
-      <Typography data-testid="survey-disclaimer" variant='h5'>{survey.disclaimer}</Typography>
+      <Typography data-testid='survey-disclaimer' variant='h5'>
+        {survey.disclaimer}
+      </Typography>
     </Box>
   );
 };
