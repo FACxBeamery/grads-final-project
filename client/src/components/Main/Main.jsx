@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
@@ -84,8 +84,8 @@ const Main = ({ history }) => {
           <Switch>
             {routesMap}
             {protectedRoutesMap}
+            <Redirect exact from='/' to='/admin' />
             <Route component={PageNotFound} />
-
           </Switch>
         </Box>
       </Box>
