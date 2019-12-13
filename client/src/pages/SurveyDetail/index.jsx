@@ -14,8 +14,8 @@ import {
   StepLabel,
 } from '@material-ui/core';
 
-import Snackbar from '../../components/Snackbar';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
+import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
 import SlackModal from '../../components/SlackModal/SlackModal';
 import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
@@ -169,36 +169,6 @@ const SurveyDetailProgressWheel = () => {
     />
   );
 };
-const SnackbarPublish = () => {
-  const { successfulPublish } = useSelector(
-    (state) => state.surveyDetailReducer,
-  );
-  return (
-    <Snackbar
-      message={
-        successfulPublish
-          ? 'The survey is now active and can welcome responses.'
-          : 'There was an error publishing survey. Please try again.'
-      }
-      variant={successfulPublish ? 'success' : 'error'}
-      timeopened={Date.now()}
-    />
-  );
-};
-const SnackbarClose = () => {
-  const { successfulClose } = useSelector((state) => state.surveyDetailReducer);
-  return (
-    <Snackbar
-      message={
-        successfulClose
-          ? 'The survey is now closed. No more responses will be recorded.'
-          : 'There was an error closing the survey. Please try again.'
-      }
-      variant={successfulClose ? 'success' : 'error'}
-      timeopened={Date.now()}
-    />
-  );
-};
 const EditSurveyButton = () => {
   const { _id } = useSelector((state) => state.surveyDetailReducer);
   return (
@@ -243,6 +213,36 @@ const SurveyDetail = ({ match }) => {
 
     getSurvey(id, dispatch);
   }, [match.params, dispatch]);
+
+  const SnackbarPublish = () => {
+    const snackbarPayload = {
+      open: true,
+      snackbar: {
+        message: successfulPublish
+          ? 'The survey is now active and can welcome responses.'
+          : 'There was an error publishing survey. Please try again.',
+        variant: successfulClose ? 'success' : 'error',
+        timeopened: Date.now(),
+      },
+    };
+
+    dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
+  };
+
+  const SnackbarClose = () => {
+    const snackbarPayload = {
+      open: true,
+      snackbar: {
+        message: successfulClose
+          ? 'The survey is now closed. No more responses will be recorded.'
+          : 'There was an error closing the survey. Please try again.',
+        variant: successfulClose ? 'success' : 'error',
+        timeopened: Date.now(),
+      },
+    };
+
+    dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
+  };
 
   return (
     <Box display='flex' flexDirection='column' align-items='flex-start'>
@@ -291,8 +291,8 @@ const SurveyDetail = ({ match }) => {
           {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
-      {successfulPublish && <SnackbarPublish />}
-      {successfulClose && <SnackbarClose />}
+      {successfulPublish && SnackbarPublish(dispatch)}
+      {successfulClose && SnackbarClose(dispatch)}
     </Box>
   );
 };
