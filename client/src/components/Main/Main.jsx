@@ -85,6 +85,7 @@ const Main = ({ history }) => {
             {routesMap}
             {protectedRoutesMap}
             <Route component={PageNotFound} />
+
           </Switch>
         </Box>
       </Box>

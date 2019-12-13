@@ -12,8 +12,7 @@ const dummySurvey = {
   description:
     'A survey description that is about 1 sentence long yeah blah blah',
   status: 'created',
-  disclaimer:
-    'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy (www.beamery.com/privacy). If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
+  disclaimer: 'some disclaimer',
   dateCreated: 1573826615,
   dateToPublish: 1574345041,
   datePublished: '',
@@ -89,7 +88,7 @@ describe('test take survey components work together', () => {
     );
     const { getByTestId } = render(
       <Provider store={store}>
-        <TakeSurvey />
+        <TakeSurvey match={{ params: { employeeId: 1, surveyId: 1 } }} />
       </Provider>,
     );
 
@@ -108,7 +107,7 @@ describe('test take survey components work together', () => {
     );
     const { getByTestId } = render(
       <Provider store={store}>
-        <TakeSurvey />
+        <TakeSurvey match={{ params: { employeeId: 1, surveyId: 1 } }} />
       </Provider>,
     );
 
@@ -130,7 +129,7 @@ describe('test take survey components work together', () => {
     );
     const { getByTestId, getByRole, getByText } = render(
       <Provider store={store}>
-        <TakeSurvey />
+        <TakeSurvey match={{ params: { employeeId: 1, surveyId: 1 } }} />
       </Provider>,
     );
 
