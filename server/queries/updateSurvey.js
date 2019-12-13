@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
+/* eslint-disable consistent-return */
 const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
@@ -44,46 +45,6 @@ const updateSurvey = async (surveyId, changes) => {
       }
       const questionsFromSurvey = changes.questions;
 
-      const changesToBeMade = {
-        ...changes,
-        recipients: changes.recipientIds
-          ? changes.recipientIds
-          : changes.recipients,
-        questions: orderedQuestionIds,
-      };
-      const result = await surveys.updateOne(
-        {
-          _id: ObjectID(surveyId),
-        },
-        {
-          $set: changesToBeMade,
-        },
-      );
-      await surveys.findOne({
-        _id: ObjectID(surveyId),
-      });
-      // if recipient has answered
-      if (changes.answersFromEmployee) {
-        await surveys.updateOne(
-          {
-            _id: ObjectID(surveyId),
-            'recipients.employeeId': ObjectID(employeeId),
-          },
-          { $set: { 'recipients.$.completed': true } },
-        );
-        await surveys.updateOne(
-          { _id: ObjectID(surveyId) },
-          {
-            $push: {
-              responses: {
-                employeeId: anonymous ? null : employeeId,
-                answers: changes.answersFromEmployee,
-              },
-            },
-          },
-        );
-      }
-      // change the pre-existing questions in the collection
       questionsFromSurvey.map(async (question) => {
         // if they have a _id prop, they exist already in the collection
         if (question._id) {
@@ -95,11 +56,50 @@ const updateSurvey = async (surveyId, changes) => {
               { $set: questionWithoutId },
             );
           } catch (error) {
-            console.error(error);
+            console.log(error);
           }
         }
       });
-      return result;
+      const changesToBeMade = {
+        ...changes,
+        recipients: changes.recipientIds
+          ? changes.recipientIds
+          : changes.recipients,
+        questions: orderedQuestionIds,
+      };
+      await surveys.updateOne(
+        {
+          _id: ObjectID(surveyId),
+        },
+        {
+          $set: changesToBeMade,
+        },
+      );
+      await surveys.findOne({
+        _id: ObjectID(surveyId),
+      });
+    }
+    // if recipient has answered
+    if (changes.answers) {
+      await surveys.updateOne(
+        {
+          _id: ObjectID(surveyId),
+          'recipients.employeeId': ObjectID(employeeId),
+        },
+        { $set: { 'recipients.$.completed': true } },
+      );
+      await surveys.updateOne(
+        { _id: ObjectID(surveyId) },
+        {
+          $push: {
+            responses: {
+              employeeId: anonymous ? null : employeeId,
+              answers: changes.answers,
+            },
+          },
+        })
+      return
+    
     }
 
     const result = await surveys.updateOne(
