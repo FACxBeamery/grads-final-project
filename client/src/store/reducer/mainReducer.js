@@ -4,7 +4,7 @@ const initalState = {
   checkingIfAuthed: true,
 };
 
-const adminLoginReducer = (state = initalState, action) => {
+const mainReducer = (state = initalState, action) => {
   const { payload } = action;
   switch (action.type) {
     case CHECKING_IF_AUTHED:
@@ -14,4 +14,4 @@ const adminLoginReducer = (state = initalState, action) => {
   }
 };
 
-export default adminLoginReducer;
+export default mainReducer;

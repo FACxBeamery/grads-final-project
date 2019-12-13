@@ -39,7 +39,7 @@ const AdminLogin = () => {
   useEffect(() => {
     const { auth } = data;
     if (auth){
-      setTimeout(() => history.replace(from), 200);
+      history.replace(from);
     }
   }, [from, history, data])
 

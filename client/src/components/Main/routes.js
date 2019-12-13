@@ -15,6 +15,6 @@ export const protectedRoutes = [
   { path: '/admin', component: Dashboard },
   { path: '/admin/surveys/create', component: CreateSurvey },
   { path: '/admin/surveys/edit/:id', component: EditSurvey },
-  { path: '/admin/surveys/templat', component: SurveyBuilderFromTemplate },
+  { path: '/admin/surveys/template', component: SurveyBuilderFromTemplate },
   { path: '/admin/surveys/:id', component: SurveyDetail },
 ];

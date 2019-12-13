@@ -8,8 +8,8 @@ import { Box } from '@material-ui/core';
 import Header from '../Header/Header';
 
 import PageNotFound from '../../pages/PageNotFound';
-import LoadingPageOrRedirect from './LoadingPageOrRedirect'
-import { routes, protectedRoutes } from './routes'
+import LoadingPageOrRedirect from './LoadingPageOrRedirect';
+import { routes, protectedRoutes } from './routes';
 
 import addTokenToEveryRequest from '../../utils/addAuthorizationHeaderToEveryRequest';
 import deleteTokenOn401StatusCodes from '../../utils/deleteTokenOn401StatusCodes';
@@ -27,34 +27,48 @@ const Main = ({ history }) => {
   useEffect(() => {
     addTokenToEveryRequest();
     deleteTokenOn401StatusCodes(axios);
-  })
+  });
 
   useEffect(() => {
-    if ((history.location.pathname).startsWith('/admin')){
-      dispatch({ type: CHECKING_IF_AUTHED, payload: { checkingIfAuthed: true } });
-      checkTokenIsAuth(dispatch, auth).then(() => 
-        dispatch({ type: CHECKING_IF_AUTHED, payload: { checkingIfAuthed: false } }))
+    if (history.location.pathname.startsWith('/admin')) {
+      dispatch({
+        type: CHECKING_IF_AUTHED,
+        payload: { checkingIfAuthed: true },
+      });
+      checkTokenIsAuth(dispatch, auth).then(() =>
+        dispatch({
+          type: CHECKING_IF_AUTHED,
+          payload: { checkingIfAuthed: false },
+        }),
+      );
     }
-  }, [auth, dispatch, history.action, history.location, history.location.key])
+  }, [auth, dispatch, history.action, history.location, history.location.key]);
 
-  
-  
   // eslint-disable-next-line react/prop-types
   const ProtectedRoute = ({ component: Component, ...rest }) => {
     return (
-      <Route 
+      <Route
         {...rest}
         render={(props) => {
-          return !checkingIfAuthed && auth
-          ? <Component {...props} />
-          : <LoadingPageOrRedirect {...props} checkingIfAuthed={checkingIfAuthed} />
+          return !checkingIfAuthed && auth ? (
+            <Component {...props} />
+          ) : (
+            <LoadingPageOrRedirect
+              {...props}
+              checkingIfAuthed={checkingIfAuthed}
+            />
+          );
         }}
       />
-      )
-  }
+    );
+  };
 
-  const routesMap = routes.map(rProps => <Route key={rProps.path} {...rProps} />)
-  const protectedRoutesMap = protectedRoutes.map(prProps => <ProtectedRoute key={prProps.path} {...prProps} />)
+  const routesMap = routes.map((rProps) => (
+    <Route exact key={rProps.path} {...rProps} />
+  ));
+  const protectedRoutesMap = protectedRoutes.map((prProps) => (
+    <ProtectedRoute exact key={prProps.path} {...prProps} />
+  ));
 
   return (
     <main>
@@ -64,8 +78,8 @@ const Main = ({ history }) => {
         </Box>
         <Box mx={4}>
           <Switch>
-            { routesMap }
-            { protectedRoutesMap }
+            {routesMap}
+            {protectedRoutesMap}
             <Route component={PageNotFound} />
           </Switch>
         </Box>
