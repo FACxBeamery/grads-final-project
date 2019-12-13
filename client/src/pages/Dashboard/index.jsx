@@ -129,7 +129,7 @@ const Dashboard = ({ history }) => {
   return (
     <Box>
       <Box display='flex' alignItems='center' justifyContent='space-between'>
-        <Typography variant='h2'>Dashboard</Typography>
+        <Typography variant='h1'>Dashboard</Typography>
         <Box display='flex' flexDirection='column' alignItems='center'>
           <Box mb={2}>
             <Button
