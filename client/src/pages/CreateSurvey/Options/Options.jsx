@@ -88,6 +88,10 @@ const Option = ({ optionIndex, questionIndex }) => {
   const optionTextIsBiggerThanMaxValue = text && text.length > 280;
   const optionTextIsSmallerThanMinValue = text && text.length < 2;
   const optionTextIsEmpty = text === '';
+
+  const setOptionTextAndRefreshErrorsBag = (e) =>
+    setOptionText(e, `${questionIndex}${optionIndex}`);
+
   return (
     <Box display='flex'>
       <Box
@@ -125,7 +129,7 @@ const Option = ({ optionIndex, questionIndex }) => {
           label='Answer text'
           value={text || ''}
           name='text'
-          onChange={(e) => setOptionText(e, `${questionIndex}${optionIndex}`)}
+          onChange={setOptionTextAndRefreshErrorsBag}
           error={Boolean(
             optionTextIsBiggerThanMaxValue ||
               optionTextIsSmallerThanMinValue ||

@@ -101,6 +101,18 @@ const Question = ({ questionIndex }) => {
   const questionTitleIsBiggerThanMaxValue = title && title.length > 280;
   const questionTitleIsSmallerThanMinValue = title && title.length < 2;
   const questionTitleIsEmpty = title === '';
+
+  const setQuestionTitleAndRefreshErrorsBag = (e) =>
+    setQuestionData(
+      e,
+      'text',
+      'title',
+      title,
+      2,
+      280,
+      `question${questionIndex}`,
+    );
+
   return (
     <Box display='flex'>
       <Box
@@ -153,19 +165,9 @@ const Question = ({ questionIndex }) => {
               value={title || ''}
               name='title'
               label='Question'
-              onChange={
-                (e) =>
-                  setQuestionData(
-                    e,
-                    'text',
-                    'title',
-                    title,
-                    2,
-                    280,
-                    `question${questionIndex}`,
-                  )
-                // eslint-disable-next-line react/jsx-curly-newline
-              }
+              onChange={setQuestionTitleAndRefreshErrorsBag}
+
+              // eslint-disable-next-line react/jsx-curly-newline
             />
           </Box>
           <Box justifySelf='flex-end'>
