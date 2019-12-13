@@ -54,7 +54,6 @@ const Main = () => {
           </Switch>
         </Box>
       </Box>
-      {/* {snackbar} */}
       {open && (
         <Snackbar message={message} variant={variant} timeopened={timeOpened} />
       )}

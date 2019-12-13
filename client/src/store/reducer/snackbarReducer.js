@@ -1,9 +1,6 @@
-// import React from 'react';
-// import Snackbar from '../../components/Snackbar';
 import { UPDATE_SNACKBAR, SET_SNACKBAR_OPEN } from '../actions/snackbarActions';
 
 const initalState = {
-  // snackbar: <Snackbar message='' variant='success' timeopened={Date.now()} />,
   snackbar: {
     message: '',
     variant: 'success',
