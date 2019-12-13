@@ -54,7 +54,7 @@ const AdminLogin = () => {
         window.localStorage.setItem('jwt_token', token);
         const payload1 = {
           open: true,
-          snakbar: {
+          snackbar: {
             message,
             variant: 'success',
             timeOpened: Date.now(),
@@ -66,8 +66,12 @@ const AdminLogin = () => {
         dispatch({ type: SET_HELPER_TEXT, payload: payload2 });
       } else {
         const payload1 = {
-          message,
-          variant: 'error',
+          open: true,
+          snackbar: {
+            message,
+            variant: 'error',
+            timeOpened: Date.now(),
+          },
         };
         dispatch({ type: UPDATE_SNACKBAR, payload: payload1 });
 
@@ -77,8 +81,12 @@ const AdminLogin = () => {
       setLoginOnPost(auth);
     } catch (err) {
       const payload = {
-        message: 'An unexpected error occured. Try again later.',
-        variant: 'error',
+        open: true,
+        snackbar: {
+          message: 'An unexpected error occured. Try again later.',
+          variant: 'error',
+          timeOpened: Date.now(),
+        },
       };
       dispatch({ type: UPDATE_SNACKBAR, payload });
     }

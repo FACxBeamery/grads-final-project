@@ -18,6 +18,7 @@ const snackbarReducer = (state = initalState, action) => {
     case UPDATE_SNACKBAR:
       return {
         ...state,
+        ...payload,
         snackbar: { ...state.snackbar, ...payload.snackbar },
       };
     case SET_SNACKBAR_OPEN:

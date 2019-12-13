@@ -20,8 +20,6 @@ const Main = () => {
   );
   const { open } = useSelector((state) => state.snackbarReducer);
 
-  console.log('Snackabr state, in Main:', message, variant, timeOpened);
-
   return (
     <main>
       <Box>
