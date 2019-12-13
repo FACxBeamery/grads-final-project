@@ -43,7 +43,7 @@ const Main = () => {
               component={SurveyBuilderFromTemplate}
             />
             <Route exact path='/admin/surveys/:id' component={SurveyDetail} />
-            <Route exact path='/takesurvey' component={TakeSurvey} />
+            <Route exact path='/surveys/:surveyId/:employeeId' component={TakeSurvey} />
           </Switch>
         </Box>
       </Box>

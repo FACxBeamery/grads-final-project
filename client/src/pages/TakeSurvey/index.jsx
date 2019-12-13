@@ -9,14 +9,13 @@ import SurveySubmit from './SurveySubmit/SurveySubmit';
 import SurveyClosedMessage from './SurveyClosedMessage/SurveyClosedMessage';
 import AlreadyCompletedMessage from './AlreadyCompletedMessage/AlreadyCompletedMessage'
 
-const TakeSurvey = () => {
+const TakeSurvey = ({ match }) => {
   const dispatch = useDispatch();
   const activeQuestion = useSelector(
     (state) => state.takeSurveyReducer.activeQuestion,
   );
 
-  const employeeId = "507f1f77bcf86cd799439017"
-  const surveyId = "508f1f99bcf86cd799439214"
+  const { employeeId, surveyId } = match.params
 
   useEffect(() => {
     const getSurvey = async () => {
@@ -30,7 +29,7 @@ const TakeSurvey = () => {
     };
     getSurvey();
 
-  }, [dispatch]);
+  }, [dispatch, employeeId, surveyId]);
 
   const surveyClosed = useSelector(state => state.takeSurveyReducer.surveyClosed)
 
@@ -45,7 +44,7 @@ const TakeSurvey = () => {
     < Box display='flex' flexDirection='column' >
       <UserProgressStepper />
       {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
-      {activeQuestion === 'end' ? <SurveySubmit /> : null}
+      {activeQuestion === 'end' ? <SurveySubmit match={match} /> : null}
     </Box >)
 
 

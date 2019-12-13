@@ -41,6 +41,21 @@ const updateSurvey = async (surveyId, changes) => {
         });
       }
       const questionsFromSurvey = changes.questions;
+      questionsFromSurvey.map(async (question) => {
+        // if they have a _id prop, they exist already in the collection
+        if (question._id) {
+          const questionWithoutId = { ...question };
+          delete questionWithoutId._id;
+          try {
+            await questions.updateOne(
+              { _id: ObjectID(question._id) },
+              { $set: questionWithoutId },
+            );
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
       const changesToBeMade = {
         ...changes,
         recipients: changes.recipientIds,
@@ -57,44 +72,29 @@ const updateSurvey = async (surveyId, changes) => {
       await surveys.findOne({
         _id: ObjectID(surveyId),
       });
-      // if recipient has answered
-      if (changes.answersFromEmployee) {
-        await surveys.updateOne(
-          {
-            _id: ObjectID(surveyId),
-            'recipients.employeeId': ObjectID(employeeId),
-          },
-          { $set: { 'recipients.$.completed': true } },
-        );
-        await surveys.updateOne(
-          { _id: ObjectID(surveyId) },
-          {
-            $push: {
-              responses: {
-                employeeId: anonymous ? null : employeeId,
-                answers: changes.answersFromEmployee,
-              },
+    }
+    // if recipient has answered
+    if (changes.answers) {
+      console.log('got in here')
+      await surveys.updateOne(
+        {
+          _id: ObjectID(surveyId),
+          'recipients.employeeId': ObjectID(employeeId),
+        },
+        { $set: { 'recipients.$.completed': true } },
+      );
+      await surveys.updateOne(
+        { _id: ObjectID(surveyId) },
+        {
+          $push: {
+            responses: {
+              employeeId: anonymous ? null : employeeId,
+              answers: changes.answers,
             },
           },
-        );
-      }
+        })
+      return
       // change the pre-existing questions in the collection
-      questionsFromSurvey.map(async (question) => {
-        // if they have a _id prop, they exist already in the collection
-        if (question._id) {
-          const questionWithoutId = { ...question };
-          delete questionWithoutId._id;
-          try {
-            await questions.updateOne(
-              { _id: ObjectID(question._id) },
-              { $set: questionWithoutId },
-            );
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      });
-      return result
     }
     const result = await surveys.updateOne(
       {
