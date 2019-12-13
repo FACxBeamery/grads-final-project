@@ -44,7 +44,7 @@ const TakeSurvey = ({ match }) => {
     < Box display='flex' flexDirection='column' >
       <UserProgressStepper />
       {activeQuestion === 'start' ? <SurveyDescription /> : <QuestionCard />}
-      {activeQuestion === 'end' ? <SurveySubmit match={match} /> : null}
+      {activeQuestion === 'end' && <SurveySubmit match={match} />}
     </Box >)
 
 
