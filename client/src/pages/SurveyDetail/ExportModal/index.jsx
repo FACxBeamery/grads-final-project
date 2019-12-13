@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import FileDownload from 'js-file-download';
 
+import { UPDATE_SNACKBAR } from '../../../store/actions/snackbarActions';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -33,13 +35,22 @@ const createValidFilename = (string) => {
   return stringToFilename;
 };
 
-const downloadSurvey = async (id, anonymous, title) => {
+const downloadSurvey = async (id, anonymous, title, dispatch) => {
   try {
-    axios.get(`/download/${id}/${anonymous}`).then((response) => {
-      FileDownload(response.data, `${createValidFilename(title)}.csv`);
-    });
+    const res = await axios.get(`/download/${id}/${anonymous}`);
+    FileDownload(res.data, `${createValidFilename(title)}.csv`);
   } catch (error) {
-    // TODO put error message here
+    console.log('LOL');
+    const snackbarPayload = {
+      open: true,
+      snackbar: {
+        message: 'Error downloading CSV - Try again',
+        variant: 'error',
+        timeOpened: Date.now(),
+      },
+    };
+
+    dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
   }
 };
 
@@ -111,7 +122,7 @@ const ExportModal = () => {
         <Button
           variant='contained'
           color='secondary'
-          onClick={() => downloadSurvey(_id, anonymousExport, title)}
+          onClick={() => downloadSurvey(_id, anonymousExport, title, dispatch)}
         >
           Export results
         </Button>
