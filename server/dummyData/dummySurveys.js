@@ -9,7 +9,7 @@ module.exports = [
       'A survey to help us gauge how the graduate programme is going and to learn from your opinions',
     status: 'draft',
     disclaimer:
-      'In addition to your opinion, we will also collect your name and email address for a follow up if required. We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we we will process your data in line with the Beamery Privacy Policy. If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
+      'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy. If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
     dateCreated: 1573826615,
     dateEdited: 1572617513,
     dateToPublish: 1574345041,
@@ -57,7 +57,7 @@ module.exports = [
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
     status: 'active',
     disclaimer:
-      'In addition to your opinion, we will also collect your name and email address for a follow up if required. We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we we will process your data in line with the Beamery Privacy Policy. If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
+      'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy. If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
     dateCreated: 1572617513,
     dateToPublish: 1574259113,
     dateEdited: 1572617513,
@@ -238,7 +238,7 @@ module.exports = [
       'A survey description that is about 2 sentences long yeah blah blah this is the description. Hope you like this description! :0',
     status: 'closed',
     disclaimer:
-      'In addition to your opinion, we will also collect your name and email address for a follow up if required. We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we we will process your data in line with the Beamery Privacy Policy. If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
+      'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy. If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
     dateCreated: 1572617513,
     dateEdited: 1572617513,
     dateToPublish: 1574259113,
