@@ -44,6 +44,7 @@ const updateSurvey = async (surveyId, changes) => {
         });
       }
       const questionsFromSurvey = changes.questions;
+
       questionsFromSurvey.map(async (question) => {
         // if they have a _id prop, they exist already in the collection
         if (question._id) {
@@ -61,7 +62,9 @@ const updateSurvey = async (surveyId, changes) => {
       });
       const changesToBeMade = {
         ...changes,
-        recipients: changes.recipientIds,
+        recipients: changes.recipientIds
+          ? changes.recipientIds
+          : changes.recipients,
         questions: orderedQuestionIds,
       };
       await surveys.updateOne(
@@ -96,7 +99,7 @@ const updateSurvey = async (surveyId, changes) => {
           },
         })
       return
-      // change the pre-existing questions in the collection
+    
     }
 
     const result = await surveys.updateOne(
@@ -107,6 +110,7 @@ const updateSurvey = async (surveyId, changes) => {
         $set: changes,
       },
     );
+
     return result;
   } catch (err) {
     return err;

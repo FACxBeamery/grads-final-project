@@ -74,7 +74,6 @@ const postSurveys = async (req, res) => {
   }
   // Joi.validate(surveyObject, surveyObjectSchema, async (err, result) => {
   //   if (err) {
-  //     console.log('Joi validation failed');
   //     res.send(err.message);
   //   } else {
   //     try {

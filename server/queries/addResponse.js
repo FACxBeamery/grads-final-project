@@ -3,7 +3,6 @@ const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
 const addResponse = async (employeeId, surveyId, anonymous, answers) => {
-  console.log('Reached response query');
   const db = getDb();
   const surveysCollection = db.collection('Surveys');
   const responseForDb = {
@@ -25,12 +24,11 @@ const addResponse = async (employeeId, surveyId, anonymous, answers) => {
       { $set: { 'recipients.$.completed': true } },
     );
     const secondUpdateSuccessful = secondQueryReturn.result.ok === 1;
-    console.log('Response added to DB!');
     if (!firstUpdateSuccessful || !secondUpdateSuccessful) {
       console.log('Query unsuccessful!');
       return new Error('Query unsuccessful');
     }
-    return 'success'
+    return 'success';
   } catch (err) {
     console.log('Unable to add response to database.');
     return new Error(err.message);
