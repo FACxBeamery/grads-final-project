@@ -10,8 +10,6 @@ const updateSurvey = async (surveyId, changes) => {
     const surveys = db.collection('Surveys');
     const questions = db.collection('Questions');
 
-    console.log('CHANGES', changes);
-
     // checking if survey is anon
     const surveyBeforeChanges = await surveys.findOne({
       _id: ObjectID(surveyId),
@@ -69,8 +67,6 @@ const updateSurvey = async (surveyId, changes) => {
           : changes.recipients,
         questions: orderedQuestionIds,
       };
-      console.log('CHANGES TO BE MADE', changesToBeMade);
-
       await surveys.updateOne(
         {
           _id: ObjectID(surveyId),
@@ -82,7 +78,6 @@ const updateSurvey = async (surveyId, changes) => {
       const result = await surveys.findOne({
         _id: ObjectID(surveyId),
       });
-      console.log('UPDATED SURVEY IN COLL', result);
       return result;
     }
     // if recipient has answered
@@ -116,7 +111,6 @@ const updateSurvey = async (surveyId, changes) => {
         $set: changes,
       },
     );
-    console.log('IT ACTUALLY STOPPED HERE', result);
 
     return result;
   } catch (err) {
