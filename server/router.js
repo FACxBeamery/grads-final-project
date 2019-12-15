@@ -4,7 +4,7 @@ const router = express();
 
 const getSurveys = require('./handlers/getSurveys');
 const patchSurvey = require('./handlers/patchSurvey');
-const getSurveyAndQuestions = require('./handlers/getSurveyAndQuestions');
+// const getSurveyAndQuestions = require('./handlers/getSurveyAndQuestions');
 
 const getSurvey = require('./handlers/getSurvey');
 const postSurveys = require('./handlers/postSurveys');
