@@ -17,7 +17,7 @@ import {
 } from '@material-ui/icons';
 import { amber, green } from '@material-ui/core/colors';
 
-import { SET_SNACKBAR_OPEN }  from '../../store/actions/snackbarActions';
+import { SET_SNACKBAR_OPEN } from '../../store/actions/snackbarActions';
 
 
 const variantIcon = {
@@ -121,7 +121,7 @@ const CustomizedSnackbars = ({ message, variant, timeopened }) => {
   };
 
   return (
-    message && (
+    message && open && (
       <div>
         <Snackbar
           anchorOrigin={{
