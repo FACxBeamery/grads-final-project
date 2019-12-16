@@ -25,12 +25,17 @@ import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
 import formatDate from '../../utils/formatDate';
 
 const publishSurvey = async (_id, dispatch) => {
-  const response = await axios.patch(`/surveys/${_id}`, {
-    status: 'active',
-    datePublished: Date.now(),
-  });
-  const payload = response.status === 204;
-  dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
+  try {
+    const response = await axios.patch(`/surveys/${_id}`, {
+      status: 'active',
+      datePublished: Date.now(),
+    });
+    const payload = response.status === 204;
+    dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
+  } catch (err) {
+    console.error(err.message)
+    dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false })
+  }
 };
 const setSurveyData = (data, dispatch) => {
   const payload = data;
@@ -46,12 +51,17 @@ const getSurvey = async (idToSend, dispatch) => {
   }
 };
 const closeSurvey = async (_id, dispatch) => {
-  const response = await axios.patch(`/surveys/${_id}`, {
-    status: 'closed',
-    dateClosed: Date.now(),
-  });
-  const payload = response.status === 204;
-  dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
+  try {
+    const response = await axios.patch(`/surveys/${_id}`, {
+      status: 'closed',
+      dateClosed: Date.now(),
+    });
+    const payload = response.status === 204;
+    dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
+  } catch (err) {
+    console.error(err.message)
+    dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload: false });
+  }
 };
 const PublishSurveyButton = ({ surveyId }) => {
   const dispatch = useDispatch();
@@ -328,16 +338,16 @@ const SurveyDetail = ({ match }) => {
           {recipients.length ? (
             <EmployeeCompletionTable />
           ) : (
-            <Typography>
-              No recipients have been added. Select Edit Survey to start adding.
+              <Typography>
+                No recipients have been added. Select Edit Survey to start adding.
             </Typography>
-          )}
+            )}
 
           {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
-      {successfulPublish && SnackbarPublish()}
-      {successfulClose && SnackbarClose()}
+      {[true, false].includes(successfulPublish) && SnackbarPublish()}
+      {[true, false].includes(successfulClose) && SnackbarClose()}
       <ExportModal />
     </Box>
   );
