@@ -60,6 +60,8 @@ const dummySurveyClosed = {
 describe('Testing the Survey Detail page', () => {
   it('Testing the workings of the entire Survey Detail page, including the stepper and buttons.', async () => {
     // eslint-disable-next-line no-underscore-dangle
+    global.confirm = jest.fn().mockImplementation(() => true)
+
     const mockAxiosGetFirst = jest.spyOn(axios, 'get');
     mockAxiosGetFirst.mockImplementation((url) => {
       if (url === '/employees') {
@@ -137,7 +139,6 @@ describe('Testing the Survey Detail page', () => {
     mockAxiosGetSecond.mockRestore();
 
     fireEvent.click(getByText('Close Survey'));
-
     const mockAxiosGetThird = jest.spyOn(axios, 'get');
     mockAxiosGetThird.mockImplementation((url) => {
       if (url === '/employees') {

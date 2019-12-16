@@ -4,7 +4,7 @@ const router = express();
 
 const getSurveys = require('./handlers/getSurveys');
 const patchSurvey = require('./handlers/patchSurvey');
-const getSurveyAndQuestions = require('./handlers/getSurveyAndQuestions');
+// const getSurveyAndQuestions = require('./handlers/getSurveyAndQuestions');
 
 const getSurvey = require('./handlers/getSurvey');
 const postSurveys = require('./handlers/postSurveys');
@@ -22,12 +22,12 @@ router.get('/test', (req, res) =>
 );
 
 // TODO change this endpoint when survey routes are protected
-router.get('/surveys:id', getSurveyAndQuestions);
+// router.get('/surveys:id', getSurveyAndQuestions);
 
 router.post('/login', postLogin);
 
-router.patch('/surveys/:id', patchSurvey);
 router.get('/surveys/:id', getSurvey);
+router.patch('/surveys/:id', patchSurvey);
 router.get('/surveys', getSurveys);
 
 router.post('/surveys', postSurveys);

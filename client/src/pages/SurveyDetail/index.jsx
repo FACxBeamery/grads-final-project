@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-alert */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -14,9 +16,9 @@ import {
   StepLabel,
 } from '@material-ui/core';
 
-import Snackbar from '../../components/Snackbar';
 import ExportModal from './ExportModal';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
+import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
 import SlackModal from '../../components/SlackModal/SlackModal';
 import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
@@ -60,9 +62,11 @@ const PublishSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
-        await publishSurvey(surveyId, dispatch);
-        await getSurvey(surveyId, dispatch);
+        if (confirm('Are you sure you want to publish this survey?')) {
+          dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+          await publishSurvey(surveyId, dispatch);
+          await getSurvey(surveyId, dispatch);
+        }
       }}
     >
       Publish Survey
@@ -78,9 +82,15 @@ const CloseSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        dispatch({ type: 'RESET_EMPLOYEE_DATA' });
-        await closeSurvey(surveyId, dispatch);
-        await getSurvey(surveyId, dispatch);
+        if (
+          confirm(
+            'Are you sure you want to close this survey? This action cannot be undone.',
+          )
+        ) {
+          dispatch({ type: 'RESET_EMPLOYEE_DATA' });
+          await closeSurvey(surveyId, dispatch);
+          await getSurvey(surveyId, dispatch);
+        }
       }}
     >
       Close Survey
@@ -189,36 +199,6 @@ const SurveyDetailProgressWheel = () => {
     />
   );
 };
-const SnackbarPublish = () => {
-  const { successfulPublish } = useSelector(
-    (state) => state.surveyDetailReducer,
-  );
-  return (
-    <Snackbar
-      message={
-        successfulPublish
-          ? 'The survey is now active and can welcome responses.'
-          : 'There was an error publishing survey. Please try again.'
-      }
-      variant={successfulPublish ? 'success' : 'error'}
-      timeopened={Date.now()}
-    />
-  );
-};
-const SnackbarClose = () => {
-  const { successfulClose } = useSelector((state) => state.surveyDetailReducer);
-  return (
-    <Snackbar
-      message={
-        successfulClose
-          ? 'The survey is now closed. No more responses will be recorded.'
-          : 'There was an error closing the survey. Please try again.'
-      }
-      variant={successfulClose ? 'success' : 'error'}
-      timeopened={Date.now()}
-    />
-  );
-};
 const EditSurveyButton = () => {
   const { _id } = useSelector((state) => state.surveyDetailReducer);
   return (
@@ -264,6 +244,36 @@ const SurveyDetail = ({ match }) => {
 
     getSurvey(id, dispatch);
   }, [match.params, dispatch]);
+
+  const SnackbarPublish = () => {
+    const snackbarPayload = {
+      open: true,
+      snackbar: {
+        message: successfulPublish
+          ? 'The survey is now active and can welcome responses.'
+          : 'There was an error publishing survey. Please try again.',
+        variant: successfulPublish ? 'success' : 'error',
+        timeopened: Date.now(),
+      },
+    };
+
+    dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
+  };
+
+  const SnackbarClose = () => {
+    const snackbarPayload = {
+      open: true,
+      snackbar: {
+        message: successfulClose
+          ? 'The survey is now closed. No more responses will be recorded.'
+          : 'There was an error closing the survey. Please try again.',
+        variant: successfulClose ? 'success' : 'error',
+        timeopened: Date.now(),
+      },
+    };
+
+    dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
+  };
 
   return (
     <Box display='flex' flexDirection='column' align-items='flex-start'>
@@ -331,8 +341,8 @@ const SurveyDetail = ({ match }) => {
           )}
         </Box>
       )}
-      {successfulPublish && <SnackbarPublish />}
-      {successfulClose && <SnackbarClose />}
+      {successfulPublish && SnackbarPublish()}
+      {successfulClose && SnackbarClose()}
       <ExportModal />
     </Box>
   );
