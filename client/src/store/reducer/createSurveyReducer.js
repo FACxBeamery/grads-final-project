@@ -59,6 +59,11 @@ const objectWithoutKey = (obj, key) => {
   return newObj;
 };
 
+const addOptionsToEachQuestion = (questions) =>
+  questions.map((question) =>
+    question.options ? question : { ...question, options: [''] },
+  );
+
 const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
@@ -66,12 +71,17 @@ const createSurveyReducer = (state = initalState, action) => {
     case 'TOGGLE_MODAL':
       return { ...state, openModal: !state.openModal };
     case 'SET_SURVEY_DATA':
-      return { ...state, ...payload };
+      return {
+        ...state,
+        ...payload,
+        questions: addOptionsToEachQuestion(payload.questions),
+      };
 
     case 'SET_SURVEY_DATA_FROM_TEMPLATE':
       return {
         ...state,
         ...payload,
+        questions: addOptionsToEachQuestion(payload.questions),
         title: `COPY FROM - ${payload.title}`,
         responses: [],
         dateCreated: Date.now(),
