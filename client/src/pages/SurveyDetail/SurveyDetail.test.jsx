@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
@@ -60,7 +61,7 @@ const dummySurveyClosed = {
 describe('Testing the Survey Detail page', () => {
   it('Testing the workings of the entire Survey Detail page, including the stepper and buttons.', async () => {
     // eslint-disable-next-line no-underscore-dangle
-    global.confirm = jest.fn().mockImplementation(() => true)
+    global.confirm = jest.fn().mockImplementation(() => true);
 
     const mockAxiosGetFirst = jest.spyOn(axios, 'get');
     mockAxiosGetFirst.mockImplementation((url) => {
