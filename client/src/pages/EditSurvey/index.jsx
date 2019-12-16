@@ -88,7 +88,9 @@ const EditSurvey = ({ match, history }) => {
     dispatch({ type: 'RESET_EMPLOYEE_DATA' });
     dispatch({ type: 'RESET_ERRORS_BAG' });
     const setSurveyData = (data) => {
-      const payload = data;
+      let payload = data;
+      // remove _id key from data that was sent back from db
+      payload = (({ _id, ...others }) => ({ ...others }))(payload);
       dispatch({ type: 'SET_SURVEY_DATA', payload });
       dispatch({
         type: 'SET_EMPLOYEE_TABLE_RECIPIENTS',
