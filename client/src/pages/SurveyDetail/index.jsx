@@ -30,7 +30,6 @@ const publishSurvey = async (_id, dispatch) => {
       status: 'active',
       datePublished: Date.now(),
     });
-    console.log(response)
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
   } catch (err) {
