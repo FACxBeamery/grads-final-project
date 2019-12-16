@@ -1,91 +1,99 @@
-// const Joi = require('@hapi/joi');
+const Joi = require('@hapi/joi');
+
+const passport = require('passport');
 const addQuestions = require('../queries/addQuestions');
 const createSurvey = require('../queries/createSurvey');
 
-/* Survey schema:
-    {
-        id: ObjectID (auto generated)
-        title: string
-        description: string
-        status: created/active/closed
-        dateCreated: date
-        dateToPublish: date
-        datePublished: date
-        dateToClose: date
-        dateClosed: date
-        anonymous: boolean
-        recipients: [{employeeId: ObjectId completed: boolean}]
-        questions: [{questionId: ObjectId position: int}]
-        responses: [{
-            employeeId: ObjectID (or null if anon.)
-            answers: [{
-                questionId: ObjectId
-                answer: string/int (depends on question type)
-                comment: null or string
-                }]
-        }]
+const postSurveys = async (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, async (err, user, info) => {
+    if (err) {
+      throw new Error(err);
     }
-    */
+    if (info) {
+      return res.status(401).json({ message: info.message });
+    }
+    if (user) {
+      // eslint-disable-next-line no-unused-vars
+      const surveyObjectSchema = Joi.object().keys({
+        title: Joi.string() // !_id is not allowed under this schema!
+          .min(2)
+          .max(60)
+          .required(),
+        description: Joi.string()
+          .min(2)
+          .max(280)
+          .required(),
+        disclaimer: Joi.string()
+          .min(2)
+          .max(1000)
+          .required(),
+        status: Joi.string().valid('draft', 'active', 'closed'),
+        dateCreated: Joi.alternatives()
+          .try(Joi.string().valid(''), Joi.number().integer())
+          .required(),
+        dateEdited: Joi.alternatives()
+          .try(Joi.string().valid(''), Joi.number().integer())
+          .required(), // !can dateEdited = '' or is required?!
+        dateToPublish: Joi.alternatives()
+          .try(Joi.string().valid(''), Joi.number().integer())
+          .required(),
+        datePublished: Joi.alternatives()
+          .try(Joi.string().valid(''), Joi.number().integer())
+          .required(),
+        dateToClose: Joi.alternatives()
+          .try(Joi.string().valid(''), Joi.number().integer())
+          .required(),
+        dateClosed: Joi.alternatives()
+          .try(Joi.string().valid(''), Joi.number().integer())
+          .required(),
+        anonymous: Joi.boolean().required(),
+        recipients: Joi.array().items(
+          Joi.object().keys({
+            employeeId: Joi.string(),
+            completed: Joi.boolean(),
+          }),
+        ),
+        // questions: Joi.array().items(
+        //   Joi.object().keys({ position: Joi.number().integer() }), // !do questions need a position anymore?!
+        // ),
+        questions: Joi.array().items(Joi.string()),
+        responses: Joi.array().items(
+          Joi.object().keys({
+            employeeId: Joi.string(), // !not required because can be anonymous!
+            answers: Joi.array().items(
+              Joi.object().keys({
+                questionId: Joi.string(),
+                // answer: Joi.alternatives()
+                //   .try(Joi.string(), Joi.number().integer()) // !can answer be an integer?!
+                //   .required(),
+                answer: Joi.string().required(),
+                comment: Joi.string().allow(null),
+              }),
+            ),
+          }),
+        ),
+      });
 
-const postSurveys = async (req, res) => {
-  // !! ------ ONLY UNCOMMENT THIS ONCE SURVEY EDITOR IS FINISHED --- !!
-  //   const surveyObjectSchema = Joi.object().keys({
-  //     title: Joi.string()
-  //       .min(5)
-  //       .max(100)
-  //       .required(),
-  //     description: Joi.string()
-  //       .min(5)
-  //       .max(140)
-  //       .required(),
-  //     status: Joi.string().valid('created', 'active', 'closed'),
-  //     dateCreated: Joi.string(),
-  //     dateToPublish: Joi.string(),
-  //     datePublished: Joi.string(),
-  //     dateToClose: Joi.string(),
-  //     dateClosed: Joi.string(),
-  //     anonymous: Joi.boolean(),
-  //     recipients: Joi.array().items(
-  //       Joi.object().keys({ employeeId: Joi.string(), completed: Joi.boolean() }),
-  //     ),
-  //     questions: Joi.array().items(
-  //       Joi.object().keys({ position: Joi.number().integer() }),
-  //     ),
-  //     responses: Joi.array().items(
-  //       Joi.object().keys({
-  //         answers: Joi.array().items(
-  //           Joi.object().keys({
-  //             answer: Joi.alternatives().try(Joi.number(), Joi.string()),
-  //             comment: Joi.string().allow(null),
-  //           }),
-  //         ),
-  //       }),
-  //     ),
-  //   });
-  const surveyObject = req.body;
-  const { questions } = surveyObject;
-  try {
-    const questionIdsObject = await addQuestions(questions);
-    const questionIds = Object.values(questionIdsObject);
-    await createSurvey(surveyObject, questionIds);
-    res.sendStatus(200);
-  } catch (e) {
-    res.status(500).send(e.message);
-  }
-  // Joi.validate(surveyObject, surveyObjectSchema, async (err, result) => {
-  //   if (err) {
-  //     res.send(err.message);
-  //   } else {
-  //     try {
-  //       const questionIdsObject = await addQuestions(questions);
-  //       const questionIds = Object.values(questionIdsObject);
-  //       await createSurvey(surveyObject, questionIds);
-  //       res.sendStatus(200);
-  //     } catch (e) {
-  //       res.status(500).send(e.message);
-  //     }
-  //   }
-  // });
+      const surveyObject = req.body;
+      const { questions } = surveyObject;
+      try {
+        const questionIdsObject = await addQuestions(questions); // !does this need Joi validation also?!
+        const questionIds = Object.values(questionIdsObject);
+
+        const surveyIsValid = surveyObjectSchema.validate(surveyObject);
+
+        if (!surveyIsValid.error) {
+          const postResult = await createSurvey(surveyObject, questionIds);
+          return res.status(200).json({ message: postResult });
+        }
+        throw Error(surveyIsValid.error);
+      } catch (error) {
+        return res.status(500).send(error.message);
+      }
+    }
+
+    return res.status(403).json({ message: "The JWT token isn't valid." });
+  })(req, res, next);
 };
 
 module.exports = postSurveys;

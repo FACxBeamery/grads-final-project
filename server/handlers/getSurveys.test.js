@@ -1,72 +1,8 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
-const { ObjectID } = require('mongodb');
-
 const { initDb, closeDb } = require('../databaseConnection');
-const app = require('../app');
 
-const dummySurvey = {
-  title: 'test survey title',
-  description: 'Test description',
-  status: 'created',
-  dateCreated: '28 NOV 2019 GMT',
-  dateToPublish: '28 NOV 2019 GMT',
-  datePublished: '28 NOV 2019 GMT',
-  dateToClose: '28 NOV 2019 GMT',
-  dateClosed: '28 NOV 2019 GMT',
-  anonymous: false,
-  recipients: [{ employeeId: '321423143214', completed: true }],
-  questions: [
-    {
-      id: ObjectID('707f1f42bcf86dd799439011'),
-      title: 'Please describe your first week in few sentences',
-      type: 'text',
-      required: true,
-      commentEnabled: true,
-    },
-    {
-      id: ObjectID('707f1f87bcf86dd799439021'),
-      title: 'How did you feel at work this week?',
-      type: 'multichoice',
-      required: true,
-      commentEnabled: true,
-      options: [
-        {
-          text: 'really bad',
-          position: 0,
-        },
-        {
-          text: 'bad',
-          position: 1,
-        },
-        {
-          text: 'meh',
-          position: 2,
-        },
-        {
-          text: 'good',
-          position: 3,
-        },
-        {
-          text: 'great',
-          position: 4,
-        },
-      ],
-    },
-  ],
-  responses: [
-    {
-      employeeId: '32123123',
-      answers: [
-        {
-          questionId: '32142314',
-          answer: 'yes!',
-          comment: 'this is a comment',
-        },
-      ],
-    },
-  ],
-};
+const app = require('../app');
 
 describe('Test authentication using JWT tokens', () => {
   beforeEach(() => initDb());
@@ -96,14 +32,20 @@ describe('Test authentication using JWT tokens', () => {
       expect(loginResponse.body.auth).toEqual(true);
       expect(loginResponse.body.token).toBeDefined();
 
+      const {
+        body: { token },
+      } = loginResponse;
+
       const res = await request(app)
-        .post('/surveys')
-        .send(dummySurvey)
-        .set('Accept', 'application/json')
-        .expect(200);
-      console.log('RES', res);
+        .get('/surveys')
+        .set('Authorization', `JWT ${token}`);
 
       expect(res.status).toEqual(200);
+      if (res.body) {
+        // expect(res.body[0]).toHaveProperty('firstName');
+        // expect(res.body[0]).toHaveProperty('lastName');
+        // expect(res.body[0]).toHaveProperty('jobTitle');
+      }
 
       return done();
     } catch (err) {
@@ -114,7 +56,7 @@ describe('Test authentication using JWT tokens', () => {
   it('Responds with message and status 200 when no JWT provided.', async (done) => {
     try {
       const res = await request(app)
-        .get('/employees')
+        .get('/surveys')
         .set('Accept', 'application/json');
 
       expect(res.status).toEqual(401);
@@ -128,7 +70,7 @@ describe('Test authentication using JWT tokens', () => {
   it('Empty JWT token', async (done) => {
     try {
       const res = await request(app)
-        .get('/employees')
+        .get('/surveys')
         .set('Authorization', `JWT `);
 
       expect(res.status).toEqual(401);
