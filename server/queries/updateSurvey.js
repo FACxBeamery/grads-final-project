@@ -75,9 +75,10 @@ const updateSurvey = async (surveyId, changes) => {
           $set: changesToBeMade,
         },
       );
-      await surveys.findOne({
+      const result = await surveys.findOne({
         _id: ObjectID(surveyId),
       });
+      return result;
     }
     // if recipient has answered
     if (changes.answers) {
@@ -97,9 +98,9 @@ const updateSurvey = async (surveyId, changes) => {
               answers: changes.answers,
             },
           },
-        })
-      return
-    
+        },
+      );
+      return;
     }
 
     const result = await surveys.updateOne(
