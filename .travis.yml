@@ -1,11 +1,16 @@
 language: node_js
 services:
-    - docker
+  - docker
 install:
-    - docker --version
-    - docker-compose --version
+  - docker --version
+  - docker-compose --version
 test:
-    - npm test
+  - npm test
 env:
-    global:
-        - NODE_ENV=test JWT_SECRET=dummysecret MONGO_URI=mongodb://db:27017/testdb
+  global:
+    - NODE_ENV=test JWT_SECRET=dummysecret MONGO_URI=mongodb://db:27017/testdb
+deploy:
+  provider: heroku
+  api_key:
+    secure: GohXTI3umfcruQR4Ix2ZjkW7JpkSfFVS0UUgsta6F6zdeTv9yFK3L8q4R1qvEzqUbsQzDFMC9ycSl9102VZYHmmAESKpd7xEs8u8K8wyPC1nvkmUrLSkYjnX5TKRMvslq8zruXgv/JEJ3BA+LUz4Ga9EeOvVSEOWsM6RIfqcMrey3uXrQ+rO1+5rkelWUy2XQtcSwVawRmze7f7bvYx8Y29GDadP7vcSuqpkWmqWq3fymiRI6pqB8N4kkP3187xRMNaE6wYVJdEjMEbPdHNomUx3T1OqvF5hrYNfS9U1s+Xbke3p12LT/JvS6WIcleNhh8PtycGQnGUUM3T5VxEyw4lhaH4D/SFr87MLYj06RHXgLAE200qFQAvbSMVgi2TljIuB9VIB4sCJkxrEAToFixPE2/f91PqWOaww0uW5m82Zm+tQ9i4dnt+J/38MFakz1SWRbMZ6UW1n/NtkpgVc6wyb8k1QUuLbDouCURI0nH2uOXlp8hTg/Fl+YswsgnU9yNl+21cG5afuXdeuv0BOdbXfHk7Vst+wqeA6AesFgUOkDVpLf/Qdkd1AQ2fRc1C9I6osgBk6LJXByaBvipcQv4J12UQYOxZCvpFkRvNBIkrdpZ53xuTotFfLH0aI3Nx02v4hJDJrKMTJ53epEG/qFT+Ee6+XY7D2CcA7up+3BAg=
+    app: vibeAtBeamery
