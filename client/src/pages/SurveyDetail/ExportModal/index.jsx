@@ -39,6 +39,17 @@ const downloadSurvey = async (id, anonymous, title, dispatch) => {
   try {
     const res = await axios.get(`/download/${id}/${anonymous}`);
     FileDownload(res.data, `${createValidFilename(title)}.csv`);
+
+    const snackbarPayload = {
+      open: true,
+      snackbar: {
+        message: 'Download successful',
+        variant: 'success',
+        timeOpened: Date.now(),
+      },
+    };
+
+    dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
   } catch (error) {
     const snackbarPayload = {
       open: true,
