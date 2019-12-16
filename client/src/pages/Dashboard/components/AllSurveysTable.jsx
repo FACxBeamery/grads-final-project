@@ -21,8 +21,9 @@ const AllSurveysTable = ({ history }) => {
     'Survey',
     'Description',
     'Responses',
+    'Date Created',
     'Date Published',
-    'Date to Close',
+    'Date Closed',
     'Status',
   ];
 
@@ -49,8 +50,9 @@ const AllSurveysTable = ({ history }) => {
               _id,
               title,
               status,
+              dateCreated,
               datePublished,
-              dateToClose,
+              dateClosed,
               recipients,
               responses,
               description,
@@ -67,8 +69,9 @@ const AllSurveysTable = ({ history }) => {
                 <TableCell scope='row'>{title}</TableCell>
                 <TableCell>{description}</TableCell>
                 <TableCell>{`${responses.length}/${recipients.length} respondents`}</TableCell>
-                <TableCell>{formatDate(datePublished) || 'No date'}</TableCell>
-                <TableCell>{formatDate(dateToClose) || 'No date'}</TableCell>
+                <TableCell>{formatDate(dateCreated)}</TableCell>
+                <TableCell>{formatDate(datePublished) || 'Pending'}</TableCell>
+                <TableCell>{formatDate(dateClosed) || 'Pending'}</TableCell>
                 <TableCell className={styles[status]}>{status}</TableCell>
               </TableRow>
             );
