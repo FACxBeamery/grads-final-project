@@ -32,7 +32,7 @@ const SurveyDescription = () => {
     );
   };
 
-  const SurveyDescription = () => {
+  const SurveyDescriptionText = () => {
     return (
       <Typography data-testid='survey-description' variant='h5'>
         {survey.description}
@@ -58,7 +58,7 @@ const SurveyDescription = () => {
       <Box mb={2}>
         <SurveyTitle />
       </Box>
-      <SurveyDescription />
+      <SurveyDescriptionText />
       <SurveyDisclaimer />
       {survey.anonymous && <AnonymousDisclaimer />}
       {!survey.anonymous && <NonAnonymousDisclaimer />}
