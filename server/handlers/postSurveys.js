@@ -34,15 +34,15 @@ const postSurveys = async (req, res, next) => {
         dateEdited: Joi.alternatives()
           .try(Joi.string().valid(''), Joi.number().integer())
           .required(), // !can dateEdited = '' or is required?!
-        dateToPublish: Joi.alternatives()
-          .try(Joi.string().valid(''), Joi.number().integer())
-          .required(),
+        // dateToPublish: Joi.alternatives()
+        //   .try(Joi.string().valid(''), Joi.number().integer())
+        //   .required(),
         datePublished: Joi.alternatives()
           .try(Joi.string().valid(''), Joi.number().integer())
           .required(),
-        dateToClose: Joi.alternatives()
-          .try(Joi.string().valid(''), Joi.number().integer())
-          .required(),
+        // dateToClose: Joi.alternatives()
+        //   .try(Joi.string().valid(''), Joi.number().integer())
+        //   .required(),
         dateClosed: Joi.alternatives()
           .try(Joi.string().valid(''), Joi.number().integer())
           .required(),
@@ -56,7 +56,7 @@ const postSurveys = async (req, res, next) => {
         // questions: Joi.array().items(
         //   Joi.object().keys({ position: Joi.number().integer() }), // !do questions need a position anymore?!
         // ),
-        questions: Joi.array().items(Joi.string()),
+        questions: Joi.array(),
         responses: Joi.array().items(
           Joi.object().keys({
             employeeId: Joi.string(), // !not required because can be anonymous!
@@ -88,6 +88,8 @@ const postSurveys = async (req, res, next) => {
         }
         throw Error(surveyIsValid.error);
       } catch (error) {
+        console.log(error);
+
         return res.status(500).send(error.message);
       }
     }

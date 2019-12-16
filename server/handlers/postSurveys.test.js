@@ -8,12 +8,14 @@ const app = require('../app');
 const dummySurvey = {
   title: 'test survey title',
   description: 'Test description',
+  disclaimer: 'I AM A DUMMY DISCLAIMER BLA BLA BLA',
   status: 'created',
-  dateCreated: '28 NOV 2019 GMT',
-  dateToPublish: '28 NOV 2019 GMT',
+  dateCreated: '12312312123',
+  dateEdited: '',
+  // dateToPublish: '',
   datePublished: '28 NOV 2019 GMT',
-  dateToClose: '28 NOV 2019 GMT',
-  dateClosed: '28 NOV 2019 GMT',
+  // dateToClose: '28 NOV 2019 GMT',
+  dateClosed: '',
   anonymous: false,
   recipients: [{ employeeId: '321423143214', completed: true }],
   questions: [
