@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
+const dotenv = require('dotenv');
 const { initDb, closeDb } = require('../databaseConnection');
 
+dotenv.config();
 const findAdminByCredentials = require('./findAdminByCredentials');
 
 describe('Testing findAdminByCredentials returns one admin document when the correct credentials are provided.', () => {
@@ -10,9 +12,12 @@ describe('Testing findAdminByCredentials returns one admin document when the cor
   it('Testing findAdminByCredentials returns one admin document when the correct credentials are provided.', async (done) => {
     try {
       expect.assertions(6);
-      const adminDocument = await findAdminByCredentials('admin', 'admin');
-      expect(adminDocument.username).toStrictEqual('admin');
-      expect(adminDocument.password).toStrictEqual('admin');
+      const adminDocument = await findAdminByCredentials(
+        process.env.VIBE_U,
+        process.env.VIBE_P,
+      );
+      expect(adminDocument.username).toStrictEqual(process.env.VIBE_U);
+      expect(adminDocument.password).toStrictEqual(process.env.VIBE_P);
       expect(adminDocument.type).toStrictEqual('admin');
       expect(adminDocument.employeeId).toStrictEqual('123123');
       expect(typeof adminDocument).toBe('object');
@@ -32,7 +37,10 @@ describe('Testing findAdminByCredentials returns one admin document when the cor
   it('Testing findAdminByCredentials returns null when an incorrect username is provided.', async (done) => {
     try {
       expect.assertions(1);
-      const adminDocument = await findAdminByCredentials('incorrect', 'admin');
+      const adminDocument = await findAdminByCredentials(
+        'incorrect',
+        'IsThisAPassWordddd',
+      );
       expect(adminDocument).toBeNull();
 
       return done();
@@ -44,7 +52,10 @@ describe('Testing findAdminByCredentials returns one admin document when the cor
   it('Testing findAdminByCredentials returns null when an incorrect password is provided.', async (done) => {
     try {
       expect.assertions(1);
-      const adminDocument = await findAdminByCredentials('admin', 'incorrect');
+      const adminDocument = await findAdminByCredentials(
+        'ohIMANADMIN',
+        'incorrect',
+      );
       expect(adminDocument).toBeNull();
 
       return done();

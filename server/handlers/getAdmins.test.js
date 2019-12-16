@@ -1,6 +1,9 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
+const dotenv = require('dotenv');
 const { initDb, closeDb } = require('../databaseConnection');
+
+dotenv.config();
 const app = require('../app');
 
 describe('Test authentication using JWT tokens', () => {
@@ -23,8 +26,8 @@ describe('Test authentication using JWT tokens', () => {
       const loginResponse = await request(app)
         .post('/login')
         .send({
-          username: 'admin',
-          password: 'admin',
+          username: process.env.VIBE_U,
+          password: process.env.VIBE_P,
         });
 
       expect(loginResponse.status).toEqual(200);

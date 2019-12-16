@@ -1,6 +1,9 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
+const dotenv = require('dotenv');
 const { initDb, closeDb } = require('../databaseConnection');
+
+dotenv.config();
 const app = require('../app');
 
 describe('Testing POST /login', () => {
@@ -12,8 +15,8 @@ describe('Testing POST /login', () => {
       const res = await request(app)
         .post('/login')
         .send({
-          username: 'admin',
-          password: 'admin',
+          username: process.env.VIBE_U,
+          password: process.env.VIBE_P,
         })
         .set('Accept', 'application/json');
 
@@ -39,7 +42,7 @@ describe('Testing POST /login', () => {
         .post('/login')
         .send({
           username: 'incorrect',
-          password: 'admin',
+          password: process.env.VIBE_P,
         })
         .set('Accept', 'application/json')
         .expect(403)

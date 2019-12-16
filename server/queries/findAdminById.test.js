@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
+const dotenv = require('dotenv');
 const { initDb, closeDb } = require('../databaseConnection');
 
+dotenv.config();
 const findAdminById = require('./findAdminById');
 const findAdminByCredentials = require('./findAdminByCredentials');
 
@@ -16,11 +18,14 @@ describe('Testing findAdminById returns one admin document when the correct id i
   it('Testing findAdminById returns one admin document when the correct id is provided.', async (done) => {
     try {
       expect.assertions(6);
-      const { _id } = await findAdminByCredentials('admin', 'admin');
+      const { _id } = await findAdminByCredentials(
+        process.env.VIBE_U,
+        process.env.VIBE_P,
+      );
       const adminDocument = await findAdminById(_id);
 
-      expect(adminDocument.username).toStrictEqual('admin');
-      expect(adminDocument.password).toStrictEqual('admin');
+      expect(adminDocument.username).toStrictEqual(process.env.VIBE_U);
+      expect(adminDocument.password).toStrictEqual(process.env.VIBE_P);
       expect(adminDocument.type).toStrictEqual('admin');
       expect(adminDocument.employeeId).toStrictEqual('123123');
       expect(typeof adminDocument).toBe('object');
