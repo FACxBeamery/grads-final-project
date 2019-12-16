@@ -64,7 +64,7 @@ const SlackModal = () => {
   const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
 
   const generateLink = (recipientID, surveyIdToDo) => {
-    const link = `<https://localhost:3000/${surveyIdToDo}/${recipientID}>`;
+    const link = `<https://localhost:3000/surveys/${surveyIdToDo}/${recipientID}>`;
     return link;
   };
   const generatedLinks = recipientsIDs.map((recipientID) =>
@@ -93,11 +93,11 @@ const SlackModal = () => {
     dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
   };
   return (
-    <Box my={4} alignSelf='center'>
+    <Box alignSelf='center'>
       <Button
         onClick={() => dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' })}
         color='secondary'
-        variant='contained'
+        variant='outlined'
         size='large'
       >
         Send Survey Invite

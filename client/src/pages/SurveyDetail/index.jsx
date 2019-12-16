@@ -290,11 +290,18 @@ const SurveyDetail = ({ match }) => {
           )}
           <Box display='flex' flexDirection='column'>
             {status === 'active' && (
-              <CloseSurveyButton surveyId={match.params.id} />
+              <Box>
+                <Box mb={2} display='flex' flexDirection='column'>
+                  <CloseSurveyButton surveyId={match.params.id} />
+                </Box>
+                {employeeDataForSlack && <SlackModal />}
+              </Box>
             )}
+
             {status === 'closed' && (
               <ExportSurveyButton surveyId={match.params.id} />
             )}
+
             {(status === 'active' || status === 'closed') && (
               <Box m={4}>
                 <SurveyDetailProgressWheel />
@@ -322,8 +329,6 @@ const SurveyDetail = ({ match }) => {
               No recipients have been added. Select Edit Survey to start adding.
             </Typography>
           )}
-
-          {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
       {successfulPublish && <SnackbarPublish />}
