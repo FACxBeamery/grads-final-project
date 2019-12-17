@@ -2,7 +2,7 @@
 const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
-const readSurvey = async (_id) => {
+const readSurvey = async (_id, withResponses = false) => {
   try {
     const db = getDb();
     const surveys = db.collection('Surveys');
@@ -10,6 +10,8 @@ const readSurvey = async (_id) => {
     const survey = await surveys.findOne({
       _id: ObjectID(_id),
     });
+
+    if (!withResponses) delete survey.responses;
 
     const surveyQuestions = survey.questions;
 

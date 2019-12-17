@@ -33,8 +33,8 @@ const publishSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
   } catch (err) {
-    console.error(err.message)
-    dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false })
+    console.error(err.message);
+    dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false });
   }
 };
 const setSurveyData = (data, dispatch) => {
@@ -44,7 +44,7 @@ const setSurveyData = (data, dispatch) => {
 };
 const getSurvey = async (idToSend, dispatch) => {
   try {
-    const { data } = await axios.get(`/surveys/${idToSend}`);
+    const { data } = await axios.get(`/surveys/${idToSend}?responses=true`);
     setSurveyData(data, dispatch);
   } catch (error) {
     setSurveyData({}, dispatch);
@@ -59,7 +59,7 @@ const closeSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
   } catch (err) {
-    console.error(err.message)
+    console.error(err.message);
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload: false });
   }
 };
@@ -338,10 +338,10 @@ const SurveyDetail = ({ match }) => {
           {recipients.length ? (
             <EmployeeCompletionTable />
           ) : (
-              <Typography>
-                No recipients have been added. Select Edit Survey to start adding.
+            <Typography>
+              No recipients have been added. Select Edit Survey to start adding.
             </Typography>
-            )}
+          )}
 
           {employeeDataForSlack && <SlackModal />}
         </Box>
