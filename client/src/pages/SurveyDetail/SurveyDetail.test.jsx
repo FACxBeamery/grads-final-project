@@ -107,7 +107,7 @@ describe('Testing the Survey Detail page', () => {
 
     mockAxiosGetFirst.mockRestore();
 
-    fireEvent.click(getByText('Publish Survey'));
+    fireEvent.click(getByText('Activate Survey'));
 
     const mockAxiosGetSecond = jest.spyOn(axios, 'get');
     mockAxiosGetSecond.mockImplementation((url) => {
@@ -148,7 +148,7 @@ describe('Testing the Survey Detail page', () => {
     });
 
     const closedSurveyStepperText = await waitForElement(() =>
-      getByText(`Closed ${formatDate(dummySurveyClosed.dateClosed)}`),
+      getByText(`Closed`),
     );
 
     expect(closedSurveyStepperText).toBeVisible();
