@@ -5,7 +5,8 @@
   "main": "localDatabaseConnection.js",
   "scripts": {
     "test": "jest --runInBand",
-    "lint": "./node_modules/eslint/bin/eslint.js ."
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "start": "node server.js"
   },
   "jest": {
     "coverageThreshold": {

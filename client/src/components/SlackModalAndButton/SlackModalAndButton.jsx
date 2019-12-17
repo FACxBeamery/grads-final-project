@@ -66,7 +66,7 @@ const SlackModal = () => {
   const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
 
   const generateLink = (recipientID, surveyIdToDo) => {
-    const link = `<http://localhost:3000/surveys/${surveyIdToDo}/${recipientID}>`;
+    const link = `<https://vibe-at-beamery.netlify.com/surveys/${surveyIdToDo}/${recipientID}>`;
     return link;
   };
   const generatedLinks = recipientsIDs.map((recipientID) =>
