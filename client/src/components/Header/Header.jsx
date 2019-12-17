@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { AppBar, Button, Box } from '@material-ui/core';
 import styles from './Header.module.css';
 
-const Header = ({ history, location }) => {
-  const isAdmin = location.pathname.startsWith('/admin');
+const Header = ({ history }) => {
+  const { data } = useSelector((state) => state.adminLoginReducer);
+  const { auth } = data;
+  const isAdmin = auth;
 
   const goToAdminDashboard = () => {
     if (isAdmin) {
