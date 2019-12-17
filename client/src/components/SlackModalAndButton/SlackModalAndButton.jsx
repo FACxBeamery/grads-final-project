@@ -161,7 +161,7 @@ const SlackModal = () => {
       );
 
       try {
-        const response = await axios.post('/slack', { message });
+        const response = await axios.post('/slack', { slackID, message });
 
         if (response) {
           if (response.status === 200) {
