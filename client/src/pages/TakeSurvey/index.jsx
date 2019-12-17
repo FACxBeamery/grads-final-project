@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { Box } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import UserProgressStepper from './UserProgressStepper/UserProgressStepper';
 import QuestionCard from './QuestionCard/QuestionCard';
 import SurveyDescription from './SurveyDescription/SurveyDescription';
