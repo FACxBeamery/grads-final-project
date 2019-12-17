@@ -6,7 +6,7 @@ import axios from 'axios';
 
 axios.interceptors.request.use(
   function(config) {
-    const serverUrl = process.env.SERVER_URL;
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
     config.url = join(serverUrl, config.url);
     return config;
   },
