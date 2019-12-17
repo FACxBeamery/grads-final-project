@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
   incompleteStepText: {
     color: theme.palette.primary.main,
   },
+  activeStepText: {
+    fontSize: '1.5rem',
+  },
+  inactiveStepText: {
+    fontSize: '1rem',
+  },
   connector: {
     width: '8rem',
     height: '0.125rem',
@@ -93,9 +99,13 @@ const Stepper = ({ activeStep, steps }) => {
               ? classes.completedConnector
               : classes.incompleteConnector
           } ${classes[`connector${index + 1}`]}`;
-          const stepTextClassName = completed
-            ? classes.completedStepText
-            : classes.incompleteStepText;
+          const stepTextClassName = `${
+            completed ? classes.completedStepText : classes.incompleteStepText
+          } ${
+            index === activeStep - 1
+              ? classes.activeStepText
+              : classes.inactiveStepText
+          }`;
 
           return (
             <div>
