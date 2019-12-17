@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -39,10 +40,20 @@ const TakeSurvey = ({ match }) => {
     getSurvey();
   }, [dispatch, employeeId, surveyId]);
 
-  const { surveyClosed, employeeHasCompleted } = useSelector(
-    (state) => state.takeSurveyReducer,
+  const surveyClosed = useSelector(
+    (state) => state.takeSurveyReducer.surveyClosed,
   );
 
+  const employeeHasCompleted = useSelector(
+    (state) => state.takeSurveyReducer.employeeHasCompleted,
+  );
+
+  if (employeeHasCompleted) {
+    return <AlreadyCompletedMessage />;
+  }
+  if (surveyClosed) {
+    return <SurveyClosedMessage />;
+  }
   return (
     <Box display='flex' flexDirection='column'>
       <UserProgressStepper />
@@ -52,17 +63,5 @@ const TakeSurvey = ({ match }) => {
       {activeQuestion === 'end' && <SurveySubmit match={match} />}
     </Box>
   );
-};
-
-TakeSurvey.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      surveyId: PropTypes.string,
-      employeeId: PropTypes.string,
-    }),
-  }).isRequired,
-
-  surveyId: PropTypes.string.isRequired,
-  employeeId: PropTypes.string.isRequired,
 };
 export default TakeSurvey;

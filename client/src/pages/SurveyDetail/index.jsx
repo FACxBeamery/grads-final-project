@@ -4,19 +4,12 @@
 /* eslint-disable no-alert */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import {
-  Typography,
-  Button,
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-} from '@material-ui/core';
+import { Typography, Button, Box } from '@material-ui/core';
 
+import Stepper from '../../components/Stepper';
 import ExportModal from './ExportModal';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
@@ -34,6 +27,8 @@ const publishSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
   } catch (err) {
+    // eslint-disable-next-line no-console
+
     console.error(err.message);
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false });
   }
@@ -45,7 +40,7 @@ const setSurveyData = (data, dispatch) => {
 };
 const getSurvey = async (idToSend, dispatch) => {
   try {
-    const { data } = await axios.get(`/surveys/${idToSend}`);
+    const { data } = await axios.get(`/surveys/${idToSend}?responses=true`);
     setSurveyData(data, dispatch);
   } catch (error) {
     setSurveyData({}, dispatch);
@@ -60,6 +55,7 @@ const closeSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err.message);
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload: false });
   }
@@ -73,14 +69,14 @@ const PublishSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        if (confirm('Are you sure you want to publish this survey?')) {
+        if (confirm('Are you sure you want to make this survey active?')) {
           dispatch({ type: 'RESET_EMPLOYEE_DATA' });
           await publishSurvey(surveyId, dispatch);
           await getSurvey(surveyId, dispatch);
         }
       }}
     >
-      Publish Survey
+      Activate Survey
     </Button>
   );
 };
@@ -124,73 +120,6 @@ const ExportSurveyButton = () => {
     >
       Export results
     </Button>
-  );
-};
-
-const SurveyDetailsStepper = () => {
-  const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
-    (state) => state.surveyDetailReducer,
-  );
-
-  const stepperMuiTheme = createMuiTheme({
-    overrides: {
-      MuiStepper: {
-        root: {
-          margin: 0,
-          padding: 0,
-        },
-      },
-      MuiStepIcon: {
-        root: {
-          zIndex: 1,
-          '&$active': {
-            color: '#F15852',
-          },
-          '&$completed': {
-            color: '#F15852',
-          },
-        },
-      },
-      MuiStepConnector: {
-        active: {
-          '& $line': {
-            backgroundColor: '#201E5A',
-            border: 0,
-            height: 3,
-          },
-        },
-        completed: {
-          '& $line': {
-            backgroundColor: '#201E5A',
-            border: 0,
-            height: 3,
-          },
-        },
-      },
-    },
-  });
-
-  const stepperLabels = [
-    `Drafted\n${formatDate(dateCreated)}`,
-    datePublished
-      ? `Published\n${formatDate(datePublished)}`
-      : `Publish\npending`,
-    dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
-  ];
-  return (
-    <MuiThemeProvider theme={stepperMuiTheme}>
-      <Stepper
-        alternativeLabel
-        activeStep={activeStep}
-        data-testid='survey-detail-stepper'
-      >
-        {stepperLabels.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    </MuiThemeProvider>
   );
 };
 
@@ -241,7 +170,28 @@ const SurveyDetail = ({ match }) => {
     successfulPublish,
     successfulClose,
     employeeDataForSlack,
+    activeStep,
+    dateCreated,
+    datePublished,
+    dateClosed,
   } = useSelector((state) => state.surveyDetailReducer);
+
+  const StepperLabelDiv = ({ label, date }) => {
+    return (
+      <Box display='flex' alignItems='center' flexDirection='column'>
+        <Typography style={{ fontSize: '0.75rem' }}>{label}</Typography>
+        <Typography style={{ fontSize: '0.75rem' }}>
+          {date && formatDate(date)}
+        </Typography>
+      </Box>
+    );
+  };
+
+  const stepperLabels = [
+    <StepperLabelDiv label='Drafted' date={dateCreated} />,
+    <StepperLabelDiv label='Activated' date={datePublished} />,
+    <StepperLabelDiv label='Closed' date={dateClosed} />,
+  ];
 
   useEffect(() => {
     const { id } = match.params;
@@ -262,7 +212,7 @@ const SurveyDetail = ({ match }) => {
       snackbar: {
         message: successfulPublish
           ? 'The survey is now active and can welcome responses.'
-          : 'There was an error publishing survey. Please try again.',
+          : 'There was an error activating survey. Please try again.',
         variant: successfulPublish ? 'success' : 'error',
         timeopened: Date.now(),
       },
@@ -298,7 +248,8 @@ const SurveyDetail = ({ match }) => {
               {description}
             </Typography>
           </Box>
-          <SurveyDetailsStepper />
+          <Stepper steps={stepperLabels} activeStep={activeStep} />
+          {/* <SurveyDetailsStepper /> */}
         </Box>
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
@@ -346,13 +297,12 @@ const SurveyDetail = ({ match }) => {
           {recipients.length ? (
             <EmployeeCompletionTable />
           ) : (
-            <Box>
-              <Typography>
-                No recipients have been added. Select Edit Survey to start
-                adding.
-              </Typography>
-            </Box>
+            <Typography>
+              No recipients have been added. Select Edit Survey to start adding.
+            </Typography>
           )}
+
+          {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
       {[true, false].includes(successfulPublish) && SnackbarPublish()}

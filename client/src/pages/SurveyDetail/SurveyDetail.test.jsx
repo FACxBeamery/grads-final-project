@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
@@ -60,7 +61,7 @@ const dummySurveyClosed = {
 describe('Testing the Survey Detail page', () => {
   it('Testing the workings of the entire Survey Detail page, including the stepper and buttons.', async () => {
     // eslint-disable-next-line no-underscore-dangle
-    global.confirm = jest.fn().mockImplementation(() => true)
+    global.confirm = jest.fn().mockImplementation(() => true);
 
     const mockAxiosGetFirst = jest.spyOn(axios, 'get');
     mockAxiosGetFirst.mockImplementation((url) => {
@@ -91,14 +92,13 @@ describe('Testing the Survey Detail page', () => {
     expect(dummySurveyTitle).toBeVisible();
     expect(getByText(dummySurvey.description)).toBeVisible();
 
-    expect(getByText('Publish Survey')).toBeVisible();
+    expect(getByText('Activate Survey')).toBeVisible();
     expect(getByText('Edit survey')).toBeVisible();
 
-    expect(
-      getByText(`Drafted ${formatDate(dummySurvey.dateCreated)}`),
-    ).toBeVisible();
-    expect(getByText(`Publish pending`)).toBeVisible();
-    expect(getByText(`Closed pending`)).toBeVisible();
+    expect(getByText(`Drafted`)).toBeVisible();
+    expect(getByText(`${formatDate(dummySurvey.dateCreated)}`)).toBeVisible();
+    expect(getByText(`Activated`)).toBeVisible();
+    expect(getByText(`Closed`)).toBeVisible();
 
     expect(getByText('Recipients')).toBeVisible();
     expect(
@@ -107,7 +107,7 @@ describe('Testing the Survey Detail page', () => {
 
     mockAxiosGetFirst.mockRestore();
 
-    fireEvent.click(getByText('Publish Survey'));
+    fireEvent.click(getByText('Activate Survey'));
 
     const mockAxiosGetSecond = jest.spyOn(axios, 'get');
     mockAxiosGetSecond.mockImplementation((url) => {
@@ -123,10 +123,10 @@ describe('Testing the Survey Detail page', () => {
 
     expect(closeSurveyButton).toBeVisible();
 
+    expect(getByText(`Activated`)).toBeVisible();
     expect(
-      getByText(`Published ${formatDate(dummySurveyPublished.datePublished)}`),
+      getByText(`${formatDate(dummySurveyPublished.datePublished)}`),
     ).toBeVisible();
-
     expect(getByTestId('survey-detail-stepper')).toBeVisible();
 
     expect(
@@ -148,7 +148,7 @@ describe('Testing the Survey Detail page', () => {
     });
 
     const closedSurveyStepperText = await waitForElement(() =>
-      getByText(`Closed ${formatDate(dummySurveyClosed.dateClosed)}`),
+      getByText(`Closed`),
     );
 
     expect(closedSurveyStepperText).toBeVisible();
