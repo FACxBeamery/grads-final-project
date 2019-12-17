@@ -82,13 +82,14 @@ const updateSurvey = async (surveyId, changes) => {
     }
     // if recipient has answered
     if (changes.answers) {
-      await surveys.updateOne(
+      const result = await surveys.updateOne(
         {
           _id: ObjectID(surveyId),
-          'recipients.employeeId': ObjectID(employeeId),
+          'recipients.employeeId': employeeId,
         },
         { $set: { 'recipients.$.completed': true } },
       );
+
       await surveys.updateOne(
         { _id: ObjectID(surveyId) },
         {
