@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { AppBar, Button, Box } from '@material-ui/core';
 import styles from './Header.module.css';
 
-const Header = ({ history, location }) => {
-  const isAdmin = location.pathname.startsWith('/admin');
+const Header = ({ history }) => {
+  const { data } = useSelector((state) => state.adminLoginReducer);
+  const { auth } = data;
+  const isAdmin = auth;
 
   const goToAdminDashboard = () => {
     if (isAdmin) {
@@ -31,6 +34,24 @@ const Header = ({ history, location }) => {
     </span>
   );
 
+  const dashboardButton = (
+    <Button onClick={() => history.push(`/admin`)} style={{ color: '#FFFFFF' }}>
+      My Dashboard
+    </Button>
+  );
+
+  const logoutButton = isAdmin && (
+    <Button
+      onClick={() => {
+        window.localStorage.removeItem('jwt_token');
+        history.push(`/admin/login`);
+      }}
+      style={{ color: '#FFFFFF' }}
+    >
+      Logout
+    </Button>
+  );
+
   return (
     <AppBar data-testid='app-bar' position='relative'>
       <h2 className={styles.header}>
@@ -38,12 +59,8 @@ const Header = ({ history, location }) => {
       </h2>
       {isAdmin && (
         <Box mr={2} className={styles.button}>
-          <Button
-            onClick={() => history.push(`/admin`)}
-            style={{ color: '#FFFFFF' }}
-          >
-            My Dashboard
-          </Button>
+          {dashboardButton}
+          {logoutButton}
         </Box>
       )}
     </AppBar>

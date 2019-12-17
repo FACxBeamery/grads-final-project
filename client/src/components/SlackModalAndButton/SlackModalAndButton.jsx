@@ -11,6 +11,8 @@ import {
   Paper,
 } from '@material-ui/core';
 
+import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
+
 const SlackMessageTextBox = () => {
   const dispatch = useDispatch();
 
@@ -26,7 +28,7 @@ const SlackMessageTextBox = () => {
   };
 
   return (
-    <Box my={4} p={4}>
+    <Box mb={2}>
       <Typography>Enter your message to the survey recipients:</Typography>
       <TextField
         data-testid='slack-message-box'
@@ -34,10 +36,10 @@ const SlackMessageTextBox = () => {
         fullWidth
         required
         autoComplete='off'
-        value={slackMessageText}
+        value={slackMessageText || ''}
         error={slackMessageText.length < 5}
         helperText={
-          slackMessageText < 5
+          slackMessageText.length < 5
             ? 'You must provide a message to the recipients'
             : ''
         }
@@ -74,54 +76,104 @@ const SlackModal = () => {
   const customMessageWithLinks = (link) => `${slackMessageText} ${link}`;
 
   const slackIDs = employeeDataForSlack
+    // eslint-disable-next-line no-underscore-dangle
     .filter((employee) => recipientsIDs.includes(employee._id))
     .map((person) => person.slackID);
 
   const handleSlackMessageSubmit = (event) => {
     event.preventDefault();
 
-    slackIDs.forEach((slackID, linkIndex) => {
+    slackIDs.forEach(async (slackID, linkIndex) => {
       const message = encodeURI(
         customMessageWithLinks(generatedLinks[linkIndex]),
       );
 
-      axios.post('/slack', { slackID, message });
+      try {
+        const response = await axios.post('/slack', { slackID, message });
+
+        if (response) {
+          if (response.status === 200) {
+            const snackbarPayloadSent = {
+              open: true,
+              snackbar: {
+                message: 'Slack message successfully sent 🎉',
+                variant: 'success',
+                timeOpened: Date.now(),
+              },
+            };
+
+            dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayloadSent });
+          }
+        }
+      } catch (error) {
+        const snackbarPayloadFail = {
+          open: true,
+          snackbar: {
+            message:
+              'Slack message failed to send. Refresh and try again. If this problem persists, contact the engineering team.',
+            variant: 'error',
+            timeOpened: Date.now(),
+          },
+        };
+
+        dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayloadFail });
+      }
     });
   };
 
-  const closeModal = () => {
-    dispatch({ type: 'TOGGLE_CREATE_SURVEY_MODAL' });
-  };
   return (
-    <Box my={4} alignSelf='center'>
-      <Button
-        onClick={() => dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' })}
-        color='secondary'
-        variant='contained'
-        size='large'
-      >
-        Send Survey Invite
-      </Button>
+    <>
       <Modal
         open={openSlackModal}
+        style={{
+          position: 'fixed',
+          zIndex: '1300',
+          right: '0px',
+          bottom: '0px',
+          width: '40rem',
+          top: '31%',
+          left: '25%',
+        }}
         aria-labelledby='send-slack-message-modal'
         onClose={() => dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' })}
       >
         <Paper>
-          <Box my={4} p={4}>
-            <SlackMessageTextBox />
-            <Button
-              variant='contained'
-              color='secondary'
-              onClick={handleSlackMessageSubmit}
+          <Box
+            height='70%'
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            my={2}
+          >
+            <Box
+              display='flex'
+              flexDirection='column'
+              alignItems='center'
+              my={2}
             >
-              Send Slack Invite
-            </Button>
-            <Button onClick={closeModal}>X</Button>
+              <SlackMessageTextBox />
+              <Button
+                variant='contained'
+                color='secondary'
+                onClick={handleSlackMessageSubmit}
+                disabled={Boolean(slackMessageText.length < 5)}
+              >
+                Send Slack Invite
+              </Button>
+            </Box>
           </Box>
         </Paper>
       </Modal>
-    </Box>
+
+      <Button
+        onClick={() => dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' })}
+        color='secondary'
+        variant='outlined'
+        size='large'
+      >
+        Send Survey Invite
+      </Button>
+    </>
   );
 };
 
