@@ -154,7 +154,7 @@ const SlackModal = () => {
       >
         <Paper>
           <Box
-            height='25vw'
+            height='20vw'
             display='flex'
             flexDirection='column'
             justifyContent='center'
