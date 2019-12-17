@@ -3,13 +3,12 @@
 /* eslint-disable no-alert */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Stepper from '../../components/Stepper';
-import { Typography, Button, Box, Step, StepLabel } from '@material-ui/core';
+import { Typography, Button, Box } from '@material-ui/core';
 
+import Stepper from '../../components/Stepper';
 import ExportModal from './ExportModal';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
@@ -27,6 +26,7 @@ const publishSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err.message);
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false });
   }
@@ -53,6 +53,7 @@ const closeSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err.message);
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload: false });
   }
@@ -117,71 +118,6 @@ const ExportSurveyButton = () => {
     >
       Export results
     </Button>
-  );
-};
-
-const SurveyDetailsStepper = () => {
-  const { activeStep, dateCreated, datePublished, dateClosed } = useSelector(
-    (state) => state.surveyDetailReducer,
-  );
-
-  const stepperMuiTheme = createMuiTheme({
-    overrides: {
-      MuiStepper: {
-        root: {
-          margin: 0,
-          padding: 0,
-        },
-      },
-      MuiStepIcon: {
-        root: {
-          zIndex: 1,
-          '&$active': {
-            color: '#F15852',
-          },
-          '&$completed': {
-            color: '#F15852',
-          },
-        },
-      },
-      MuiStepConnector: {
-        active: {
-          '& $line': {
-            backgroundColor: '#201E5A',
-            border: 0,
-            height: 3,
-          },
-        },
-        completed: {
-          '& $line': {
-            backgroundColor: '#201E5A',
-            border: 0,
-            height: 3,
-          },
-        },
-      },
-    },
-  });
-
-  const stepperLabels = [
-    `Drafted\n${formatDate(dateCreated)}`,
-    datePublished ? `Published\n${formatDate(datePublished)}` : `Published`,
-    dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed`,
-  ];
-  return (
-    <MuiThemeProvider theme={stepperMuiTheme}>
-      <Stepper
-        alternativeLabel
-        activeStep={activeStep}
-        data-testid='survey-detail-stepper'
-      >
-        {stepperLabels.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    </MuiThemeProvider>
   );
 };
 
