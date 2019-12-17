@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 const Stepper = ({ activeStep, steps }) => {
   const classes = useStyles();
   return (
-    <div className={classes.rootContainer}>
+    <div className={classes.rootContainer} data-testid='survey-detail-stepper'>
       <div className={classes.stepperContainer}>
         {steps.map((step, index) => {
           const completed = index <= activeStep - 1;
