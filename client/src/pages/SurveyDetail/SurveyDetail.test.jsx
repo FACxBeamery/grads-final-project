@@ -92,14 +92,13 @@ describe('Testing the Survey Detail page', () => {
     expect(dummySurveyTitle).toBeVisible();
     expect(getByText(dummySurvey.description)).toBeVisible();
 
-    expect(getByText('Publish Survey')).toBeVisible();
+    expect(getByText('Activate Survey')).toBeVisible();
     expect(getByText('Edit survey')).toBeVisible();
 
-    expect(
-      getByText(`Drafted ${formatDate(dummySurvey.dateCreated)}`),
-    ).toBeVisible();
-    expect(getByText(`Publish pending`)).toBeVisible();
-    expect(getByText(`Closed pending`)).toBeVisible();
+    expect(getByText(`Drafted`)).toBeVisible();
+    expect(getByText(`${formatDate(dummySurvey.dateCreated)}`)).toBeVisible();
+    expect(getByText(`Activated`)).toBeVisible();
+    expect(getByText(`Closed`)).toBeVisible();
 
     expect(getByText('Recipients')).toBeVisible();
     expect(
@@ -124,10 +123,10 @@ describe('Testing the Survey Detail page', () => {
 
     expect(closeSurveyButton).toBeVisible();
 
+    expect(getByText(`Activated`)).toBeVisible();
     expect(
-      getByText(`Published ${formatDate(dummySurveyPublished.datePublished)}`),
+      getByText(`${formatDate(dummySurveyPublished.datePublished)}`),
     ).toBeVisible();
-
     expect(getByTestId('survey-detail-stepper')).toBeVisible();
 
     expect(
