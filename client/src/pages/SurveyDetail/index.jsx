@@ -301,8 +301,6 @@ const SurveyDetail = ({ match }) => {
               No recipients have been added. Select Edit Survey to start adding.
             </Typography>
           )}
-
-          {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
       {[true, false].includes(successfulPublish) && SnackbarPublish()}
