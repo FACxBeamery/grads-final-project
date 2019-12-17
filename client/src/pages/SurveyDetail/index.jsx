@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-alert */
@@ -13,7 +14,7 @@ import ExportModal from './ExportModal';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
-import SlackModal from '../../components/SlackModal/SlackModal';
+import SlackModalAndButton from '../../components/SlackModalAndButton/SlackModalAndButton';
 import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
 import formatDate from '../../utils/formatDate';
 
@@ -27,6 +28,7 @@ const publishSurvey = async (_id, dispatch) => {
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
   } catch (err) {
     // eslint-disable-next-line no-console
+
     console.error(err.message);
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false });
   }
@@ -260,11 +262,18 @@ const SurveyDetail = ({ match }) => {
           )}
           <Box display='flex' flexDirection='column'>
             {status === 'active' && (
-              <CloseSurveyButton surveyId={match.params.id} />
+              <>
+                <Box mb={2} display='flex' flexDirection='column'>
+                  <CloseSurveyButton surveyId={match.params.id} />
+                </Box>
+                {employeeDataForSlack && <SlackModalAndButton />}
+              </>
             )}
+
             {status === 'closed' && (
               <ExportSurveyButton surveyId={match.params.id} />
             )}
+
             {(status === 'active' || status === 'closed') && (
               <Box m={4}>
                 <SurveyDetailProgressWheel />
@@ -292,8 +301,6 @@ const SurveyDetail = ({ match }) => {
               No recipients have been added. Select Edit Survey to start adding.
             </Typography>
           )}
-
-          {employeeDataForSlack && <SlackModal />}
         </Box>
       )}
       {[true, false].includes(successfulPublish) && SnackbarPublish()}

@@ -1,24 +1,30 @@
 {
-    "name": "project_grads",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "npm run test:client && npm run test:server",
-        "test:client": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=80 client bash ./travis_tests.sh",
-        "test:server": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=40 server bash ./travis_tests.sh",
-        "dockerup": "docker-compose -f dev-docker-compose.yml up --build",
-        "dockerdown": "docker-compose -f dev-docker-compose.yml down --rmi all"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/FACxBeamery/grads-final-project.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/FACxBeamery/grads-final-project/issues"
-    },
-    "homepage": "https://github.com/FACxBeamery/grads-final-project#readme"
+  "name": "project_grads",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "12.10.0",
+    "npm": "6.13.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:client && npm run test:server",
+    "test:client": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=80 client bash ./travis_tests.sh",
+    "test:server": "docker-compose -f dev-docker-compose.yml run -e COVERAGE_THRESHOLD=40 server bash ./travis_tests.sh",
+    "dockerup": "docker-compose -f dev-docker-compose.yml up --build",
+    "dockerdown": "docker-compose -f dev-docker-compose.yml down --rmi all",
+    "start": "node ./server/server.js",
+    "build": "cd server && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FACxBeamery/grads-final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FACxBeamery/grads-final-project/issues"
+  },
+  "homepage": "https://github.com/FACxBeamery/grads-final-project#readme",
 }
