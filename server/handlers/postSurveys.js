@@ -88,8 +88,6 @@ const postSurveys = async (req, res, next) => {
         }
         throw Error(surveyIsValid.error);
       } catch (error) {
-        console.log(error);
-
         return res.status(500).send(error.message);
       }
     }

@@ -9,12 +9,10 @@ const dummySurvey = {
   title: 'test survey title',
   description: 'Test description',
   disclaimer: 'I AM A DUMMY DISCLAIMER BLA BLA BLA',
-  status: 'created',
+  status: 'draft',
   dateCreated: '12312312123',
   dateEdited: '',
-  // dateToPublish: '',
-  datePublished: '28 NOV 2019 GMT',
-  // dateToClose: '28 NOV 2019 GMT',
+  datePublished: '12312312123',
   dateClosed: '',
   anonymous: false,
   recipients: [{ employeeId: '321423143214', completed: true }],
@@ -97,13 +95,15 @@ describe('Test authentication using JWT tokens', () => {
       expect(loginResponse.status).toEqual(200);
       expect(loginResponse.body.auth).toEqual(true);
       expect(loginResponse.body.token).toBeDefined();
+      const {
+        body: { token },
+      } = loginResponse;
 
       const res = await request(app)
         .post('/surveys')
         .send(dummySurvey)
         .set('Accept', 'application/json')
-        .expect(200);
-      console.log('RES', res);
+        .set('Authorization', `JWT ${token}`);
 
       expect(res.status).toEqual(200);
 
@@ -116,7 +116,8 @@ describe('Test authentication using JWT tokens', () => {
   it('Responds with message and status 200 when no JWT provided.', async (done) => {
     try {
       const res = await request(app)
-        .get('/employees')
+        .post('/surveys')
+        .send(dummySurvey)
         .set('Accept', 'application/json');
 
       expect(res.status).toEqual(401);
@@ -130,7 +131,8 @@ describe('Test authentication using JWT tokens', () => {
   it('Empty JWT token', async (done) => {
     try {
       const res = await request(app)
-        .get('/employees')
+        .post('/surveys')
+        .send(dummySurvey)
         .set('Authorization', `JWT `);
 
       expect(res.status).toEqual(401);
