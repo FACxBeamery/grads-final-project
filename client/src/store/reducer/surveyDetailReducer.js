@@ -8,6 +8,7 @@ const initalState = {
   slackMessageText: '',
   employeeDataForSlack: [],
   slackMessageSubmission: false,
+  slackMessageFail: false,
 };
 
 const getStatusStep = (status) => {
@@ -29,6 +30,7 @@ const surveyDetailReducer = (state = initalState, action) => {
         slackMessageText: '',
         employeeDataForSlack: [],
         slackMessageSubmission: false,
+        slackMessageFail: false,
       };
 
     case 'SET_SURVEY_DATA_SURVEY_DETAIL':
@@ -56,6 +58,11 @@ const surveyDetailReducer = (state = initalState, action) => {
       return {
         ...state,
         slackMessageSubmission: true,
+      };
+    case 'SLACK_MESSAGE_FAIL':
+      return {
+        ...state,
+        slackMessageFail: true,
       };
     default:
       return state;

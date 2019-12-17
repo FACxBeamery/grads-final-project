@@ -63,6 +63,7 @@ const SlackConfirmation = () => {
       flexDirection='column'
       alignItems='center'
       justifyContent='center'
+      my={2}
     >
       <Box my={4}>
         <Typography variant='h5'>
@@ -77,6 +78,44 @@ const SlackConfirmation = () => {
         color='secondary'
         variant='contained'
         size='large'
+        my={2}
+      >
+        Okay
+      </Button>
+    </Box>
+  );
+};
+const SlackFail = () => {
+  const dispatch = useDispatch();
+
+  const closeModal = () => {
+    dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' });
+  };
+
+  return (
+    <Box
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      justifyContent='center'
+      my={2}
+    >
+      <Box my={4}>
+        <Typography variant='h5'>
+          Your slack message failed to send due to a problem with the server.
+          <span aria-label='partyemoji' role='img'>
+            😭
+          </span>
+          Refresh and try again. If this problem persists, contact the
+          engineering team.
+        </Typography>
+      </Box>
+      <Button
+        onClick={closeModal}
+        color='secondary'
+        variant='contained'
+        size='large'
+        my={2}
       >
         Okay
       </Button>
@@ -93,6 +132,7 @@ const SlackModal = () => {
     _id,
     employeeDataForSlack,
     slackMessageSubmission,
+    slackMessageFail,
   } = useSelector((state) => state.surveyDetailReducer);
 
   const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
@@ -121,15 +161,20 @@ const SlackModal = () => {
       );
 
       try {
-        const response = await axios.post('/slack', { slackID, message });
+        const response = await axios.post('/slack', { message });
+
         if (response) {
-          if (response.status === 204) {
+          if (response.status === 200) {
             dispatch({
               type: 'SLACK_MESSAGE_SUBMISSION',
             });
           }
         }
       } catch (error) {
+        dispatch({
+          type: 'SLACK_MESSAGE_FAIL',
+        });
+
         // eslint-disable-next-line no-console
         console.error();
       }
@@ -154,13 +199,19 @@ const SlackModal = () => {
       >
         <Paper>
           <Box
-            height='20vw'
+            height='70%'
             display='flex'
             flexDirection='column'
             justifyContent='center'
+            my={2}
           >
             {!slackMessageSubmission ? (
-              <Box display='flex' flexDirection='column' alignItems='center'>
+              <Box
+                display='flex'
+                flexDirection='column'
+                alignItems='center'
+                my={2}
+              >
                 <SlackMessageTextBox />
                 <Button
                   variant='contained'
@@ -173,6 +224,7 @@ const SlackModal = () => {
             ) : (
               <SlackConfirmation />
             )}
+            {slackMessageFail && <SlackFail />}
           </Box>
         </Paper>
       </Modal>
