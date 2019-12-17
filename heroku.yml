@@ -1,6 +1,6 @@
 build:
   docker:
-    client: ./client/Dockerfile.client
+    # client: ./client/Dockerfile.client
     server: ./server/Dockerfile.server
 # run:
 #   client: npm run start
