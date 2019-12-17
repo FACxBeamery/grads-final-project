@@ -67,14 +67,14 @@ const PublishSurveyButton = ({ surveyId }) => {
       variant='contained'
       color='secondary'
       onClick={async () => {
-        if (confirm('Are you sure you want to publish this survey?')) {
+        if (confirm('Are you sure you want to make this survey active?')) {
           dispatch({ type: 'RESET_EMPLOYEE_DATA' });
           await publishSurvey(surveyId, dispatch);
           await getSurvey(surveyId, dispatch);
         }
       }}
     >
-      Publish Survey
+      Activate Survey
     </Button>
   );
 };
@@ -187,7 +187,7 @@ const SurveyDetail = ({ match }) => {
 
   const stepperLabels = [
     <StepperLabelDiv label='Drafted' date={dateCreated} />,
-    <StepperLabelDiv label='Made Active' date={datePublished} />,
+    <StepperLabelDiv label='Activated' date={datePublished} />,
     <StepperLabelDiv label='Closed' date={dateClosed} />,
   ];
 
@@ -210,7 +210,7 @@ const SurveyDetail = ({ match }) => {
       snackbar: {
         message: successfulPublish
           ? 'The survey is now active and can welcome responses.'
-          : 'There was an error publishing survey. Please try again.',
+          : 'There was an error activating survey. Please try again.',
         variant: successfulPublish ? 'success' : 'error',
         timeopened: Date.now(),
       },
