@@ -5,6 +5,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import axios from 'axios';
+import addServerUrlToAxiosRequests from './utils/addServerUrlToAxiosRequests';
+
 ReactDOM.render(
   <BrowserRouter>
     <App />
