@@ -38,7 +38,7 @@ const setSurveyData = (data, dispatch) => {
 };
 const getSurvey = async (idToSend, dispatch) => {
   try {
-    const { data } = await axios.get(`/surveys/${idToSend}`);
+    const { data } = await axios.get(`/surveys/${idToSend}?responses=true`);
     setSurveyData(data, dispatch);
   } catch (error) {
     setSurveyData({}, dispatch);

@@ -39,7 +39,7 @@ const TemplateSurveysTable = ({ history }) => {
   const goToSurveyBuilderWithPreexistingData = async (id) => {
     let surveySelected;
     try {
-      const { data } = await axios.get(`/surveys/${id}`);
+      const { data } = await axios.get(`/surveys/${id}?responses=true`);
       surveySelected = (({ _id, ...others }) => ({ ...others }))(data);
 
       surveySelected.questions = surveySelected.questions.map((question) => {
