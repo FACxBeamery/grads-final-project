@@ -22,7 +22,7 @@ const AllSurveysTable = ({ history }) => {
     'Description',
     'Responses',
     'Date Created',
-    'Date Published',
+    'Date Made Active',
     'Date Closed',
     'Status',
   ];
@@ -70,8 +70,8 @@ const AllSurveysTable = ({ history }) => {
                 <TableCell>{description}</TableCell>
                 <TableCell>{`${responses.length}/${recipients.length} respondents`}</TableCell>
                 <TableCell>{formatDate(dateCreated)}</TableCell>
-                <TableCell>{formatDate(datePublished) || 'Pending'}</TableCell>
-                <TableCell>{formatDate(dateClosed) || 'Pending'}</TableCell>
+                <TableCell>{formatDate(datePublished) || '-'}</TableCell>
+                <TableCell>{formatDate(dateClosed) || '-'}</TableCell>
                 <TableCell className={styles[status]}>{status}</TableCell>
               </TableRow>
             );

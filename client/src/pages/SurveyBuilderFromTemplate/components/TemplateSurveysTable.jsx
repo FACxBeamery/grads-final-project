@@ -22,7 +22,14 @@ import formatDate from '../../../utils/formatDate';
 import sortArrayByObjsKey from '../../../utils/sortArrayByObjsKey';
 
 const TemplateSurveysTable = ({ history }) => {
-  const cells = ['', 'Survey', 'Description', 'Responses', 'Date Published'];
+  const cells = [
+    '',
+    'Survey',
+    'Description',
+    'Responses',
+    'Date Created',
+    'Date Made Active',
+  ];
   const { surveys } = useSelector((state) => ({
     surveys: state.dashboardReducer.surveys,
   }));
@@ -97,6 +104,7 @@ const TemplateSurveysTable = ({ history }) => {
               const {
                 title,
                 datePublished,
+                dateCreated,
                 recipients,
                 _id,
                 responses,
@@ -119,9 +127,8 @@ const TemplateSurveysTable = ({ history }) => {
                   <TableCell scope='row'>{title}</TableCell>
                   <TableCell>{description}</TableCell>
                   <TableCell>{`${responses.length}/${recipients.length} respondents`}</TableCell>
-                  <TableCell>
-                    {formatDate(datePublished) || 'No date'}
-                  </TableCell>
+                  <TableCell>{formatDate(dateCreated) || '-'}</TableCell>
+                  <TableCell>{formatDate(datePublished) || '-'}</TableCell>
                 </TableRow>
               );
             })}
