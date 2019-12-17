@@ -9,7 +9,7 @@ const postSlackMessage = async (req, res) => {
 
     const result = await sendSlackMessage(slackID, message);
 
-    if (result.data.ok === true) {
+    if (result.ok) {
       return res.status(200).json(result);
     }
     return res.status(404).json(result);
