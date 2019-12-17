@@ -36,10 +36,10 @@ const SlackMessageTextBox = () => {
         fullWidth
         required
         autoComplete='off'
-        value={slackMessageText}
+        value={slackMessageText || ''}
         error={slackMessageText.length < 5}
         helperText={
-          slackMessageText < 5
+          slackMessageText.length < 5
             ? 'You must provide a message to the recipients'
             : ''
         }
@@ -61,8 +61,6 @@ const SlackModal = () => {
     slackMessageText,
     _id,
     employeeDataForSlack,
-    slackMessageSubmission,
-    slackMessageFail,
   } = useSelector((state) => state.surveyDetailReducer);
 
   const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
@@ -158,6 +156,7 @@ const SlackModal = () => {
                 variant='contained'
                 color='secondary'
                 onClick={handleSlackMessageSubmit}
+                disabled={Boolean(slackMessageText.length < 5)}
               >
                 Send Slack Invite
               </Button>
