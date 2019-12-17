@@ -7,14 +7,8 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import {
-  Typography,
-  Button,
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-} from '@material-ui/core';
+import Stepper from '../../components/Stepper';
+import { Typography, Button, Box, Step, StepLabel } from '@material-ui/core';
 
 import ExportModal from './ExportModal';
 import { EmployeeCompletionTable } from '../../components/EmployeeTable';
@@ -33,8 +27,8 @@ const publishSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
   } catch (err) {
-    console.error(err.message)
-    dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false })
+    console.error(err.message);
+    dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload: false });
   }
 };
 const setSurveyData = (data, dispatch) => {
@@ -59,7 +53,7 @@ const closeSurvey = async (_id, dispatch) => {
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload });
   } catch (err) {
-    console.error(err.message)
+    console.error(err.message);
     dispatch({ type: 'SET_SUCCESSFUL_CLOSE', payload: false });
   }
 };
@@ -171,10 +165,8 @@ const SurveyDetailsStepper = () => {
 
   const stepperLabels = [
     `Drafted\n${formatDate(dateCreated)}`,
-    datePublished
-      ? `Published\n${formatDate(datePublished)}`
-      : `Publish\npending`,
-    dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed\npending`,
+    datePublished ? `Published\n${formatDate(datePublished)}` : `Published`,
+    dateClosed ? `Closed\n${formatDate(dateClosed)}` : `Closed`,
   ];
   return (
     <MuiThemeProvider theme={stepperMuiTheme}>
@@ -240,7 +232,28 @@ const SurveyDetail = ({ match }) => {
     successfulPublish,
     successfulClose,
     employeeDataForSlack,
+    activeStep,
+    dateCreated,
+    datePublished,
+    dateClosed,
   } = useSelector((state) => state.surveyDetailReducer);
+
+  const StepperLabelDiv = ({ label, date }) => {
+    return (
+      <Box display='flex' alignItems='center' flexDirection='column'>
+        <Typography style={{ fontSize: '0.75rem' }}>{label}</Typography>
+        <Typography style={{ fontSize: '0.75rem' }}>
+          {date && formatDate(date)}
+        </Typography>
+      </Box>
+    );
+  };
+
+  const stepperLabels = [
+    <StepperLabelDiv label='Drafted' date={dateCreated} />,
+    <StepperLabelDiv label='Made Active' date={datePublished} />,
+    <StepperLabelDiv label='Closed' date={dateClosed} />,
+  ];
 
   useEffect(() => {
     const { id } = match.params;
@@ -297,7 +310,8 @@ const SurveyDetail = ({ match }) => {
               {description}
             </Typography>
           </Box>
-          <SurveyDetailsStepper />
+          <Stepper steps={stepperLabels} activeStep={activeStep} />
+          {/* <SurveyDetailsStepper /> */}
         </Box>
         <Box alignSelf='flex-start'>
           {status === 'draft' && (
@@ -338,10 +352,10 @@ const SurveyDetail = ({ match }) => {
           {recipients.length ? (
             <EmployeeCompletionTable />
           ) : (
-              <Typography>
-                No recipients have been added. Select Edit Survey to start adding.
+            <Typography>
+              No recipients have been added. Select Edit Survey to start adding.
             </Typography>
-            )}
+          )}
 
           {employeeDataForSlack && <SlackModal />}
         </Box>
