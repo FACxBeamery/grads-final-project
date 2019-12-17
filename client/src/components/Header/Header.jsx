@@ -34,6 +34,24 @@ const Header = ({ history }) => {
     </span>
   );
 
+  const dashboardButton = (
+    <Button onClick={() => history.push(`/admin`)} style={{ color: '#FFFFFF' }}>
+      My Dashboard
+    </Button>
+  );
+
+  const logoutButton = isAdmin && (
+    <Button
+      onClick={() => {
+        window.localStorage.removeItem('jwt_token');
+        history.push(`/admin/login`);
+      }}
+      style={{ color: '#FFFFFF' }}
+    >
+      Logout
+    </Button>
+  );
+
   return (
     <AppBar data-testid='app-bar' position='relative'>
       <h2 className={styles.header}>
@@ -41,12 +59,8 @@ const Header = ({ history }) => {
       </h2>
       {isAdmin && (
         <Box mr={2} className={styles.button}>
-          <Button
-            onClick={() => history.push(`/admin`)}
-            style={{ color: '#FFFFFF' }}
-          >
-            My Dashboard
-          </Button>
+          {dashboardButton}
+          {logoutButton}
         </Box>
       )}
     </AppBar>
