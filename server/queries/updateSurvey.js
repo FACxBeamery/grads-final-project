@@ -85,10 +85,11 @@ const updateSurvey = async (surveyId, changes) => {
       await surveys.updateOne(
         {
           _id: ObjectID(surveyId),
-          'recipients.employeeId': ObjectID(employeeId),
+          'recipients.employeeId': employeeId,
         },
         { $set: { 'recipients.$.completed': true } },
       );
+
       await surveys.updateOne(
         { _id: ObjectID(surveyId) },
         {
