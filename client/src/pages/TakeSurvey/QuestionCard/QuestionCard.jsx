@@ -128,9 +128,13 @@ const TextQuestion = () => {
   );
 
   useEffect(() => {
-    if (currentAnswerText) {
+    if (currentAnswerText && currentAnswerText !== '') {
       dispatch({
         type: 'ENABLE_NEXT',
+      });
+    } else {
+      dispatch({
+        type: 'DISABLE_NEXT',
       });
     }
   }, [currentAnswerText, dispatch]);
