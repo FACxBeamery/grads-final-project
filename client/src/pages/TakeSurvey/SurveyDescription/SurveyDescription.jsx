@@ -9,32 +9,34 @@ const SurveyDescription = () => {
 
   const AnonymousDisclaimer = () => {
     return (
-      <Typography>
-        This survey is anonymous. Your responses will not be linked to your
-        personal data.
+      <Typography variant='h5'>
+        This survey is
+        <strong> anonymous</strong>
+        .Your responses will not be linked to your personal data.
       </Typography>
     );
   };
 
   const NonAnonymousDisclaimer = () => {
     return (
-      <Typography>
-        This survey is not anonymous. Your responses will be linked to your
-        personal data.
+      <Typography variant='h5'>
+        This survey is
+        <strong> not </strong>
+        anonymous. Your responses will be linked to your personal data.
       </Typography>
     );
   };
   const SurveyTitle = () => {
     return (
-      <Typography data-testid='survey-title' variant='h3'>
+      <Typography color='primary' data-testid='survey-title' variant='h2'>
         {survey.title}
       </Typography>
     );
   };
 
-  const SurveyDescription = () => {
+  const SurveyDescriptionText = () => {
     return (
-      <Typography data-testid='survey-description' variant='h5'>
+      <Typography data-testid='survey-description' color='primary' variant='h4'>
         {survey.description}
       </Typography>
     );
@@ -42,9 +44,28 @@ const SurveyDescription = () => {
 
   const SurveyDisclaimer = () => {
     return (
-      <Typography data-testid='survey-disclaimer' variant='h5'>
-        {survey.disclaimer}
-      </Typography>
+      <Box
+        display='flex'
+        flexDirection='column'
+        justifyContent='space-between'
+        mt={2}
+        mb={4}
+      >
+        <Box alignItems='left'>
+          <Typography variant='h5' style={{ fontWeight: 'bold' }}>
+            Privacy Notice :
+          </Typography>
+        </Box>
+        <Box alignItems='center'>
+          <Typography
+            data-testid='survey-disclaimer'
+            variant='h6'
+            style={{ fontStyle: 'italic' }}
+          >
+            {survey.disclaimer}
+          </Typography>
+        </Box>
+      </Box>
     );
   };
   return (
@@ -55,13 +76,16 @@ const SurveyDescription = () => {
       alignItems='center'
       justifyContent='space-between'
     >
-      <Box mb={2}>
+      <Box mb={4}>
         <SurveyTitle />
       </Box>
-      <SurveyDescription />
-      <SurveyDisclaimer />
+      <Box mb={4}>
+        <SurveyDescriptionText />
+      </Box>
+
       {survey.anonymous && <AnonymousDisclaimer />}
       {!survey.anonymous && <NonAnonymousDisclaimer />}
+      <SurveyDisclaimer />
     </Box>
   );
 };
