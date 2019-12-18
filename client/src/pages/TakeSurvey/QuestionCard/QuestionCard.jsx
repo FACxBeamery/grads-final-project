@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, Button, TextField, Typography } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -51,18 +50,11 @@ const MultichoiceQuestionOptions = () => {
     (state) => state.takeSurveyReducer.answers[activeStep - 1].answer,
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (currentAnswer) {
-      dispatch({
-        type: 'ENABLE_NEXT',
-      });
-    }
-  }, [currentAnswer, dispatch]);
-
   const handleButtonClick = (event) => {
     event.preventDefault();
-
+    dispatch({
+      type: 'ENABLE_NEXT',
+    });
     dispatch({
       type: 'ADD_RESPONSE',
       payload: {
@@ -126,20 +118,10 @@ const TextQuestion = () => {
   const currentAnswerText = useSelector(
     (state) => state.takeSurveyReducer.answers[activeStep - 1].answer,
   );
-
-  useEffect(() => {
-    if (currentAnswerText && currentAnswerText !== '') {
-      dispatch({
-        type: 'ENABLE_NEXT',
-      });
-    } else {
-      dispatch({
-        type: 'DISABLE_NEXT',
-      });
-    }
-  }, [currentAnswerText, dispatch]);
-
   const handleTextInput = (event) => {
+    dispatch({
+      type: 'ENABLE_NEXT',
+    });
     dispatch({
       type: 'ADD_RESPONSE',
       payload: {
