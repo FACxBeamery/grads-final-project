@@ -64,6 +64,12 @@ const addOptionsToEachQuestion = (questions) =>
     question.options ? question : { ...question, options: [''] },
   );
 
+const createArrayOfObjectsFromArray = (array) => {
+  return array.map((item) => {
+    return { employeeId: item, completed: false };
+  });
+};
+
 const createSurveyReducer = (state = initalState, action) => {
   const { payload } = action;
 
@@ -218,7 +224,13 @@ const createSurveyReducer = (state = initalState, action) => {
         ),
       };
     case 'SAVE_RECIPIENTS':
-      return { ...state, recipientIds: payload.recipients };
+      // eslint-disable-next-line no-case-declarations
+      const newRecipientsIds = payload.recipients;
+      return {
+        ...state,
+        recipientIds: newRecipientsIds,
+        recipients: createArrayOfObjectsFromArray(newRecipientsIds),
+      };
     default:
       return state;
   }
