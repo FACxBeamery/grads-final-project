@@ -82,7 +82,7 @@ const updateSurvey = async (surveyId, changes) => {
     }
     // if recipient has answered
     if (changes.answers) {
-      const result = await surveys.updateOne(
+      await surveys.updateOne(
         {
           _id: ObjectID(surveyId),
           'recipients.employeeId': employeeId,
