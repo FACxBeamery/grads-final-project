@@ -28,6 +28,9 @@ const UserProgressStepper = () => {
   const previousQuestion = () => {
     dispatch({ type: 'PREVIOUS_STEP' });
     dispatch({
+      type: 'ENABLE_NEXT',
+    });
+    dispatch({
       type: 'SET_ACTIVE_QUESTION',
     });
   };
@@ -46,7 +49,7 @@ const UserProgressStepper = () => {
             data-testid='next-button'
             onClick={nextQuestion}
             disabled={
-              (activeQuestion.required  && !enableNext) ||
+              (activeQuestion.required && !enableNext) ||
               activeStep === numberOfSteps - 1
             }
           >
