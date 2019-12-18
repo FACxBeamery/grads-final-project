@@ -39,20 +39,10 @@ const TakeSurvey = ({ match }) => {
     getSurvey();
   }, [dispatch, employeeId, surveyId]);
 
-  const surveyClosed = useSelector(
-    (state) => state.takeSurveyReducer.surveyClosed,
+  const { surveyClosed, employeeHasCompleted } = useSelector(
+    (state) => state.takeSurveyReducer,
   );
 
-  const employeeHasCompleted = useSelector(
-    (state) => state.takeSurveyReducer.employeeHasCompleted,
-  );
-
-  if (employeeHasCompleted) {
-    return <AlreadyCompletedMessage />;
-  }
-  if (surveyClosed) {
-    return <SurveyClosedMessage />;
-  }
   return (
     <Box display='flex' flexDirection='column'>
       <UserProgressStepper />
