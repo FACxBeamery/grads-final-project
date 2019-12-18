@@ -4,7 +4,7 @@ const SurveyCompletedImage = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      height='128px'
+      height='512px'
       viewBox='0 0 52 60'
       width='128px'
     >

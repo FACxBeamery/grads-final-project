@@ -67,30 +67,26 @@ const SurveySubmit = ({ match }) => {
       justifyContent='space-between'
       data-testid='survey-submit'
     >
-      <Box my={2} display='flex' flexDirection='column' alignItems='center'>
-        <Typography variant='h4'>
-          <strong>Please submit your answers</strong>
-        </Typography>
+      <Box my={4}>
+        <Typography variant='h4'>You have finished the survey!</Typography>
+        <Typography variant='h4'>Thanks for your time.</Typography>
+        <SurveyCompletedImage />
+      </Box>
+      <Box mb={2}>
         {!responseSubmission ? (
-          <Box my={2}>
-            <Button
-              alignSelf='center'
-              variant='contained'
-              color='secondary'
-              onClick={handleSurveySubmit}
-            >
-              Submit My Responses
-            </Button>
-          </Box>
+          <Button
+            variant='contained'
+            color='secondary'
+            onClick={handleSurveySubmit}
+          >
+            Submit My Responses
+          </Button>
         ) : (
           <ConfirmationMessage />
         )}
       </Box>
-      <Box my={2}>
-        <SurveyCompletedImage />
-      </Box>
 
-      <Typography gutterBottom align='center'>
+      <Typography>
         Made with ❤ by Tom Galligan, Antonio Gargaro, Thomas Kostrzewski, Martha
         Lambert, Lyndsey Scott, and João Viana
       </Typography>

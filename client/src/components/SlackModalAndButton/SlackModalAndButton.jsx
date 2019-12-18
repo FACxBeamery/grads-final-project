@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -64,57 +63,33 @@ const SlackModal = () => {
     employeeDataForSlack,
   } = useSelector((state) => state.surveyDetailReducer);
 
-  const recipientsIDs = recipients.map((recipient) => {
-    return { employeeId: recipient.employeeId };
-  });
+  const recipientsIDs = recipients.map((recipient) => recipient.employeeId);
 
   const generateLink = (recipientID, surveyIdToDo) => {
     const link = `<https://vibe-at-beamery.netlify.com/surveys/${surveyIdToDo}/${recipientID}>`;
     return link;
   };
+  const generatedLinks = recipientsIDs.map((recipientID) =>
+    generateLink(recipientID, _id),
+  );
 
   const customMessageWithLinks = (link) => `${slackMessageText} ${link}`;
 
-  const filteredEmployeeData = employeeDataForSlack.filter((employee) =>
-    recipientsIDs
-      .map((recipient) => recipient.employeeId)
-
-      .includes(employee._id),
-  );
-
-  const recipientsWithLinks = recipientsIDs.map((recipient) => {
-    // eslint-disable-next-line prefer-destructuring
-    const slackID = filteredEmployeeData.find((person) => {
-      return person._id === recipient.employeeId;
-    }).slackID;
-
-    return {
-      slackID,
-      employeeId: recipient.employeeId,
-      link: generateLink(recipient.employeeId, _id),
-    };
-  });
-
-  // const slackIDs = employeeDataForSlack
-  //   // eslint-disable-next-line no-underscore-dangle
-  //   .filter((employee) =>
-  //     recipientsIDs
-  //       .map((recipient) => recipient.employeeId)
-  //       .includes(employee._id),
-  //   )
-  //   .map((person) => person.slackID);
+  const slackIDs = employeeDataForSlack
+    // eslint-disable-next-line no-underscore-dangle
+    .filter((employee) => recipientsIDs.includes(employee._id))
+    .map((person) => person.slackID);
 
   const handleSlackMessageSubmit = (event) => {
     event.preventDefault();
 
-    recipientsWithLinks.forEach(async (recipient) => {
-      const message = encodeURI(customMessageWithLinks(recipient.link));
+    slackIDs.forEach(async (slackID, linkIndex) => {
+      const message = encodeURI(
+        customMessageWithLinks(generatedLinks[linkIndex]),
+      );
 
       try {
-        const response = await axios.post('/slack', {
-          slackID: recipient.slackID,
-          message,
-        });
+        const response = await axios.post('/slack', { slackID, message });
 
         if (response) {
           if (response.status === 200) {

@@ -266,7 +266,7 @@ const SurveyDetail = ({ match }) => {
                 <Box mb={2} display='flex' flexDirection='column'>
                   <CloseSurveyButton surveyId={match.params.id} />
                 </Box>
-                {employeeDataForSlack.length && <SlackModalAndButton />}
+                {employeeDataForSlack && <SlackModalAndButton />}
               </>
             )}
 
