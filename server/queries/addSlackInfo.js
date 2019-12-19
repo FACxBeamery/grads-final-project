@@ -1,12 +1,14 @@
-const addSlackInfo = async (db, employeeEmail, slackIDToAdd) => {
-  const EmployeesCollection = await db.collection('Employees');
+const { getDb } = require('../databaseConnection');
 
+const addSlackInfo = async (employeeEmail, slackIDToAdd) => {
   try {
-    const updateEmployee = EmployeesCollection.updateOne(
+    const db = getDb();
+    const employees = await db.collection('Employees');
+
+    const updateEmployee = employees.updateOne(
       { email: employeeEmail },
       { $set: { slackID: slackIDToAdd } },
     );
-
     return updateEmployee;
   } catch (err) {
     return err;
