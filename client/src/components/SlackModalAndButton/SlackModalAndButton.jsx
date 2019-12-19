@@ -71,30 +71,24 @@ const SlackModal = () => {
 
   const customMessageWithLinks = (link) => `${slackMessageText} ${link}`;
 
-  const filteredEmployeeData = employeeDataForSlack.filter((employee) => {
-    const recipient = recipients.find(
-      (recipient) => recipient.employeeId === employee._id,
-    );
-    return recipient && recipient.completed === false;
-  });
+  const incompleteRecipients = recipients.filter(
+    (recipient) => recipient.completed === false,
+  );
+  const incompleteRecipientsWithLinks = incompleteRecipients.map(
+    (recipient) => {
+      const matchingEmployee = employeeDataForSlack.find(
+        (employee) => employee._id === recipient.employeeId,
+      );
+      const slackID = matchingEmployee.slackID;
+      const link = generateLink(recipient.employeeId, _id);
 
-  const recipientsWithLinks = recipients.map((recipient) => {
-    // eslint-disable-next-line prefer-destructuring
-    const slackID = filteredEmployeeData.find((person) => {
-      return person._id === recipient.employeeId;
-    }).slackID;
-
-    return {
-      ...recipients,
-      slackID,
-      link: generateLink(recipient.employeeId, _id),
-    };
-  });
-
+      return { ...recipient, slackID, link };
+    },
+  );
   const handleSlackMessageSubmit = (event) => {
     event.preventDefault();
 
-    recipientsWithLinks.forEach(async (recipient) => {
+    incompleteRecipientsWithLinks.forEach(async (recipient) => {
       const message = encodeURI(customMessageWithLinks(recipient.link));
 
       try {
