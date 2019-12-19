@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
-/* istanbul ignore file */
 const app = require('./app');
 const getNODE_ENV = require('./utils/getNODE_ENV');
 const { initDb } = require('./databaseConnection.js');
