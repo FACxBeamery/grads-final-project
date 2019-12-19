@@ -14,8 +14,8 @@ const downloadCSV = async (req, res, next) => {
     }
     if (user) {
       try {
-        const id = !req.params.id ? req.params : req.params.id;
-        const survey = await readSurvey(id.toString(), true);
+        const surveyId = req.params.id ? req.params.id : req.params;
+        const survey = await readSurvey(surveyId, withResponses = true);
         const { responses, questions } = survey;
         const anonymous = survey.anonymous || req.params.anonymous === 'true';
         let employees;
@@ -37,7 +37,7 @@ const downloadCSV = async (req, res, next) => {
           if (!anonymous) {
             const matchingEmployee = employees.find((employee) => {
               // eslint-disable-next-line no-underscore-dangle
-              return response.employeeId.equals(employee._id);
+              return response.employeeId === employee._id.toString();
             });
             responseObj.Name = `${matchingEmployee.firstName} ${matchingEmployee.lastName}`;
           }
