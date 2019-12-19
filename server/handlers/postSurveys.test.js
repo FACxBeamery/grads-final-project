@@ -72,17 +72,6 @@ describe('Test authentication using JWT tokens', () => {
   beforeEach(() => initDb());
   afterEach(() => closeDb());
 
-  it('sends an error status if no auth token sent', async (done) => {
-    try {
-      const res = await request(app).get('/admins');
-      expect(res.status).toEqual(401);
-
-      return done();
-    } catch (err) {
-      return done(err);
-    }
-  });
-
   it('sends response data if auth token sent', async (done) => {
     try {
       const loginResponse = await request(app)
