@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi');
 
 const passport = require('passport');
 const addQuestions = require('../queries/addQuestions');
-const createSurvey = require('../queries/createSurvey');
+const addSurvey = require('../queries/addSurvey');
 
 const postSurveys = async (req, res, next) => {
   passport.authenticate('jwt', { session: false }, async (err, user, info) => {
@@ -83,7 +83,7 @@ const postSurveys = async (req, res, next) => {
         const surveyIsValid = surveyObjectSchema.validate(surveyObject);
 
         if (!surveyIsValid.error) {
-          const postResult = await createSurvey(surveyObject, questionIds);
+          const postResult = await addSurvey(surveyObject, questionIds);
           return res.status(200).json({ message: postResult });
         }
         throw Error(surveyIsValid.error);
