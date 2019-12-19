@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const passport = require('passport');
 const { Parser } = require('json2csv');
 const fs = require('fs');
@@ -34,10 +35,13 @@ const downloadCSV = async (req, res, next) => {
         }
         const responsesWithQuestionTitles = responses.map((response) => {
           const responseObj = {};
+          console.log(employees)
           if (!anonymous) {
             const matchingEmployee = employees.find((employee) => {
-              // eslint-disable-next-line no-underscore-dangle
-              return response.employeeId === employee._id.toString();
+              console.log("response.employeeId: ", response.employeeId)
+              console.log("employee._id.toString(): ", employee._id.toString())
+
+              return response.employeeId.toString() === employee._id.toString();
             });
             responseObj.Name = `${matchingEmployee.firstName} ${matchingEmployee.lastName}`;
           }
