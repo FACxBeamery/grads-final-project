@@ -41,11 +41,6 @@ describe('Test authentication using JWT tokens', () => {
         .set('Authorization', `JWT ${token}`);
 
       expect(res.status).toEqual(200);
-      if (res.body) {
-        // expect(res.body[0]).toHaveProperty('firstName');
-        // expect(res.body[0]).toHaveProperty('lastName');
-        // expect(res.body[0]).toHaveProperty('jobTitle');
-      }
 
       return done();
     } catch (err) {
