@@ -73,7 +73,7 @@ const MultichoiceQuestionOptions = () => {
   };
   return activeQuestion.options.map((option) => {
     const isAnswerSelected =
-      currentAnswer && currentAnswer.toLowerCase() === option;
+      currentAnswer && currentAnswer.toLowerCase() === option.toLowerCase();
 
     const buttonColor = isAnswerSelected ? '#201E5A' : '#E6E6E6';
 
