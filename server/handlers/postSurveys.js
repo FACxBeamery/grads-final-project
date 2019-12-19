@@ -15,7 +15,7 @@ const postSurveys = async (req, res, next) => {
     if (user) {
       // eslint-disable-next-line no-unused-vars
       const surveyObjectSchema = Joi.object().keys({
-        title: Joi.string() // !_id is not allowed under this schema!
+        title: Joi.string()
           .min(2)
           .max(60)
           .required(),
@@ -29,23 +29,17 @@ const postSurveys = async (req, res, next) => {
           .required(),
         status: Joi.string().valid('draft', 'active', 'closed'),
         dateCreated: Joi.alternatives()
-          .try(Joi.string().valid(''), Joi.number().integer())
+          .try(Joi.string(), Joi.number())
           .required(),
         dateEdited: Joi.alternatives()
-          .try(Joi.string().valid(''), Joi.number().integer())
-          .required(), // !can dateEdited = '' or is required?!
-        // dateToPublish: Joi.alternatives()
-        //   .try(Joi.string().valid(''), Joi.number().integer())
-        //   .required(),
+          .try(Joi.string(), Joi.number(), Joi.date())
+          .allow(null),
         datePublished: Joi.alternatives()
-          .try(Joi.string().valid(''), Joi.number().integer())
-          .required(),
-        // dateToClose: Joi.alternatives()
-        //   .try(Joi.string().valid(''), Joi.number().integer())
-        //   .required(),
+          .try(Joi.string(), Joi.number(), Joi.date())
+          .allow(null),
         dateClosed: Joi.alternatives()
-          .try(Joi.string().valid(''), Joi.number().integer())
-          .required(),
+          .try(Joi.string(), Joi.number(), Joi.date())
+          .allow(null),
         anonymous: Joi.boolean().required(),
         recipients: Joi.array().items(
           Joi.object().keys({
@@ -53,9 +47,7 @@ const postSurveys = async (req, res, next) => {
             completed: Joi.boolean(),
           }),
         ),
-        // questions: Joi.array().items(
-        //   Joi.object().keys({ position: Joi.number().integer() }), // !do questions need a position anymore?!
-        // ),
+        recipientIds: Joi.array().allow(null),
         questions: Joi.array(),
         responses: Joi.array().items(
           Joi.object().keys({
