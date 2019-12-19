@@ -130,12 +130,14 @@ const Dashboard = ({ history }) => {
     <Box>
       <Box display='flex' alignItems='center' justifyContent='space-between'>
         <Typography variant='h1'>Dashboard</Typography>
-        <Box display='flex' flexDirection='column' alignItems='center'>
-          <Box mb={2}>
+        <Box display='flex' flexDirection='row'>
+          <Box mb={2} mr={2}>
             <Button
               onClick={goToSurveyBuilder}
               variant='contained'
               color='secondary'
+              size='medium'
+              height='auto'
             >
               Create Survey
             </Button>
@@ -144,6 +146,8 @@ const Dashboard = ({ history }) => {
             onClick={goToSurveyBuilderFromTemplate}
             variant='outlined'
             color='secondary'
+            size='medium'
+            style={{ height: 'fit-content' }}
           >
             Create From Template
           </Button>

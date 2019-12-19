@@ -12,22 +12,12 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import formatDate from '../../../utils/formatDate';
-
 import ProgressWheel from '../../../components/ProgressWheel/ProgressWheel';
 
 import styles from './SurveyCard.module.css';
 
 const SurveyCard = ({ survey }) => {
-  const {
-    _id,
-    title,
-    description,
-    recipients,
-    responses,
-    dateToClose,
-    status,
-  } = survey;
+  const { _id, title, description, recipients, responses, status } = survey;
   const percentage = responses.length / recipients.length;
   return (
     <Grid item xs={12} sm={6} md={4} component={Card} className={styles.card}>
@@ -37,16 +27,6 @@ const SurveyCard = ({ survey }) => {
             <Typography color='textSecondary' gutterBottom variant='subtitle2'>
               SURVEY
             </Typography>
-            {formatDate(dateToClose) && (
-              <Typography
-                color='textSecondary'
-                className={styles.italic}
-                gutterBottom
-                variant='subtitle2'
-              >
-                {`Deadline: ${formatDate(dateToClose)}`}
-              </Typography>
-            )}
           </Box>
           <Box display='flex' justifyContent='space-between' mb={1}>
             <Box display='flex' flexDirection='column' mr={2}>
@@ -90,7 +70,7 @@ const SurveyCard = ({ survey }) => {
             )}
           </Button>
           <Chip
-            label={status === 'active' ? 'Active' : 'Ready to publish'}
+            label={status === 'active' ? 'Active' : 'Ready to Activate'}
             className={status === 'active' ? styles.active : styles.draft}
           />
         </CardActions>

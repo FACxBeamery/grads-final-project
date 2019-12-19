@@ -128,6 +128,16 @@ const EmployeesTable = () => {
     getEmployees();
   }, [dispatch]);
 
+  useEffect(() => {
+    const createArrayOfObjectsFromArray = (array) => {
+      return array.map((item) => {
+        return { employeeId: item, completed: false };
+      });
+    };
+    const payload = { recipients: createArrayOfObjectsFromArray(recipients) };
+    dispatch({ type: 'SAVE_RECIPIENTS', payload });
+  }, [recipients, dispatch]);
+
   const handleRowClick = (event, id) => {
     const payload = { id };
     dispatch({ type: 'TOGGLE_RECIPIENT', payload });

@@ -99,7 +99,7 @@ const EditSurvey = ({ match, history }) => {
     };
     const getSurvey = async () => {
       try {
-        const { data } = await axios.get(`/surveys/${id}`);
+        const { data } = await axios.get(`/surveys/${id}?responses=true`);
         setSurveyData(data);
       } catch (error) {
         setSurveyData({});

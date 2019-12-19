@@ -88,7 +88,7 @@ describe('Testing readSurvey retrieves the correct document.', () => {
         responses: [],
       };
       expect.assertions(1);
-      const readDocument = await readSurvey('508f1f99bcf86cd799439014');
+      const readDocument = await readSurvey('508f1f99bcf86cd799439014', true);
       expect(readDocument).toStrictEqual(documentToFind);
 
       return done();
