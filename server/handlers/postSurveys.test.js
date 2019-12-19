@@ -8,12 +8,12 @@ const app = require('../app');
 const dummySurvey = {
   title: 'test survey title',
   description: 'Test description',
-  status: 'created',
-  dateCreated: '28 NOV 2019 GMT',
-  dateToPublish: '28 NOV 2019 GMT',
-  datePublished: '28 NOV 2019 GMT',
-  dateToClose: '28 NOV 2019 GMT',
-  dateClosed: '28 NOV 2019 GMT',
+  disclaimer: 'I AM A DUMMY DISCLAIMER BLA BLA BLA',
+  status: 'draft',
+  dateCreated: 1576756643032,
+  dateEdited: null,
+  datePublished: 1576756643032,
+  dateClosed: null,
   anonymous: false,
   recipients: [{ employeeId: '321423143214', completed: true }],
   questions: [
@@ -68,30 +68,67 @@ const dummySurvey = {
   ],
 };
 
-describe('Testing POST to the /surveys endpoint', () => {
+describe('Test authentication using JWT tokens', () => {
   beforeEach(() => initDb());
   afterEach(() => closeDb());
 
-  it('Reponds with 200 when given a suitable JSON in body.', async (done) => {
+  it('sends response data if auth token sent', async (done) => {
     try {
-      await request(app)
+      const loginResponse = await request(app)
+        .post('/login')
+        .send({
+          username: 'admin',
+          password: 'admin',
+        });
+
+      expect(loginResponse.status).toEqual(200);
+      expect(loginResponse.body.auth).toEqual(true);
+      expect(loginResponse.body.token).toBeDefined();
+      const {
+        body: { token },
+      } = loginResponse;
+
+      const res = await request(app)
         .post('/surveys')
         .send(dummySurvey)
         .set('Accept', 'application/json')
-        .expect(200);
-      // .expect('Content-Type', /json/);
+        .set('Authorization', `JWT ${token}`);
+
+      expect(res.status).toEqual(200);
+
       return done();
     } catch (err) {
       return done(err);
     }
   });
 
-  // it('Responds with 500 if an inappropriate body is POSTed to /surveys', async (done) => {
-  //   const res = await request(app)
-  //     .post('/surveys')
-  //     .send('An invalid body')
-  //     .set('Accept', 'application/json');
-  //   expect(res.status).toBe(500);
-  //   return done();
-  // });
+  it('Responds with message and status 200 when no JWT provided.', async (done) => {
+    try {
+      const res = await request(app)
+        .post('/surveys')
+        .send(dummySurvey)
+        .set('Accept', 'application/json');
+
+      expect(res.status).toEqual(401);
+      expect(JSON.parse(res.text)).toStrictEqual({ message: 'No auth token' });
+      return done();
+    } catch (err) {
+      return done(err);
+    }
+  });
+
+  it('Empty JWT token', async (done) => {
+    try {
+      const res = await request(app)
+        .post('/surveys')
+        .send(dummySurvey)
+        .set('Authorization', `JWT `);
+
+      expect(res.status).toEqual(401);
+      expect(JSON.parse(res.text)).toStrictEqual({ message: 'No auth token' });
+      return done();
+    } catch (err) {
+      return done(err);
+    }
+  });
 });

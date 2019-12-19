@@ -26,7 +26,7 @@ describe('Testing GET /download/:id/:anonymous', () => {
     return closeDb();
   });
 
-  it('Responds with status 204 when the survey has been updated successfully.', async (done) => {
+  it('Responds with status 200 when the survey has been downloaded successfully.', async (done) => {
     try {
       const surveyIdToDownload = '509f1f99bcf86cd799439215';
 
