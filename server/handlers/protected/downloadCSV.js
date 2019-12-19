@@ -35,12 +35,8 @@ const downloadCSV = async (req, res, next) => {
         }
         const responsesWithQuestionTitles = responses.map((response) => {
           const responseObj = {};
-          console.log(employees)
           if (!anonymous) {
             const matchingEmployee = employees.find((employee) => {
-              console.log("response.employeeId: ", response.employeeId)
-              console.log("employee._id.toString(): ", employee._id.toString())
-
               return response.employeeId.toString() === employee._id.toString();
             });
             responseObj.Name = `${matchingEmployee.firstName} ${matchingEmployee.lastName}`;
