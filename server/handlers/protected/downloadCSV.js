@@ -15,7 +15,7 @@ const downloadCSV = async (req, res, next) => {
     if (user) {
       try {
         const surveyId = req.params.id ? req.params.id : req.params;
-        const survey = await readSurvey(surveyId, withResponses = true);
+        const survey = await readSurvey(surveyId, true);
         const { responses, questions } = survey;
         const anonymous = survey.anonymous || req.params.anonymous === 'true';
         let employees;
