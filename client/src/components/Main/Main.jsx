@@ -53,11 +53,11 @@ const Main = ({ history }) => {
           return !checkingIfAuthed && auth ? (
             <Component {...props} />
           ) : (
-              <LoadingPageOrRedirect
-                {...props}
-                checkingIfAuthed={checkingIfAuthed}
-              />
-            );
+            <LoadingPageOrRedirect
+              {...props}
+              checkingIfAuthed={checkingIfAuthed}
+            />
+          );
         }}
       />
     );
@@ -72,7 +72,6 @@ const Main = ({ history }) => {
   const { message, variant, timeOpened } = useSelector(
     (state) => state.snackbarReducer.snackbar,
   );
-
 
   return (
     <main>
@@ -90,7 +89,6 @@ const Main = ({ history }) => {
         </Box>
       </Box>
       <Snackbar message={message} variant={variant} timeopened={timeOpened} />
-      )
     </main>
   );
 };

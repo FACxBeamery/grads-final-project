@@ -26,6 +26,7 @@ const publishSurvey = async (_id, dispatch) => {
     });
     const payload = response.status === 204;
     dispatch({ type: 'SET_SUCCESSFUL_PUBLISH', payload });
+    dispatch({ type: 'TOGGLE_OPEN_SLACK_MODAL' });
   } catch (err) {
     // eslint-disable-next-line no-console
 
