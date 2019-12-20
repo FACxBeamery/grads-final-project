@@ -47,13 +47,13 @@ describe('My Connected React-Redux Component', () => {
     });
 
     const helperText = await waitForElement(
-      () => getByText('Use a valid email format'),
+      () => getByText('Email must end in @beamery.com'),
       {},
     );
 
     getAllByRole('textbox').forEach((textbox) => {
       fireEvent.change(textbox, {
-        target: { value: 'steven.bianchi@beamer.com' },
+        target: { value: 'steven@beamery.com' },
       });
     });
 

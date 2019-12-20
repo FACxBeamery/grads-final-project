@@ -72,7 +72,7 @@ const AdminLogin = () => {
 
   const usernameHelpertext = useCallback(() => {
     if (username !== '' && !isUsernameInEmailFormat)
-      dispatchUsernameHelper('Use a valid email format');
+      dispatchUsernameHelper('Email must end in @beamery.com');
     else dispatchUsernameHelper('');
   }, [dispatchUsernameHelper, isUsernameInEmailFormat, username]);
 
