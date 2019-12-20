@@ -1,6 +1,9 @@
 const initalState = {
   surveys: [],
   showActiveSurveys: true,
+  openDeleteSurveyModal: false,
+  surveyToDeleteId: undefined,
+  surveyToDeleteTitle: '',
 };
 
 const dashboardReducer = (state = initalState, action) => {
@@ -14,6 +17,14 @@ const dashboardReducer = (state = initalState, action) => {
       return { ...state, showActiveSurveys: !state.showActiveSurveys };
     case 'SET_SURVEYS':
       return { ...state, surveys: action.payload };
+    case 'TOGGLE_DELETE_SURVEY_MODAL':
+      return { ...state, openDeleteSurveyModal: !state.openDeleteSurveyModal };
+    case 'SET_DELETE_SURVEY_DATA':
+      return {
+        ...state,
+        surveyToDeleteId: action.payload.id,
+        surveyToDeleteTitle: action.payload.title,
+      };
     default:
       return state;
   }
