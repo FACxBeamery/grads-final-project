@@ -8,15 +8,15 @@ const removeSurvey = async (req, res, next) => {
       throw new Error(err);
     }
     if (info) {
-      res.status(401).json({ message: info.message });
+      return res.status(401).json({ message: info.message });
     }
     if (user) {
       try {
         const { id } = req.params;
         const result = await deleteSurvey(id);
-        res.status(200).json(result);
+        return res.status(200).json(result);
       } catch (error) {
-        res
+        return res
           .status(500)
           .json(
             "We're experiencing some issues on our end. Please inform the engineers and we will get back to you",
