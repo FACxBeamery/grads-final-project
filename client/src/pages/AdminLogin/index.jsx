@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
@@ -12,7 +12,8 @@ import Box from '@material-ui/core/Box';
 
 import {
   SET_LOGIN,
-  SET_HELPER_TEXT,
+  SET_USERNAME_HELPER_TEXT,
+  SET_PASSWORD_HELPER_TEXT,
 } from '../../store/actions/adminLoginActions';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
@@ -20,6 +21,7 @@ import useStyles from './styles';
 import { login, unsuccessfulLogin, setAuth } from './eventHandlers';
 import Copyright from '../../components/Copyright';
 import loginAdmin from './apiCalls';
+import { emailRegex } from './utils';
 
 // eslint-disable-next-line react/prop-types
 const AdminLogin = () => {
@@ -30,8 +32,49 @@ const AdminLogin = () => {
 
   const { from } = location.state || { from: { pathname: '/admin' } };
 
-  const { helperText, data } = useSelector((state) => state.adminLoginReducer);
+  const { usernameHelperText, passwordHelperText, data } = useSelector(
+    (state) => state.adminLoginReducer,
+  );
   const { username, password } = data;
+
+  // conditionals
+  const isUsernameHelperTextPopulated =
+    usernameHelperText && usernameHelperText !== '';
+  const isPasswordHelperTextPopulated =
+    passwordHelperText && passwordHelperText !== '';
+  const isUsernameInEmailFormat = Boolean(username.match(emailRegex));
+
+  const isLoginValid =
+    username &&
+    password &&
+    isUsernameInEmailFormat &&
+    !isUsernameHelperTextPopulated &&
+    !isPasswordHelperTextPopulated;
+
+  // Helper texts
+  const dispatchUsernameHelper = useCallback(
+    (text) =>
+      dispatch({
+        type: SET_USERNAME_HELPER_TEXT,
+        payload: { helperText: text },
+      }),
+    [dispatch],
+  );
+
+  const dispatchPasswordHelper = useCallback(
+    (text) =>
+      dispatch({
+        type: SET_PASSWORD_HELPER_TEXT,
+        payload: { helperText: text },
+      }),
+    [dispatch],
+  );
+
+  const usernameHelpertext = useCallback(() => {
+    if (username !== '' && !isUsernameInEmailFormat)
+      dispatchUsernameHelper('Use a valid email format');
+    else dispatchUsernameHelper('');
+  }, [dispatchUsernameHelper, isUsernameInEmailFormat, username]);
 
   useEffect(() => {
     const { auth } = data;
@@ -40,9 +83,13 @@ const AdminLogin = () => {
     }
   }, [from, history, data]);
 
+  useEffect(() => {
+    usernameHelpertext();
+  }, [username, usernameHelpertext]);
+
   const setLoginOnChange = (event) => {
-    const helperTextPayload = { helperText: '' };
-    dispatch({ type: SET_HELPER_TEXT, payload: helperTextPayload });
+    usernameHelpertext();
+    dispatchPasswordHelper('');
 
     const inputfieldPayload = {
       [event.target.name]: event.target.value,
@@ -74,9 +121,6 @@ const AdminLogin = () => {
     }
   };
 
-  // conditionals
-  const isHelperTextEmptyString = helperText !== '';
-
   // Elements
   const usernameInputField = (
     <TextField
@@ -89,9 +133,10 @@ const AdminLogin = () => {
       name='username'
       autoComplete='email'
       value={username || ''}
+      error={isUsernameHelperTextPopulated}
+      helperText={usernameHelperText}
       onChange={setLoginOnChange}
       color='secondary'
-      error={isHelperTextEmptyString}
     />
   );
   const passwordInputField = (
@@ -108,8 +153,8 @@ const AdminLogin = () => {
       onChange={setLoginOnChange}
       autoComplete='current-password'
       color='secondary'
-      error={isHelperTextEmptyString}
-      helperText={helperText}
+      error={isPasswordHelperTextPopulated}
+      helperText={passwordHelperText}
     />
   );
   const submitLoginButton = (
@@ -119,6 +164,7 @@ const AdminLogin = () => {
       variant='contained'
       color='secondary'
       className={classes.submit}
+      disabled={!isLoginValid}
     >
       Sign In
     </Button>
