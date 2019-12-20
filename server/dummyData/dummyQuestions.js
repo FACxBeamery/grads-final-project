@@ -19,7 +19,7 @@ module.exports = [
   },
   {
     _id: ObjectID('707f1f87bcf86dd799439121'),
-    title: "I see myself still working at B*amery in two years' time",
+    title: "I see myself still working at Beamery in two years' time",
     type: 'multichoice',
     required: true,
     commentEnabled: true,
@@ -33,7 +33,7 @@ module.exports = [
   },
   {
     _id: ObjectID('707f1f87bcf76dd789439121'),
-    title: 'I am proud to work for B*amery',
+    title: 'I am proud to work for Beamery',
     type: 'multichoice',
     required: true,
     commentEnabled: false,
