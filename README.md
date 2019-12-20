@@ -118,8 +118,7 @@ Install:
 - Docker
 - NPM
 
-Once the project is cloned, run `sh start` from the root folder. This will run `npm i` in the `client` and `server` directories, 
-
+Once the project is cloned, run `sh start` from the root folder. This will run `npm i` in the `client` and `server` directories, and run dockerup on all three containers. If you have already done `npm i` and want to restart the Docker containers, run `npm run dockerup`. 
 
 To spin down the Docker containers, once you are finished, and remove the stopped containers and respective images, run `npm run dockerdown` whilst in the root folder.
 
