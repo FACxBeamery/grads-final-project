@@ -31,6 +31,7 @@ const surveyDetailReducer = (state = initalState, action) => {
         employeeDataForSlack: [],
         slackMessageSubmission: false,
         slackMessageFail: false,
+        openDeleteSurveyModal: false,
       };
 
     case 'SET_SURVEY_DATA_SURVEY_DETAIL':
@@ -63,6 +64,11 @@ const surveyDetailReducer = (state = initalState, action) => {
       return {
         ...state,
         slackMessageFail: true,
+      };
+    case 'TOGGLE_DELETE_SURVEY_MODAL_DETAIL':
+      return {
+        ...state,
+        openDeleteSurveyModal: !state.openDeleteSurveyModal,
       };
     default:
       return state;

@@ -17,6 +17,7 @@ import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 import SlackModalAndButton from '../../components/SlackModalAndButton/SlackModalAndButton';
 import ProgressWheel from '../../components/ProgressWheel/ProgressWheel';
 import formatDate from '../../utils/formatDate';
+import DeleteSurveyModal from './DeleteSurveyModal';
 
 const publishSurvey = async (_id, dispatch) => {
   try {
@@ -155,6 +156,19 @@ const EditSurveyButton = () => {
     </Button>
   );
 };
+
+const DeleteSurveyButton = () => {
+  const dispatch = useDispatch();
+  return (
+    <Button
+      color='secondary'
+      variant='contained'
+      onClick={() => dispatch({ type: 'TOGGLE_DELETE_SURVEY_MODAL_DETAIL' })}
+    >
+      Delete survey
+    </Button>
+  );
+};
 const SurveyDetail = ({ match }) => {
   const dispatch = useDispatch();
 
@@ -249,6 +263,7 @@ const SurveyDetail = ({ match }) => {
               {description}
             </Typography>
           </Box>
+
           <Stepper steps={stepperLabels} activeStep={activeStep} />
           {/* <SurveyDetailsStepper /> */}
         </Box>
@@ -306,7 +321,11 @@ const SurveyDetail = ({ match }) => {
       )}
       {[true, false].includes(successfulPublish) && SnackbarPublish()}
       {[true, false].includes(successfulClose) && SnackbarClose()}
+      <Box alignSelf='center' my={2}>
+        <DeleteSurveyButton />
+      </Box>
       <ExportModal />
+      <DeleteSurveyModal />
     </Box>
   );
 };
