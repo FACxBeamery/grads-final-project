@@ -21,7 +21,7 @@ import useStyles from './styles';
 import { login, unsuccessfulLogin, setAuth } from './eventHandlers';
 import Copyright from '../../components/Copyright';
 import loginAdmin from './apiCalls';
-import { emailRegex } from './utils';
+import { emailRegex } from '../../utils/regex';
 
 // eslint-disable-next-line react/prop-types
 const AdminLogin = () => {
