@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-const { getDb } = require('../databaseConnection');
 const { ObjectID } = require('mongodb');
+const { getDb } = require('../databaseConnection');
 
 const deleteSurvey = async (id) => {
   const db = getDb();
