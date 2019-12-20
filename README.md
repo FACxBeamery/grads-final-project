@@ -80,9 +80,14 @@ Once a survey is made active, the admin can invite the recipients to complete th
 
 
 ### Receiving A Slack Message
+
 <a href="https://ibb.co/MSy17D5"><img src="https://i.ibb.co/C8p9Q5s/Screenshot-2019-12-20-at-10-55-26.png" alt="Screenshot-2019-12-20-at-10-55-26" border="0"></a>
+
 Each survey recipient receives a personalised link to the survey via SlackBot. If the survey is closed or they have already completed the survey, clicking on the link lands them on a page conveying this information:
-<img src="https://i.imgur.com/auMat6z.png" width="30%" ><img src="https://i.imgur.com/9SlBAAg.png" width="30%" >
+
+<img src="https://i.imgur.com/auMat6z.png" width="30%" >
+
+<img src="https://i.imgur.com/9SlBAAg.png" width="30%" >
 
 
 
@@ -90,8 +95,8 @@ Each survey recipient receives a personalised link to the survey via SlackBot. I
 The first survey page contains the Privacy Notice and a disclaimer, as well as a statement about the anonymity of the survey.
 
 <img src="https://i.imgur.com/AJWtTlY.png" width="40%" >
-
 <img src="https://i.imgur.com/CsNSu5a.png" width="40%" >
+
 <img src="https://i.imgur.com/ZISYGWo.png" width="40%" >
 <img src="https://i.imgur.com/iKKZHOW.png" width="40%" >
 
@@ -120,6 +125,7 @@ Install:
 
 Once the project is cloned, run `sh start` from the root folder. This will run `npm i` in the `client` and `server` directories, and run dockerup on all three containers. If you have already done `npm i` and want to restart the Docker containers, run `npm run dockerup`. 
 
+
 To spin down the Docker containers, once you are finished, and remove the stopped containers and respective images, run `npm run dockerdown` whilst in the root folder.
 
 To check all the tests in the project, using Travis, run `npm test` from the <strong>root</strong> folder.
@@ -128,4 +134,5 @@ To view the database schema, please click [here](https://hackmd.io/UvPhEaOgSm-ce
 
 
 # Known Bugs
+
 
