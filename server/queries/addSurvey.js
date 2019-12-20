@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const { getDb } = require('../databaseConnection');
 
-const createSurvey = async (surveyObj, newQuestionsArray) => {
+const addSurvey = async (surveyObj, newQuestionsArray) => {
   /* takes the survey object from the front end, replaces the questions
         with the ObjectIds from the questions collection, and sends to the DB
         */
@@ -22,4 +22,4 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
   }
 };
 
-module.exports = createSurvey;
+module.exports = addSurvey;

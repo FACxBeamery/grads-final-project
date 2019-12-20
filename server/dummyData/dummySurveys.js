@@ -10,36 +10,35 @@ module.exports = [
     status: 'draft',
     disclaimer:
       'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy (www.beamery.com/privacy). If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
-    dateCreated: 1573826615,
-    dateEdited: 1572617513,
-    dateToPublish: 1574345041,
+    dateCreated: 1576627200000,
+    dateEdited: 1576627200000,
     datePublished: '',
     dateToClose: 1576937061,
     dateClosed: '',
     anonymous: false,
     recipients: [
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439014'),
+        employeeId: '507f1f77bcf86cd799439014',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439012'),
+        employeeId: '507f1f77bcf86cd799439012',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439013'),
+        employeeId: '507f1f77bcf86cd799439013',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439015'),
+        employeeId: '507f1f77bcf86cd799439015',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439016'),
+        employeeId: '507f1f77bcf86cd799439016',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439017'),
+        employeeId: '507f1f77bcf86cd799439017',
         completed: false,
       },
     ],
@@ -52,77 +51,77 @@ module.exports = [
   },
   {
     _id: ObjectID('508f1f99bcf86cd799439214'),
-    title: 'Q4 All Employee Engagement Survey',
-    description: 'A survey to measure engagement in Q4 of 2019',
+    title: 'All employees survey',
+    description:
+      'This survey is about gauging how you feel about your time at Beamery. Please try to be as honest as possible!',
     status: 'active',
     disclaimer:
       'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy (www.beamery.com/privacy). If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
-    dateCreated: 1572617513,
-    dateToPublish: 1574259113,
-    dateEdited: 1572617513,
-    datePublished: 1574259113,
+    dateCreated: 1575936000000,
+    dateEdited: 1575936000000,
+    datePublished: 1576022400000,
     dateToClose: 1576851113,
     dateClosed: '',
     anonymous: true,
     recipients: [
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439014'),
+        employeeId: '507f1f77bcf86cd799439014',
         completed: true,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439012'),
+        employeeId: '507f1f77bcf86cd799439012',
         completed: true,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439013'),
+        employeeId: '507f1f77bcf86cd799439013',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439015'),
+        employeeId: '507f1f77bcf86cd799439015',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439016'),
+        employeeId: '507f1f77bcf86cd799439016',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439017'),
+        employeeId: '507f1f77bcf86cd799439017',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439011'),
+        employeeId: '507f1f77bcf86cd799439011',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439018'),
+        employeeId: '507f1f77bcf86cd799439018',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439019'),
+        employeeId: '507f1f77bcf86cd799439019',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439023'),
+        employeeId: '507f1f77bcf86cd799439023',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439033'),
+        employeeId: '507f1f77bcf86cd799439033',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439043'),
+        employeeId: '507f1f77bcf86cd799439043',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439053'),
+        employeeId: '507f1f77bcf86cd799439053',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439063'),
+        employeeId: '507f1f77bcf86cd799439063',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439073'),
+        employeeId: '507f1f77bcf86cd799439073',
         completed: false,
       },
     ],
@@ -234,44 +233,44 @@ module.exports = [
     _id: ObjectID('509f1f99bcf86cd799439215'),
     title: 'People Team - engagement survey',
     description:
-      'A survey to measure engagement in the people team during 2019',
+      'This is a survey of the People team to measure your feelings about the new Beamery branding',
     status: 'closed',
     disclaimer:
       'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy (www.beamery.com/privacy). If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
-    dateCreated: 1572617513,
-    dateEdited: 1572617513,
-    dateToPublish: 1574259113,
-    datePublished: 1574259113,
+    dateCreated: 1576022400000,
+    dateEdited: 1576022400000,
+
+    datePublished: 1576022400000,
     dateToClose: 1576851113,
-    dateClosed: 1576851113,
+    dateClosed: 1576627200000,
     anonymous: false,
     recipients: [
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439011'),
+        employeeId: '507f1f77bcf86cd799439011',
         completed: true,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439019'),
+        employeeId: '507f1f77bcf86cd799439019',
         completed: true,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439023'),
+        employeeId: '507f1f77bcf86cd799439023',
         completed: true,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439033'),
+        employeeId: '507f1f77bcf86cd799439033',
         completed: true,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439043'),
+        employeeId: '507f1f77bcf86cd799439043',
         completed: true,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439063'),
+        employeeId: '507f1f77bcf86cd799439063',
         completed: false,
       },
       {
-        employeeId: ObjectID('507f1f77bcf86cd799439073'),
+        employeeId: '507f1f77bcf86cd799439073',
         completed: false,
       },
     ],
@@ -341,7 +340,7 @@ module.exports = [
           },
           {
             questionId: ObjectID('707f1f87bdf76dd799439126'),
-            answer: 'no! im oapsodmnaposmx aks xpioa scxkay!',
+            answer: 'No, I am okay!',
           },
           {
             questionId: ObjectID('707f1f87bcf86dd799439021'),
@@ -358,7 +357,7 @@ module.exports = [
           },
           {
             questionId: ObjectID('707f1f87bdf76dd799439126'),
-            answer: 'no! imapiosdma sd ipkq wd !!! scxkay!',
+            answer: 'I am fine thanks!',
           },
           {
             questionId: ObjectID('707f1f87bcf86dd799439021'),

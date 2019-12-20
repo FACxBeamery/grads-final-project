@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 const { initDb, closeDb } = require('../databaseConnection');
-const createSurvey = require('./createSurvey');
+const addSurvey = require('./addSurvey');
 
 describe('Testing that adding a new survey works', () => {
   beforeEach(() => initDb());
@@ -36,7 +36,7 @@ describe('Testing that adding a new survey works', () => {
 
       const dummyQuestionsArray = [{ questionId: '4321211412', position: 2 }];
 
-      const result = await createSurvey(dummySurvey, dummyQuestionsArray);
+      const result = await addSurvey(dummySurvey, dummyQuestionsArray);
       expect(result).toEqual('success');
       return done();
     } catch (err) {

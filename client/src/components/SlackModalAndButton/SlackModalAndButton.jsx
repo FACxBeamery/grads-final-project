@@ -64,10 +64,6 @@ const SlackModal = () => {
     employeeDataForSlack,
   } = useSelector((state) => state.surveyDetailReducer);
 
-  const recipientsIDs = recipients.map((recipient) => {
-    return { employeeId: recipient.employeeId };
-  });
-
   const generateLink = (recipientID, surveyIdToDo) => {
     const link = `<https://vibe-at-beamery.netlify.com/surveys/${surveyIdToDo}/${recipientID}>`;
     return link;
@@ -75,39 +71,24 @@ const SlackModal = () => {
 
   const customMessageWithLinks = (link) => `${slackMessageText} ${link}`;
 
-  const filteredEmployeeData = employeeDataForSlack.filter((employee) =>
-    recipientsIDs
-      .map((recipient) => recipient.employeeId)
-
-      .includes(employee._id),
+  const incompleteRecipients = recipients.filter(
+    (recipient) => recipient.completed === false,
   );
+  const incompleteRecipientsWithLinks = incompleteRecipients.map(
+    (recipient) => {
+      const matchingEmployee = employeeDataForSlack.find(
+        (employee) => employee._id === recipient.employeeId,
+      );
+      const slackID = matchingEmployee.slackID;
+      const link = generateLink(recipient.employeeId, _id);
 
-  const recipientsWithLinks = recipientsIDs.map((recipient) => {
-    // eslint-disable-next-line prefer-destructuring
-    const slackID = filteredEmployeeData.find((person) => {
-      return person._id === recipient.employeeId;
-    }).slackID;
-
-    return {
-      slackID,
-      employeeId: recipient.employeeId,
-      link: generateLink(recipient.employeeId, _id),
-    };
-  });
-
-  // const slackIDs = employeeDataForSlack
-  //   // eslint-disable-next-line no-underscore-dangle
-  //   .filter((employee) =>
-  //     recipientsIDs
-  //       .map((recipient) => recipient.employeeId)
-  //       .includes(employee._id),
-  //   )
-  //   .map((person) => person.slackID);
-
+      return { ...recipient, slackID, link };
+    },
+  );
   const handleSlackMessageSubmit = (event) => {
     event.preventDefault();
 
-    recipientsWithLinks.forEach(async (recipient) => {
+    incompleteRecipientsWithLinks.forEach(async (recipient) => {
       const message = encodeURI(customMessageWithLinks(recipient.link));
 
       try {
@@ -196,7 +177,7 @@ const SlackModal = () => {
         variant='outlined'
         size='large'
       >
-        Send Survey Invite
+        Send Reminder
       </Button>
     </>
   );
