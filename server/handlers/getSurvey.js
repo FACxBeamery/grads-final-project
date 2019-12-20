@@ -15,7 +15,7 @@ const getSurvey = async (req, res, next) => {
         const result = await readSurvey(id.toString(), withResponses);
         return res.status(200).json(result);
       } catch (error) {
-        throw Error({ message: 'Failed to read survey data.' });
+        return res.status(500);
       }
     };
 

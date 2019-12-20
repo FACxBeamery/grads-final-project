@@ -112,6 +112,12 @@ const filterData = (filters, data, attribute) => {
   return filteredData;
 };
 
+const createArrayOfObjectsFromArray = (array) => {
+  return array.map((item) => {
+    return { employeeId: item, completed: false };
+  });
+};
+
 const employeeTableReducer = (state = initalState, action) => {
   const { payload } = action;
   switch (action.type) {
@@ -154,9 +160,15 @@ const employeeTableReducer = (state = initalState, action) => {
     case 'CHANGE_ROWS_PER_PAGE':
       return { ...state, rowsPerPage: payload.rowsPerPage };
     case 'TOGGLE_RECIPIENT':
+      // eslint-disable-next-line no-case-declarations
+      const newRecipientIds = toggleSingleRecipient(
+        state.recipientIds,
+        payload.id,
+      );
       return {
         ...state,
-        recipientIds: toggleSingleRecipient(state.recipientIds, payload.id),
+        recipientIds: newRecipientIds,
+        recipients: createArrayOfObjectsFromArray(newRecipientIds),
       };
     case 'TOGGLE_FILTERED_RECIPIENTS':
       return {
@@ -207,6 +219,11 @@ const employeeTableReducer = (state = initalState, action) => {
         filteredEmployeeData: state.employeeData.filter((person) =>
           state.recipientIds.find(person._id),
         ),
+      };
+    case 'REMOVE_FILTERS':
+      return {
+        ...state,
+        filteredEmployeeData: state.employeeData,
       };
     default:
       return state;

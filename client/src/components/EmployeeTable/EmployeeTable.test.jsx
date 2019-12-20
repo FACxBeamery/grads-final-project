@@ -305,46 +305,46 @@ describe('Employee table works as expected', () => {
     expect(marthaLambert).not.toBeInTheDocument();
     expect(thomasKostrzewski).toBeInTheDocument();
   });
-  it('Checking both attributes should check the "Show all', async () => {
+  it('Selecting both attributes then clicking remove filters should uncheck everything', async () => {
     const mockAxiosGet = jest.spyOn(axios, 'get');
     mockAxiosGet.mockImplementation(() =>
       Promise.resolve({ data: dummyEmployees }),
     );
-    const { getByLabelText, getAllByLabelText } = render(
+    const { getByLabelText, getByText } = render(
       <Provider store={store}>
         <EmployeesTable />
       </Provider>,
     );
 
-    const peopleCheckbox = await waitForElement(() =>
-      getByLabelText('People', { exact: false }),
-    );
     const engineeringCheckbox = getByLabelText('Engineering', { exact: false });
 
-    const selectAllCheckbox = getAllByLabelText('Show all', {
+    const londonCheckbox = getByLabelText('London', { exact: false });
+
+    const removeFilters = getByText('Remove Filters', {
       exact: false,
-    })[0];
+    });
 
-    expect(peopleCheckbox.checked).toEqual(false);
+    expect(londonCheckbox.checked).toEqual(false);
     expect(engineeringCheckbox.checked).toEqual(false);
-    expect(selectAllCheckbox.checked).toEqual(false);
 
-    fireEvent.click(peopleCheckbox);
-    expect(peopleCheckbox.checked).toEqual(true);
+    fireEvent.click(londonCheckbox);
+    expect(londonCheckbox.checked).toEqual(true);
     expect(engineeringCheckbox.checked).toEqual(false);
-    expect(selectAllCheckbox.checked).toEqual(false);
 
     fireEvent.click(engineeringCheckbox);
-    expect(peopleCheckbox.checked).toEqual(true);
+    expect(londonCheckbox.checked).toEqual(true);
     expect(engineeringCheckbox.checked).toEqual(true);
-    expect(selectAllCheckbox.checked).toEqual(true);
+
+    fireEvent.click(removeFilters);
+    expect(londonCheckbox.checked).toEqual(false);
+    expect(engineeringCheckbox.checked).toEqual(false);
   });
   it('Typing in the searchbar should reset checkboxes to false', async () => {
     const mockAxiosGet = jest.spyOn(axios, 'get');
     mockAxiosGet.mockImplementation(() =>
       Promise.resolve({ data: dummyEmployees }),
     );
-    const { getByLabelText, getByRole, getAllByLabelText } = render(
+    const { getByLabelText, getByRole } = render(
       <Provider store={store}>
         <EmployeesTable />
       </Provider>,
@@ -354,12 +354,7 @@ describe('Employee table works as expected', () => {
       getByLabelText('People', { exact: false }),
     );
 
-    const selectAllCheckbox = getAllByLabelText('Show all', {
-      exact: false,
-    })[0];
-
     expect(peopleCheckbox.checked).toEqual(false);
-    expect(selectAllCheckbox.checked).toEqual(false);
 
     fireEvent.click(peopleCheckbox);
     expect(peopleCheckbox.checked).toEqual(true);
@@ -368,6 +363,5 @@ describe('Employee table works as expected', () => {
     fireEvent.change(searchbar, { target: { value: 't' } });
 
     expect(peopleCheckbox.checked).toEqual(false);
-    expect(selectAllCheckbox.checked).toEqual(false);
   });
 });

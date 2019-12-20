@@ -66,7 +66,7 @@ const dummySurvey = {
       id: 3,
       title: "I see myself still working at B*amery in two years' time",
       type: 'multichoice',
-      required: true,
+      required: false,
       commentEnabled: true,
       options: [
         'strongly disagree',
@@ -143,6 +143,7 @@ describe('test take survey components work together', () => {
     fireEvent.click(NextButton2);
 
     const multichoiceAnswer1 = getByText('meh', { exact: false });
+
     fireEvent.click(multichoiceAnswer1);
 
     const NextButton3 = getByTestId('next-button');
@@ -151,6 +152,7 @@ describe('test take survey components work together', () => {
     const multichoiceAnswer2 = getByText('neutral', { exact: false });
 
     fireEvent.click(multichoiceAnswer2);
+
     const NextButton4 = getByTestId('next-button');
     fireEvent.click(NextButton4);
 

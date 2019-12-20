@@ -1,0 +1,7 @@
+build:
+  docker:
+    # client: ./client/Dockerfile.client
+    web: ./server/Dockerfile.server
+# run:
+#   client: npm run start
+#   server: node -L server.js

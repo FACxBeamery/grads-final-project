@@ -17,6 +17,7 @@ const updateEmployeesWithSlackID = async (db) => {
 
       if (response && response.data.user) {
         const slackID = response.data.user.id;
+
         addSlackInfo(db, email, slackID);
         return response.data.user.id;
       }

@@ -7,6 +7,8 @@ const initalState = {
   openSlackModal: false,
   slackMessageText: '',
   employeeDataForSlack: [],
+  slackMessageSubmission: false,
+  slackMessageFail: false,
 };
 
 const getStatusStep = (status) => {
@@ -27,6 +29,9 @@ const surveyDetailReducer = (state = initalState, action) => {
         anonymousExport: false,
         slackMessageText: '',
         employeeDataForSlack: [],
+        slackMessageSubmission: false,
+        slackMessageFail: false,
+        openDeleteSurveyModal: false,
       };
 
     case 'SET_SURVEY_DATA_SURVEY_DETAIL':
@@ -50,7 +55,21 @@ const surveyDetailReducer = (state = initalState, action) => {
       return { ...state, openSlackModal: !state.openSlackModal };
     case 'ADD_SLACK_MESSAGE':
       return { ...state, slackMessageText: action.payload };
-
+    case 'SLACK_MESSAGE_SUBMISSION':
+      return {
+        ...state,
+        slackMessageSubmission: true,
+      };
+    case 'SLACK_MESSAGE_FAIL':
+      return {
+        ...state,
+        slackMessageFail: true,
+      };
+    case 'TOGGLE_DELETE_SURVEY_MODAL_DETAIL':
+      return {
+        ...state,
+        openDeleteSurveyModal: !state.openDeleteSurveyModal,
+      };
     default:
       return state;
   }

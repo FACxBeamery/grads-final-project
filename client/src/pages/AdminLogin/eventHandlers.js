@@ -1,6 +1,6 @@
 import {
   SET_LOGIN,
-  SET_HELPER_TEXT,
+  SET_PASSWORD_HELPER_TEXT,
 } from '../../store/actions/adminLoginActions';
 import { UPDATE_SNACKBAR } from '../../store/actions/snackbarActions';
 
@@ -17,7 +17,7 @@ const login = (dispatch, message, token) => {
   const helperTextPayload = { helperText: '' };
 
   dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
-  dispatch({ type: SET_HELPER_TEXT, payload: helperTextPayload });
+  dispatch({ type: SET_PASSWORD_HELPER_TEXT, payload: helperTextPayload });
 };
 
 const unsuccessfulLogin = (dispatch, message) => {
@@ -32,7 +32,7 @@ const unsuccessfulLogin = (dispatch, message) => {
   const helperTextPayload = { helperText: message };
 
   dispatch({ type: UPDATE_SNACKBAR, payload: snackbarPayload });
-  dispatch({ type: SET_HELPER_TEXT, payload: helperTextPayload });
+  dispatch({ type: SET_PASSWORD_HELPER_TEXT, payload: helperTextPayload });
 };
 
 const setAuth = (dispatch, auth) => {

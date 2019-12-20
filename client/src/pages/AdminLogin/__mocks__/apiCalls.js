@@ -1,8 +1,8 @@
 // __mocks__/apiCalls.js
 
 const users = {
-  username: 'admin',
-  password: 'admin',
+  username: 'steven.bianchi@beamery.com',
+  password: 'steven.bianchi@beamery.com',
 };
 
 const mockLoginAdmin = (username, password) => {

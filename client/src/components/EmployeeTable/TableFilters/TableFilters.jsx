@@ -12,27 +12,16 @@ import {
   FormGroup,
   Typography,
   Divider,
+  Button,
 } from '@material-ui/core';
 
 const OptionsCheckbox = ({ options, attribute }) => {
   const { filters } = useSelector((state) => state.employeeTableReducer);
   const dispatch = useDispatch();
 
-  const checkAllValuesTrue = (object) => {
-    return Object.values(object).every((element) => element);
-  };
-
-  const allChecked = checkAllValuesTrue(filters[attribute]);
-
   const handleOptionChange = (event, option) => {
     const payload = { checked: event.target.checked, option, attribute };
     dispatch({ type: 'SET_FILTER_OPTION', payload });
-    dispatch({ type: 'FILTER_DATA', payload });
-  };
-
-  const handleAllFilter = (event) => {
-    const payload = { checked: event.target.checked, attribute };
-    dispatch({ type: 'SET_ALL_FILTER', payload });
     dispatch({ type: 'FILTER_DATA', payload });
   };
 
@@ -44,22 +33,6 @@ const OptionsCheckbox = ({ options, attribute }) => {
         </FormLabel>
         <FormGroup>
           <Box display='flex'>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={allChecked}
-                  onChange={handleAllFilter}
-                  value={allChecked || ''}
-                  name='select-all'
-                  inputProps={{
-                    'aria-label': 'Show all: ',
-                  }}
-                />
-              }
-              label={
-                <Typography style={{ fontSize: '12px' }}>Show all</Typography>
-              }
-            />
             {options.map((option) => (
               <FormControlLabel
                 key={option}
@@ -104,6 +77,16 @@ const RecipientOptions = () => {
     dispatch({ type: 'FILTER_DATA', payload });
   };
 
+  const removeFilters = () => {
+    dispatch({ type: 'REMOVE_FILTERS' });
+    let payload = { checked: false, attribute: 'department' };
+    dispatch({ type: 'SET_ALL_FILTER', payload });
+    payload = { checked: false, attribute: 'office' };
+    dispatch({ type: 'SET_ALL_FILTER', payload });
+    payload = { text: '' };
+    dispatch({ type: 'SET_SEARCHBAR_TEXT', payload });
+  };
+
   const departmentOptions = Object.keys(department);
   const officeOptions = Object.keys(office);
 
@@ -126,6 +109,16 @@ const RecipientOptions = () => {
         </Box>
         <Divider />
         <Box display='flex' flexDirection='column' pt={2}>
+          <Box alignSelf='flex-end' mr={1} mb={2}>
+            <Button
+              onClick={removeFilters}
+              size='small'
+              width='auto'
+              color='secondary'
+            >
+              Remove Filters
+            </Button>
+          </Box>
           <OptionsCheckbox
             key='department'
             options={departmentOptions}

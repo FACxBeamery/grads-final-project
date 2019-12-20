@@ -92,15 +92,14 @@ const CreateSurvey = ({ history }) => {
         ...surveyForSending,
         status: 'draft',
         responses: [],
-        dateToClose: null,
         dateClosed: null,
         dateEdited: Date.now(),
         datePublished: null,
-        dateToPublish: null,
         recipients: recipientsToSend,
         recipientIds: recipientsToSend,
       };
       delete surveyForSending.employeeData;
+      delete surveyForSending.modalStyle;
       delete surveyForSending.openCreateSurveyModal;
       delete surveyForSending.isConfirming;
       delete surveyForSending.openModal;

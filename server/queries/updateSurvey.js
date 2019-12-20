@@ -17,7 +17,7 @@ const updateSurvey = async (surveyId, changes) => {
     const { anonymous } = surveyBeforeChanges;
     let employeeId;
     if (changes.employeeId) {
-      employeeId = ObjectID(changes.employeeId);
+      employeeId = changes.employeeId;
     }
     if (changes.questions) {
       // initialised an array with existing ids, and having null as a placeholder for the new ones in order to keep the ordering
@@ -85,10 +85,11 @@ const updateSurvey = async (surveyId, changes) => {
       await surveys.updateOne(
         {
           _id: ObjectID(surveyId),
-          'recipients.employeeId': ObjectID(employeeId),
+          'recipients.employeeId': employeeId,
         },
         { $set: { 'recipients.$.completed': true } },
       );
+
       await surveys.updateOne(
         { _id: ObjectID(surveyId) },
         {

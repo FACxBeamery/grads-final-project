@@ -21,36 +21,35 @@ describe('Testing readSurvey retrieves the correct document.', () => {
         status: 'draft',
         disclaimer:
           'We respect your trust and protect your privacy by never sharing this data with third parties as well as ensuring this data will be stored until the research period is over. By filling out this survey, you agree that we will process your data in line with the Beamery Privacy Policy (www.beamery.com/privacy). If you would like to chat about this policy, or if you subsequently change your mind and want us to delete your personal data, please email steven.bianchi@beamery.com.',
-        dateCreated: 1573826615,
-        dateEdited: 1572617513,
-        dateToPublish: 1574345041,
+        dateCreated: 1576627200000,
+        dateEdited: 1576627200000,
         datePublished: '',
         dateToClose: 1576937061,
         dateClosed: '',
         anonymous: false,
         recipients: [
           {
-            employeeId: ObjectID('507f1f77bcf86cd799439014'),
+            employeeId: '507f1f77bcf86cd799439014',
             completed: false,
           },
           {
-            employeeId: ObjectID('507f1f77bcf86cd799439012'),
+            employeeId: '507f1f77bcf86cd799439012',
             completed: false,
           },
           {
-            employeeId: ObjectID('507f1f77bcf86cd799439013'),
+            employeeId: '507f1f77bcf86cd799439013',
             completed: false,
           },
           {
-            employeeId: ObjectID('507f1f77bcf86cd799439015'),
+            employeeId: '507f1f77bcf86cd799439015',
             completed: false,
           },
           {
-            employeeId: ObjectID('507f1f77bcf86cd799439016'),
+            employeeId: '507f1f77bcf86cd799439016',
             completed: false,
           },
           {
-            employeeId: ObjectID('507f1f77bcf86cd799439017'),
+            employeeId: '507f1f77bcf86cd799439017',
             completed: false,
           },
         ],

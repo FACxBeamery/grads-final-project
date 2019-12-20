@@ -14,21 +14,8 @@ import { EmployeesTable } from '../../../components/EmployeeTable';
 
 const RecipientsList = () => {
   const { openModal } = useSelector((state) => state.createSurveyReducer);
-  const recipients = useSelector(
-    (state) => state.employeeTableReducer.recipientIds,
-  );
-  const createArrayOfObjectsFromArray = (array) => {
-    return array.map((item) => {
-      return { employeeId: item, completed: false };
-    });
-  };
 
   const dispatch = useDispatch();
-  const handleSaveRecipientsClick = () => {
-    const payload = { recipients: createArrayOfObjectsFromArray(recipients) };
-    dispatch({ type: 'SAVE_RECIPIENTS', payload });
-    dispatch({ type: 'TOGGLE_MODAL' });
-  };
 
   const handleClose = () => {
     dispatch({ type: 'TOGGLE_MODAL' });
@@ -53,7 +40,7 @@ const RecipientsList = () => {
         <Paper
           style={{
             width: '90vw',
-            height: '78vh',
+            height: '75vh',
             transform: 'translate(6%, 20%)',
           }}
         >
@@ -77,15 +64,6 @@ const RecipientsList = () => {
               }}
             >
               <EmployeesTable />
-            </Box>
-            <Box mt={2}>
-              <Button
-                variant='contained'
-                color='secondary'
-                onClick={handleSaveRecipientsClick}
-              >
-                Save selection
-              </Button>
             </Box>
           </Box>
         </Paper>

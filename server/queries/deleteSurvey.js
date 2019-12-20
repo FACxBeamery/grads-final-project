@@ -1,16 +1,14 @@
 /* eslint-disable no-console */
+const { ObjectID } = require('mongodb');
 const { getDb } = require('../databaseConnection');
 
-const createSurvey = async (surveyObj, newQuestionsArray) => {
-  /* takes the survey object from the front end, replaces the questions
-        with the ObjectIds from the questions collection, and sends to the DB
-        */
-
+const deleteSurvey = async (id) => {
   const db = getDb();
   const surveysCollection = db.collection('Surveys');
-  const newSurveyObj = { ...surveyObj, questions: newQuestionsArray };
   try {
-    const queryResult = await surveysCollection.insertOne(newSurveyObj);
+    const queryResult = await surveysCollection.deleteOne({
+      _id: ObjectID(id),
+    });
 
     if (queryResult.result.ok !== 1) {
       return new Error('Query not acknowledged');
@@ -22,4 +20,4 @@ const createSurvey = async (surveyObj, newQuestionsArray) => {
   }
 };
 
-module.exports = createSurvey;
+module.exports = deleteSurvey;

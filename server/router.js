@@ -10,7 +10,7 @@ const getSurvey = require('./handlers/getSurvey');
 const postSurveys = require('./handlers/postSurveys');
 const { getEmployees } = require('./handlers/getEmployees');
 const postSlackMessage = require('./handlers/postSlackMessage');
-
+const removeSurvey = require('./handlers/removeSurvey');
 const getAdmins = require('./handlers/getAdmins');
 const postLogin = require('./handlers/postLogin');
 
@@ -29,6 +29,7 @@ router.post('/login', postLogin);
 router.get('/surveys/:id', getSurvey);
 router.patch('/surveys/:id', patchSurvey);
 router.get('/surveys', getSurveys);
+router.delete('/surveys/:id', removeSurvey);
 
 router.post('/surveys', postSurveys);
 
