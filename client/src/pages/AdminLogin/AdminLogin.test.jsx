@@ -10,14 +10,13 @@ import AdminLogin from '.';
 jest.mock('./apiCalls');
 
 describe('My Connected React-Redux Component', () => {
-
   it('<AdminLogin /> displays welcome message, two input fields and sign in button', async () => {
     const { getByText, getAllByLabelText, getAllByRole } = render(
       <BrowserRouter>
         <Provider store={store}>
           <AdminLogin />
         </Provider>
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(getByText('Welcome.')).toBeInTheDocument();
@@ -37,18 +36,30 @@ describe('My Connected React-Redux Component', () => {
     expect(passwordField).toHaveLength(1);
     expect(submitButton).toBeInTheDocument();
 
+    expect(submitButton.closest('button').disabled).toEqual(true);
+
     fireEvent.submit(submitButton.closest('button'));
 
+    getAllByRole('textbox').forEach((textbox) => {
+      fireEvent.change(textbox, {
+        target: { value: 'ad' },
+      });
+    });
+
     const helperText = await waitForElement(
-      () => getByText('Missing credentials'),
+      () => getByText('Email must end in @beamery.com'),
       {},
     );
 
     getAllByRole('textbox').forEach((textbox) => {
       fireEvent.change(textbox, {
-        target: { value: 'a' },
+        target: { value: 'steven@beamery.com' },
       });
     });
+
+    expect(helperText).not.toBeInTheDocument();
+
+    expect(submitButton.closest('button').disabled).toEqual(false);
 
     fireEvent.submit(submitButton.closest('button'));
 
@@ -59,7 +70,7 @@ describe('My Connected React-Redux Component', () => {
 
     getAllByRole('textbox').forEach((textbox) => {
       fireEvent.change(textbox, {
-        target: { value: 'admin' },
+        target: { value: 'steven.bianchi@beamery.com' },
       });
     });
 
